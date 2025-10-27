@@ -27,17 +27,17 @@ except ImportError:
 
 # Optional dependency for autonomous agent commands
 try:
-import httpx
-HTTPX_AVAILABLE = True
+    import httpx
+    HTTPX_AVAILABLE = True
 except ImportError:
-HTTPX_AVAILABLE = False
-httpx = None
+    HTTPX_AVAILABLE = False
+    httpx = None
 
 
 app = typer.Typer(
-name="roma-glm",
-help="ROMA-DSPy: Hierarchical task decomposition with DSPy",
-add_completion=False,
+    name="roma-glm",
+    help="ROMA-DSPy: Hierarchical task decomposition with DSPy",
+    add_completion=False,
 )
 agent_app = typer.Typer(
 name="agent",
