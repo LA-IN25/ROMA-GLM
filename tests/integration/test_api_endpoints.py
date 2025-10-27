@@ -144,7 +144,7 @@ class TestCheckpointEndpoints:
     async def test_get_checkpoint(self, client: AsyncClient, mock_storage):
         """Test getting checkpoint details."""
         # Setup mock to return checkpoint model
-        from roma_dspy.core.storage.models import Checkpoint
+        from roma_glm.core.storage.models import Checkpoint
         from datetime import datetime, timezone
 
         mock_checkpoint = Checkpoint(

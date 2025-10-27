@@ -4,11 +4,11 @@ import pytest
 from datetime import datetime
 from typing import Any, Dict
 
-from roma_dspy.core.engine.dag import TaskDAG
-from roma_dspy.core.signatures.base_models.task_node import TaskNode
-from roma_dspy.types import TaskType, TaskStatus, NodeType
-from roma_dspy.types.module_result import NodeMetrics
-from roma_dspy.types.checkpoint_models import TaskSnapshot, DAGSnapshot
+from roma_glm.core.engine.dag import TaskDAG
+from roma_glm.core.signatures.base_models.task_node import TaskNode
+from roma_glm.types import TaskType, TaskStatus, NodeType
+from roma_glm.types.module_result import NodeMetrics
+from roma_glm.types.checkpoint_models import TaskSnapshot, DAGSnapshot
 
 
 class TestDAGSerialization:

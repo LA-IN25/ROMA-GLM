@@ -6,7 +6,7 @@
 agents:
   atomizer:
     llm:
-      model: openrouter/google/gemini-2.5-flash
+      model: openai/glm-4.5-air
       temperature: 0.0
       max_tokens: 8000
     # Load custom instruction prompt
@@ -16,7 +16,7 @@ agents:
 
   planner:
     llm:
-      model: openrouter/google/gemini-2.5-flash
+      model: openai/glm-4.5-air
       temperature: 0.1
       max_tokens: 32000
     signature_instructions: "prompt_optimization.seed_prompts.planner_seed:PLANNER_PROMPT"
@@ -24,7 +24,7 @@ agents:
 
   executor:
     llm:
-      model: openrouter/anthropic/claude-sonnet-4.5
+      model: openai/glm-4.6
       temperature: 0.2
       max_tokens: 32000
     prediction_strategy: react
@@ -38,7 +38,7 @@ agents:
 
   aggregator:
     llm:
-      model: openrouter/google/gemini-2.5-flash
+      model: openai/glm-4.5-air
       temperature: 0.0
       max_tokens: 32000
     signature_instructions: "prompt_optimization.seed_prompts.aggregator_seed:AGGREGATOR_PROMPT"
@@ -46,7 +46,7 @@ agents:
 
   verifier:
     llm:
-      model: openrouter/google/gemini-2.5-flash
+      model: openai/glm-4.5-air
       temperature: 0.0
       max_tokens: 16000
     signature_instructions: "prompt_optimization.seed_prompts.verifier_seed:VERIFIER_PROMPT"
@@ -55,7 +55,6 @@ agents:
 runtime:
   max_depth: 6
   enable_logging: true
-
 # Custom Prompts Benefits:
 # - Better task classification (atomizer)
 # - Smarter task decomposition (planner)

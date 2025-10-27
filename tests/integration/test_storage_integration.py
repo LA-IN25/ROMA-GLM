@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from src.roma_dspy.config.schemas import StorageConfig
-from src.roma_dspy.core.storage import FileStorage
-from src.roma_dspy.tools.utils.storage import DataStorage
+from src.roma_glm.config.schemas import StorageConfig
+from src.roma_glm.core.storage import FileStorage
+from src.roma_glm.tools.utils.storage import DataStorage
 
 
 class TestStorageIntegration:
@@ -274,8 +274,8 @@ class TestStorageIntegration:
 
 def test_storage_system_available():
     """Test that storage modules can be imported."""
-    from src.roma_dspy.core.storage import FileStorage
-    from src.roma_dspy.tools.utils.storage import DataStorage
+    from src.roma_glm.core.storage import FileStorage
+    from src.roma_glm.tools.utils.storage import DataStorage
 
     assert FileStorage is not None
     assert DataStorage is not None

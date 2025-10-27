@@ -6,7 +6,7 @@
 agents:
   executor:
     llm:
-      model: openai/gpt-4o-mini
+      model: openai/glm-4.5-air
       temperature: 0.3
       max_tokens: 4000
     prediction_strategy: react
@@ -17,7 +17,7 @@ agents:
           server_name: coingecko_public
           server_type: http
           url: "https://mcp.api.coingecko.com/sse"
-          use_storage: true  # Store large responses
+          use_storage: true # Store large responses
           storage_threshold_kb: 100
 
       - class_name: CalculatorToolkit
@@ -26,7 +26,6 @@ agents:
 runtime:
   max_depth: 4
   enable_logging: true
-
 # MCP Server Features:
 # - No installation required
 # - No API key needed

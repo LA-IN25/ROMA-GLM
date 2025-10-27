@@ -2,10 +2,10 @@
 
 import pytest
 from datetime import datetime, timezone
-from roma_dspy.core.storage.postgres_storage import PostgresStorage
-from roma_dspy.core.storage.models import Base, Execution, Checkpoint
-from roma_dspy.config.schemas.storage import PostgresConfig
-from roma_dspy.types.checkpoint_models import CheckpointData, CheckpointTrigger
+from roma_glm.core.storage.postgres_storage import PostgresStorage
+from roma_glm.core.storage.models import Base, Execution, Checkpoint
+from roma_glm.config.schemas.storage import PostgresConfig
+from roma_glm.types.checkpoint_models import CheckpointData, CheckpointTrigger
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.pool import NullPool
 
@@ -15,7 +15,7 @@ async def postgres_config():
     """Postgres configuration for testing."""
     return PostgresConfig(
         enabled=True,
-        connection_url="postgresql+asyncpg://localhost/roma_dspy_test",
+        connection_url="postgresql+asyncpg://localhost/roma_glm_test",
         pool_size=2,
         max_overflow=0,
         pool_timeout=5.0,
@@ -116,7 +116,7 @@ class TestPostgresStorage:
         )
 
         # Create checkpoint data
-        from roma_dspy.types.checkpoint_models import CheckpointState, DAGSnapshot
+        from roma_glm.types.checkpoint_models import CheckpointState, DAGSnapshot
 
         checkpoint_data = CheckpointData(
             checkpoint_id=checkpoint_id,

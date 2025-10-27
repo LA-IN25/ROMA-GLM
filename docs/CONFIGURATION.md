@@ -134,7 +134,7 @@ Profiles are pre-configured agent setups for different use cases. Located in `co
 agents:
   atomizer:
     llm:
-      model: openrouter/google/gemini-2.5-flash
+      model: openai/glm-4.5-air
       temperature: 0.0
       max_tokens: 8000
     signature_instructions: "prompt_optimization.seed_prompts.atomizer_seed:ATOMIZER_PROMPT"
@@ -142,7 +142,7 @@ agents:
 
   executor:
     llm:
-      model: openrouter/anthropic/claude-sonnet-4.5
+      model: openai/glm-4.6
       temperature: 0.2
       max_tokens: 32000
     prediction_strategy: react
@@ -165,7 +165,7 @@ Create `config/profiles/my_profile.yaml`:
 agents:
   executor:
     llm:
-      model: openrouter/anthropic/claude-sonnet-4.5
+      model: openai/glm-4.6
       temperature: 0.3
       max_tokens: 16000
     prediction_strategy: react
@@ -211,7 +211,7 @@ agents:
   executor:  # Agent type: atomizer, planner, executor, aggregator, verifier
     # LLM configuration
     llm:
-      model: openrouter/anthropic/claude-sonnet-4.5
+      model: openai/glm-4.6
       temperature: 0.2
       max_tokens: 32000
       timeout: 30
@@ -317,7 +317,7 @@ ROMA-DSPy classifies tasks into 5 types:
 agents:
   executor:
     llm:
-      model: openrouter/anthropic/claude-sonnet-4.5
+      model: openai/glm-4.6
     prediction_strategy: react
     toolkits:
       - class_name: FileToolkit
@@ -329,7 +329,7 @@ agent_mapping:
     # RETRIEVE: Fast model + web search
     RETRIEVE:
       llm:
-        model: openrouter/google/gemini-2.5-flash  # Fast & cheap
+        model: openai/glm-4.5-air  # Fast & cheap
         temperature: 0.0
         max_tokens: 16000
       prediction_strategy: react
@@ -346,7 +346,7 @@ agent_mapping:
     # CODE_INTERPRET: Powerful model + code execution
     CODE_INTERPRET:
       llm:
-        model: openrouter/anthropic/claude-sonnet-4.5  # Powerful
+        model: openai/glm-4.6  # Powerful
         temperature: 0.1
         max_tokens: 32000
       agent_config:
@@ -609,7 +609,7 @@ Configure language models for each agent.
 agents:
   executor:
     llm:
-      model: openrouter/anthropic/claude-sonnet-4.5
+      model: openai/glm-4.6
       temperature: 0.2
       max_tokens: 32000
       timeout: 30
@@ -635,8 +635,8 @@ agents:
 Single API key for all models:
 
 ```yaml
-model: openrouter/anthropic/claude-sonnet-4.5
-model: openrouter/google/gemini-2.5-flash
+model: openai/glm-4.6
+model: openai/glm-4.5-air
 model: openrouter/openai/gpt-4o
 ```
 
@@ -1265,7 +1265,7 @@ See **[config/examples/README.md](../config/examples/README.md)** for:
 agents:
   executor:
     llm:
-      model: openrouter/anthropic/claude-sonnet-4.5
+      model: openai/glm-4.6
     prediction_strategy: react
     toolkits:
       - class_name: FileToolkit
@@ -1323,10 +1323,10 @@ agent_mapping:
   executors:
     RETRIEVE:
       llm:
-        model: openrouter/google/gemini-2.5-flash  # $0.075/1M tokens
+        model: openai/glm-4.5-air  # $0.075/1M tokens
     CODE_INTERPRET:
       llm:
-        model: openrouter/anthropic/claude-sonnet-4.5  # $3/1M tokens
+        model: openai/glm-4.6  # $3/1M tokens
 ```
 
 ### 6. Enable Caching

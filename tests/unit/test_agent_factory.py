@@ -1,9 +1,9 @@
 """Tests for AgentFactory agent creation."""
 
 import pytest
-from src.roma_dspy.config.schemas.agents import AgentConfig
-from src.roma_dspy.config.schemas.base import LLMConfig
-from src.roma_dspy.types import AgentType, TaskType
+from src.roma_glm.config.schemas.agents import AgentConfig
+from src.roma_glm.config.schemas.base import LLMConfig
+from src.roma_glm.types import AgentType, TaskType
 
 
 class TestAgentFactoryCreation:
@@ -11,8 +11,8 @@ class TestAgentFactoryCreation:
 
     def test_create_atomizer_default_signature(self):
         """Create atomizer with default signature."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
-        from src.roma_dspy.core.modules import Atomizer
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.modules import Atomizer
 
         config = AgentConfig(
             llm=LLMConfig(model="gpt-4o", temperature=0.1)
@@ -26,8 +26,8 @@ class TestAgentFactoryCreation:
 
     def test_create_executor_custom_signature(self):
         """Create executor with custom signature."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
-        from src.roma_dspy.core.modules import Executor
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.modules import Executor
 
         config = AgentConfig(
             llm=LLMConfig(model="gpt-4o"),
@@ -43,8 +43,8 @@ class TestAgentFactoryCreation:
 
     def test_create_planner_with_instructions(self):
         """Create planner with signature instructions."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
-        from src.roma_dspy.core.modules import Planner
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.modules import Planner
 
         config = AgentConfig(
             llm=LLMConfig(model="gpt-4o"),
@@ -60,8 +60,8 @@ class TestAgentFactoryCreation:
 
     def test_create_aggregator(self):
         """Create aggregator agent."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
-        from src.roma_dspy.core.modules import Aggregator
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.modules import Aggregator
 
         config = AgentConfig(
             llm=LLMConfig(model="gpt-4o", temperature=0.2)
@@ -74,8 +74,8 @@ class TestAgentFactoryCreation:
 
     def test_create_verifier(self):
         """Create verifier agent."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
-        from src.roma_dspy.core.modules import Verifier
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.modules import Verifier
 
         config = AgentConfig(
             llm=LLMConfig(model="gpt-4o", temperature=0.0)
@@ -88,7 +88,7 @@ class TestAgentFactoryCreation:
 
     def test_create_agent_invalid_type(self):
         """Fail on invalid agent type."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
 
         config = AgentConfig(llm=LLMConfig(model="gpt-4o"))
 
@@ -99,8 +99,8 @@ class TestAgentFactoryCreation:
 
     def test_get_default_signature(self):
         """Get default signatures for all agent types."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
-        from src.roma_dspy.core.signatures import (
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.signatures import (
             AtomizerSignature, PlannerSignature, ExecutorSignature,
             AggregatorResult, VerifierSignature
         )

@@ -15,9 +15,9 @@ import pytest
 import asyncio
 from pathlib import Path
 
-from src.roma_dspy.config.manager import ConfigManager
-from src.roma_dspy.core.storage import FileStorage
-from src.roma_dspy.tools.core.e2b import E2BToolkit
+from src.roma_glm.config.manager import ConfigManager
+from src.roma_glm.core.storage import FileStorage
+from src.roma_glm.tools.core.e2b import E2BToolkit
 
 
 # Skip all tests if required env vars not set

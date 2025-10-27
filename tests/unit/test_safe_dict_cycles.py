@@ -10,7 +10,7 @@ Tests verify that:
 """
 
 import pytest
-from roma_dspy.config.schemas.toolkit import ToolkitConfig
+from roma_glm.config.schemas.toolkit import ToolkitConfig
 
 
 class TestSafeDictCircularReferences:

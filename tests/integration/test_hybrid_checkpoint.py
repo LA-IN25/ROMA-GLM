@@ -6,12 +6,12 @@ import shutil
 from pathlib import Path
 from datetime import datetime, timezone
 
-from roma_dspy.resilience.checkpoint_manager import CheckpointManager
-from roma_dspy.types.checkpoint_models import CheckpointConfig
-from roma_dspy.config.schemas.storage import PostgresConfig
-from roma_dspy.core.storage.postgres_storage import PostgresStorage
-from roma_dspy.core.storage.models import Base
-from roma_dspy.types.checkpoint_models import (
+from roma_glm.resilience.checkpoint_manager import CheckpointManager
+from roma_glm.types.checkpoint_models import CheckpointConfig
+from roma_glm.config.schemas.storage import PostgresConfig
+from roma_glm.core.storage.postgres_storage import PostgresStorage
+from roma_glm.core.storage.models import Base
+from roma_glm.types.checkpoint_models import (
     CheckpointData,
     CheckpointTrigger,
     CheckpointState,
@@ -32,7 +32,7 @@ async def postgres_storage():
     """Create PostgreSQL storage instance."""
     config = PostgresConfig(
         enabled=True,
-        connection_url="postgresql+asyncpg://localhost/roma_dspy_test",
+        connection_url="postgresql+asyncpg://localhost/roma_glm_test",
         pool_size=2,
         max_overflow=0,
         pool_timeout=5.0
@@ -86,8 +86,8 @@ class TestHybridCheckpoint:
 
     async def test_dual_write_checkpoint(self, checkpoint_manager, temp_checkpoint_dir):
         """Test that checkpoints are written to both file and Postgres."""
-        from roma_dspy.core.engine.dag import TaskDAG
-        from roma_dspy.core.signatures.base_models.task_node import TaskNode
+        from roma_glm.core.engine.dag import TaskDAG
+        from roma_glm.core.signatures.base_models.task_node import TaskNode
 
         # Create a simple DAG
         dag = TaskDAG(execution_id="test_exec_001")
@@ -113,8 +113,8 @@ class TestHybridCheckpoint:
 
     async def test_load_from_postgres_fallback_to_file(self, checkpoint_manager, postgres_storage):
         """Test loading from Postgres with file fallback."""
-        from roma_dspy.core.engine.dag import TaskDAG
-        from roma_dspy.core.signatures.base_models.task_node import TaskNode
+        from roma_glm.core.engine.dag import TaskDAG
+        from roma_glm.core.signatures.base_models.task_node import TaskNode
 
         # Create a simple DAG
         dag = TaskDAG(execution_id="test_exec_001")
@@ -146,8 +146,8 @@ class TestHybridCheckpoint:
         # Create manager WITHOUT Postgres (simulating failure)
         manager = CheckpointManager(config=config, postgres_storage=None)
 
-        from roma_dspy.core.engine.dag import TaskDAG
-        from roma_dspy.core.signatures.base_models.task_node import TaskNode
+        from roma_glm.core.engine.dag import TaskDAG
+        from roma_glm.core.signatures.base_models.task_node import TaskNode
 
         # Create a simple DAG
         dag = TaskDAG(execution_id="test_exec_002")
@@ -173,8 +173,8 @@ class TestHybridCheckpoint:
 
     async def test_list_checkpoints_hybrid(self, checkpoint_manager):
         """Test listing checkpoints from both sources."""
-        from roma_dspy.core.engine.dag import TaskDAG
-        from roma_dspy.core.signatures.base_models.task_node import TaskNode
+        from roma_glm.core.engine.dag import TaskDAG
+        from roma_glm.core.signatures.base_models.task_node import TaskNode
 
         # Create multiple checkpoints
         for i in range(3):
@@ -196,8 +196,8 @@ class TestHybridCheckpoint:
 
     async def test_checkpoint_metadata_consistency(self, checkpoint_manager):
         """Test that metadata is consistent between file and Postgres."""
-        from roma_dspy.core.engine.dag import TaskDAG
-        from roma_dspy.core.signatures.base_models.task_node import TaskNode
+        from roma_glm.core.engine.dag import TaskDAG
+        from roma_glm.core.signatures.base_models.task_node import TaskNode
 
         # Create checkpoint with metadata
         dag = TaskDAG(execution_id="test_exec_001")

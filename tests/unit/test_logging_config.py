@@ -8,7 +8,7 @@ from io import StringIO
 import pytest
 from loguru import logger
 
-from roma_dspy.logging_config import (
+from roma_glm.logging_config import (
     configure_logging,
     execution_context,
     task_context,

@@ -1,6 +1,6 @@
 <div align="center">
     <img src="./assets/sentient-logo-new-M.png" alt="alt text" width="60%"/>
-    <h1>ROMA: Recursive Open Meta-Agents</h1>
+    <h1>ROMA-GLM: Recursive Open Meta-Agents with GLM Integration</h1>
 </div>
 
 <p align="center">
@@ -62,19 +62,19 @@
 
 ---
 
-## 🎯 What is ROMA?
+## 🎯 What is ROMA-GLM?
 
 <div align="center">
     <img src="./assets/roma_run.gif" alt="alt text" width="80%"/>
 </div>
 <br>
 
-**ROMA** is a **meta-agent framework** that uses recursive hierarchical structures to solve complex problems. By breaking down tasks into parallelizable components, ROMA enables agents to tackle sophisticated reasoning challenges while maintaining transparency that makes context-engineering and iteration straightforward. The framework offers **parallel problem solving** where agents work simultaneously on different parts of complex tasks, **transparent development** with a clear structure for easy debugging, and **proven performance** demonstrated through our search agent's strong benchmark results. We've shown the framework's effectiveness, but this is just the beginning. As an **open-source and extensible** platform, ROMA is designed for community-driven development, allowing you to build and customize agents for your specific needs while benefiting from the collective improvements of the community.
+**ROMA-GLM** is a **meta-agent framework** that uses recursive hierarchical structures to solve complex problems with enhanced GLM model integration and Z.AI web search capabilities. By breaking down tasks into parallelizable components, ROMA-GLM enables agents to tackle sophisticated reasoning challenges while maintaining transparency that makes context-engineering and iteration straightforward. The framework offers **parallel problem solving** where agents work simultaneously on different parts of complex tasks, **transparent development** with a clear structure for easy debugging, **GLM model optimization** for Chinese and multilingual tasks, and **real-time web search** through Z.AI integration. We've shown the framework's effectiveness, but this is just the beginning. As an **open-source and extensible** platform, ROMA-GLM is designed for community-driven development, allowing you to build and customize agents for your specific needs while benefiting from the collective improvements of the community.
 
 ## 🏗️ How It Works
 
 
-**ROMA** framework processes tasks through a recursive **plan–execute loop**:
+**ROMA-GLM** framework processes tasks through a recursive **plan–execute loop**:
 
 ```python
 def solve(task):
@@ -90,19 +90,19 @@ def solve(task):
 # Entry point:
 answer = solve(initial_request)
 ```
-1. **Atomizer** – Decides whether a request is **atomic** (directly executable) or requires **planning**.  
-2. **Planner** – If planning is needed, the task is broken into smaller **subtasks**. Each subtask is fed back into the **Atomizer**, making the process recursive.  
-3. **Executors** – Handle atomic tasks. Executors can be **LLMs, APIs, or even other agents** — as long as they implement an `agent.execute()` interface.  
-4. **Aggregator** – Collects and integrates results from subtasks. Importantly, the Aggregator produces the **answer to the original parent task**, not just raw child outputs.  
+1. **Atomizer** – Decides whether a request is **atomic** (directly executable) or requires **planning**.
+2. **Planner** – If planning is needed, the task is broken into smaller **subtasks**. Each subtask is fed back into the **Atomizer**, making the process recursive.
+3. **Executors** – Handle atomic tasks. Executors can be **LLMs, APIs, or even other agents** — as long as they implement an `agent.execute()` interface.
+4. **Aggregator** – Collects and integrates results from subtasks. Importantly, the Aggregator produces the **answer to the original parent task**, not just raw child outputs.
 
 
 
-#### 📐 Information Flow  
-- **Top-down:** Tasks are decomposed into subtasks recursively.  
-- **Bottom-up:** Subtask results are aggregated upwards into solutions for parent tasks.  
-- **Left-to-right:** If a subtask depends on the output of a previous one, it waits until that subtask completes before execution.  
+#### 📐 Information Flow
+- **Top-down:** Tasks are decomposed into subtasks recursively.
+- **Bottom-up:** Subtask results are aggregated upwards into solutions for parent tasks.
+- **Left-to-right:** If a subtask depends on the output of a previous one, it waits until that subtask completes before execution.
 
-This structure makes the system flexible, recursive, and dependency-aware — capable of decomposing complex problems into smaller steps while ensuring results are integrated coherently. 
+This structure makes the system flexible, recursive, and dependency-aware — capable of decomposing complex problems into smaller steps while ensuring results are integrated coherently.
 
 <details>
 <summary>Click to view the system flow diagram</summary>
@@ -118,7 +118,7 @@ flowchart TB
     E --> G[Aggregator]
 
     %% Recursion
-    E -.-> B  
+    E -.-> B
 
     %% Execution + Aggregation
     D --> F[Final Result]
@@ -232,6 +232,7 @@ GOOGLE_API_KEY=...
 # Optional: Toolkit API keys
 E2B_API_KEY=...           # Code execution (prompted during setup)
 EXA_API_KEY=...           # Web search via MCP
+Z_AI_API_KEY=...           # Z.AI GLM models & web search via MCP
 COINGECKO_API_KEY=...     # CoinGecko Pro API (crypto_agent profile)
 ```
 
@@ -281,25 +282,25 @@ executor = Executor(
 
 # Atomizer decides when to branch into planning
 atomizer = Atomizer(
-    lm=dspy.LM("openrouter/google/gemini-2.5-flash", temperature=0.6, cache=False),
+    lm=dspy.LM("openai/glm-4.5-air", temperature=0.6, cache=False),
     prediction_strategy="cot",
     context_defaults={"track_usage": True},
 )
 
 # Planner produces executable subtasks for non-atomic goals
 planner = Planner(
-    lm=dspy.LM("openrouter/openai/gpt-4o-mini", temperature=0.85, cache=True),
+    lm=dspy.LM("openai/glm-4.5-air", temperature=0.85, cache=True),
     prediction_strategy="cot",
     context_defaults={"track_usage": True},
 )
 
 aggregator = Aggregator(
-    lm=dspy.LM("openrouter/openai/gpt-4o-mini", temperature=0.65),
+    lm=dspy.LM("openai/glm-4.5-air", temperature=0.65),
     prediction_strategy="cot",
 )
 
 verifier = Verifier(
-    lm=dspy.LM("openrouter/openai/gpt-4o-mini", temperature=0.0),
+    lm=dspy.LM("openai/glm-4.5-air", temperature=0.0),
 )
 
 def run_pipeline(goal: str) -> str:
@@ -380,7 +381,7 @@ ROMA-DSPy includes 9 built-in toolkits that extend agent capabilities:
 
 **Core**: FileToolkit, CalculatorToolkit, E2BToolkit (code execution)
 **Crypto**: CoinGeckoToolkit, BinanceToolkit, DefiLlamaToolkit, ArkhamToolkit
-**Search**: SerperToolkit (web search)
+**Search**: SerperToolkit (web search), ZAIWebSearchToolkit (Z.AI web search via MCP)
 **Universal**: MCPToolkit (connect to any [MCP server](https://github.com/wong2/awesome-mcp-servers))
 
 ### Quick Configuration
@@ -396,6 +397,29 @@ agents:
         toolkit_config:
           timeout: 600
 ```
+
+### Z.AI Web Search Integration
+
+ROMA-GLM includes native Z.AI web search integration via MCP:
+
+**Setup:**
+```bash
+# 1. Copy environment template
+cp .env.example .env
+
+# 2. Add your Z.AI API key
+# Get API key from: https://z.ai/manage-apikey/apikey-list
+echo "Z_AI_API_KEY=your_api_key_here" >> .env
+
+# 3. Use Z.AI web search configuration
+uv run python -m roma_glm.cli solve "search for latest AI news" --config config/examples/basic/zai_websearch.yaml
+```
+
+**Features:**
+- Real-time web search via Z.AI's MCP server
+- News, stock prices, weather data retrieval
+- Integrated with ROMA-GLM's toolkit system
+- Automatic error handling and retries
 
 **See**: [Toolkits Reference](docs/TOOLKITS.md) for complete toolkit documentation including all tools, configuration options, MCP integration, and custom toolkit development.
 
@@ -458,7 +482,7 @@ When you instantiate a module, you can either provide an existing `dspy.LM` or l
 from roma_dspy import Executor
 
 executor = Executor(
-    model="openrouter/openai/gpt-4o-mini",
+    model="openai/glm-4.5-air",
     model_config={"temperature": 0.5, "cache": True},
 )
 ```
@@ -682,7 +706,7 @@ from roma_dspy import Executor
 
 executor = Executor(
     prediction_strategy="code_act",
-    lm=dspy.LM("openrouter/openai/gpt-4o-mini", temperature=0.0),
+    lm=dspy.LM("openai/glm-4.5-air", temperature=0.0),
     tools={"get_weather": get_weather, "lookup_user": lookup_user},
 )
 ```
@@ -756,11 +780,11 @@ Happy building! If you extend or customize a module, keep the signatures aligned
 
 ## 📊 Benchmarks
 
-We evaluate our simple implementation of a search system using ROMA, called ROMA-Search across three benchmarks: **SEAL-0**, **FRAMES**, and **SimpleQA**.  
+We evaluate our simple implementation of a search system using ROMA, called ROMA-Search across three benchmarks: **SEAL-0**, **FRAMES**, and **SimpleQA**.
 Below are the performance graphs for each benchmark.
 
 ### [SEAL-0](https://huggingface.co/datasets/vtllms/sealqa)
-SealQA is a new challenging benchmark for evaluating Search-Augmented Language models on fact-seeking questions where web search yields conflicting, noisy, or unhelpful results.  
+SealQA is a new challenging benchmark for evaluating Search-Augmented Language models on fact-seeking questions where web search yields conflicting, noisy, or unhelpful results.
 
 ![SEAL-0 Results](assets/seal-0-full.001.jpeg)
 
@@ -770,7 +794,7 @@ SealQA is a new challenging benchmark for evaluating Search-Augmented Language m
 <details>
 <summary>View full results</summary>
 
-A comprehensive evaluation dataset designed to test the capabilities of Retrieval-Augmented Generation (RAG) systems across factuality, retrieval accuracy, and reasoning.  
+A comprehensive evaluation dataset designed to test the capabilities of Retrieval-Augmented Generation (RAG) systems across factuality, retrieval accuracy, and reasoning.
 
 ![FRAMES Results](assets/FRAMES-full.001.jpeg)
 
@@ -782,7 +806,7 @@ A comprehensive evaluation dataset designed to test the capabilities of Retrieva
 <details>
 <summary>View full results</summary>
 
-Factuality benchmark that measures the ability for language models to answer short, fact-seeking questions.  
+Factuality benchmark that measures the ability for language models to answer short, fact-seeking questions.
 
 ![SimpleQA Results](assets/simpleQAFull.001.jpeg)
 
@@ -792,11 +816,11 @@ Factuality benchmark that measures the ability for language models to answer sho
 
 While ROMA introduces a practical, open-source framework for hierarchical task execution, it is directly built upon two foundational research contributions introduced in [WriteHERE](https://arxiv.org/abs/2503.08275):
 
-- **Heterogeneous Recursive Planning** — The overall architecture of ROMA follows the framework first introduced in prior work on *heterogeneous recursive planning*, where complex tasks are recursively decomposed into a graph of subtasks, each assigned a distinct cognitive type.  
+- **Heterogeneous Recursive Planning** — The overall architecture of ROMA follows the framework first introduced in prior work on *heterogeneous recursive planning*, where complex tasks are recursively decomposed into a graph of subtasks, each assigned a distinct cognitive type.
 
-- **Type Specification in Decomposition** — ROMA’s “Three Universal Operations” (THINK 🤔, WRITE ✍️, SEARCH 🔍) generalize the *type specification in decomposition* hypothesis, which identified reasoning, composition, and retrieval as the three fundamental cognitive types.  
+- **Type Specification in Decomposition** — ROMA’s “Three Universal Operations” (THINK 🤔, WRITE ✍️, SEARCH 🔍) generalize the *type specification in decomposition* hypothesis, which identified reasoning, composition, and retrieval as the three fundamental cognitive types.
 
-These contributions are described in detail in the WriteHERE repository and paper. By explicitly adopting and extending this foundation, ROMA provides a **generalizable scaffold, agent system, versatility, and extensibility** that builds upon these insights and makes them usable for builders across domains. 
+These contributions are described in detail in the WriteHERE repository and paper. By explicitly adopting and extending this foundation, ROMA provides a **generalizable scaffold, agent system, versatility, and extensibility** that builds upon these insights and makes them usable for builders across domains.
 
 ## 🙏 Acknowledgments
 

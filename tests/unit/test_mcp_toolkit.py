@@ -19,9 +19,9 @@ from typing import Any, Dict
 import pytest
 import pytest_asyncio
 
-from roma_dspy.config.schemas.storage import StorageConfig
-from roma_dspy.core.storage import FileStorage
-from roma_dspy.tools.mcp.toolkit import MCPToolkit
+from roma_glm.config.schemas.storage import StorageConfig
+from roma_glm.core.storage import FileStorage
+from roma_glm.tools.mcp.toolkit import MCPToolkit
 
 # Add fixtures directory to path for importing test server
 FIXTURES_DIR = Path(__file__).parent.parent / "fixtures"

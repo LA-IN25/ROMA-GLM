@@ -8,7 +8,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from typer.testing import CliRunner
 
-from roma_dspy.cli import app
+from roma_glm.cli import app
 
 
 @pytest.fixture
@@ -20,7 +20,7 @@ def runner():
 @pytest.fixture
 def mock_httpx():
     """Mock httpx responses for CLI-to-API communication."""
-    with patch('roma_dspy.cli.httpx') as mock:
+    with patch('roma_glm.cli.httpx') as mock:
         yield mock
 
 

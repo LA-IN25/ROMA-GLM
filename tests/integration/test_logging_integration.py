@@ -7,8 +7,8 @@ from io import StringIO
 import pytest
 from loguru import logger
 
-from roma_dspy.logging_config import configure_logging, execution_context, task_context
-from roma_dspy.resilience.decorators import measure_execution_time
+from roma_glm.logging_config import configure_logging, execution_context, task_context
+from roma_glm.resilience.decorators import measure_execution_time
 
 
 class TestExecutionLogging:
@@ -96,7 +96,7 @@ class TestModuleLogging:
 
     def test_config_manager_logs(self, clean_loguru, caplog_loguru):
         """Test that ConfigManager logs properly."""
-        from roma_dspy.config.manager import ConfigManager
+        from roma_glm.config.manager import ConfigManager
 
         configure_logging(level="DEBUG", log_dir=None)
 
@@ -108,8 +108,8 @@ class TestModuleLogging:
 
     def test_storage_logs(self, clean_loguru, caplog_loguru, tmp_path):
         """Test that storage components log properly."""
-        from roma_dspy.core.storage.file_storage import FileStorage
-        from roma_dspy.config.schemas.storage import StorageConfig
+        from roma_glm.core.storage.file_storage import FileStorage
+        from roma_glm.config.schemas.storage import StorageConfig
 
         configure_logging(level="DEBUG", log_dir=None)
 

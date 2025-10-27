@@ -1,7 +1,7 @@
 [project]
-name = "roma-dspy"
+name = "roma-glm"
 version = "0.1.0"
-description = "Add your description here"
+description = "ROMA-GLM: Hierarchical task decomposition with GLM models and Z.AI web search integration"
 readme = "README.md"
 authors = [
     { name = "salzubi401", email = "salaheddin@sentient.xyz" }
@@ -43,6 +43,7 @@ dependencies = [
     "boto3>=1.40.55",
     "fastmcp>=2.12.4",
     "jinja2>=3.1.0",
+    "mcp>=1.18.0",
 ]
 
 [project.optional-dependencies]
@@ -61,7 +62,7 @@ mcp = [
 ]
 
 [project.scripts]
-roma-dspy = "roma_dspy.cli:app"
+roma-glm = "roma_glm.cli:app"
 
 [build-system]
 requires = ["hatchling"]

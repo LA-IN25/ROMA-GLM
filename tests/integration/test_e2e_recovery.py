@@ -6,22 +6,22 @@ import tempfile
 from pathlib import Path
 from unittest.mock import Mock, patch, AsyncMock
 
-from src.roma_dspy.core.engine.dag import TaskDAG
-from src.roma_dspy.core.engine.event_loop import EventLoopController
-from src.roma_dspy.core.engine.runtime import ModuleRuntime
-from src.roma_dspy.core.engine.solve import RecursiveSolver
-from src.roma_dspy.core.modules import Atomizer, Planner, Executor, Aggregator
-from src.roma_dspy.resilience.checkpoint_manager import CheckpointManager
-from src.roma_dspy.core.signatures import TaskNode, SubTask
-from src.roma_dspy.types import (
+from src.roma_glm.core.engine.dag import TaskDAG
+from src.roma_glm.core.engine.event_loop import EventLoopController
+from src.roma_glm.core.engine.runtime import ModuleRuntime
+from src.roma_glm.core.engine.solve import RecursiveSolver
+from src.roma_glm.core.modules import Atomizer, Planner, Executor, Aggregator
+from src.roma_glm.resilience.checkpoint_manager import CheckpointManager
+from src.roma_glm.core.signatures import TaskNode, SubTask
+from src.roma_glm.types import (
     TaskType,
     TaskStatus,
     NodeType,
     PredictionStrategy
 )
 from types import SimpleNamespace
-from src.roma_dspy.types.checkpoint_types import CheckpointTrigger, RecoveryStrategy
-from src.roma_dspy.types.checkpoint_models import CheckpointConfig
+from src.roma_glm.types.checkpoint_types import CheckpointTrigger, RecoveryStrategy
+from src.roma_glm.types.checkpoint_models import CheckpointConfig
 
 
 class TestEndToEndRecovery:
@@ -367,7 +367,7 @@ class TestEndToEndRecovery:
             f.write("corrupted invalid json content {")
 
         # Attempt to load corrupted checkpoint
-        from src.roma_dspy.types.checkpoint_types import CheckpointCorruptedError
+        from src.roma_glm.types.checkpoint_types import CheckpointCorruptedError
         with pytest.raises(CheckpointCorruptedError):
             await checkpoint_manager.load_checkpoint(checkpoint_id)
 

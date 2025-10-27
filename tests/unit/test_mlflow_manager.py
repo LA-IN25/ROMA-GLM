@@ -1,8 +1,8 @@
 """Tests for MLflow manager."""
 
 import pytest
-from src.roma_dspy.config.schemas.observability import MLflowConfig
-from src.roma_dspy.core.observability import MLflowManager
+from src.roma_glm.config.schemas.observability import MLflowConfig
+from src.roma_glm.core.observability import MLflowManager
 
 
 def test_mlflow_config_defaults():

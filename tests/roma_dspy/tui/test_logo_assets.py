@@ -1,4 +1,4 @@
-from roma_dspy.tui import app
+from roma_glm.tui import app
 
 
 def test_sentient_logo_loaded_from_assets() -> None:

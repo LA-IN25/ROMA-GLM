@@ -4,9 +4,9 @@ import pytest
 from unittest.mock import AsyncMock, MagicMock
 from pathlib import Path
 
-from src.roma_dspy.tools.crypto.arkham import ArkhamToolkit
-from src.roma_dspy.core.storage import FileStorage
-from src.roma_dspy.tools.utils.storage import DataStorage
+from src.roma_glm.tools.crypto.arkham import ArkhamToolkit
+from src.roma_glm.core.storage import FileStorage
+from src.roma_glm.tools.utils.storage import DataStorage
 
 
 @pytest.fixture
@@ -211,7 +211,7 @@ class TestArkhamIntegration:
         import os
         os.environ["ARKHAM_API_KEY"] = "test_key"
         
-        from src.roma_dspy.tools.crypto.arkham import ArkhamAPIError
+        from src.roma_glm.tools.crypto.arkham import ArkhamAPIError
         mock_client.get_top_tokens = AsyncMock(side_effect=ArkhamAPIError("API Error"))
         
         toolkit = ArkhamToolkit()
@@ -279,11 +279,11 @@ class TestArkhamIntegration:
 
 def test_toolkit_imports():
     """Test that toolkit can be imported."""
-    from src.roma_dspy.tools.crypto.arkham import ArkhamToolkit
+    from src.roma_glm.tools.crypto.arkham import ArkhamToolkit
     assert ArkhamToolkit is not None
 
 
 def test_toolkit_in_main_exports():
     """Test toolkit is exported from main tools module."""
-    from src.roma_dspy.tools import ArkhamToolkit
+    from src.roma_glm.tools import ArkhamToolkit
     assert ArkhamToolkit is not None

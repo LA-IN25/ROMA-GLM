@@ -11,7 +11,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from src.roma_dspy.tools.core.e2b import E2BToolkit
+from src.roma_glm.tools.core.e2b import E2BToolkit
 
 
 class MockExecution:

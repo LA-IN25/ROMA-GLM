@@ -6,7 +6,7 @@ from typing import Optional
 
 from dspy import ChatAdapter, Adapter
 
-from roma_dspy.config.schemas.root import ROMAConfig
+from roma_glm.config.schemas.root import ROMAConfig
 
 from .prompts import AGGREGATOR_PROMPT, ATOMIZER_PROMPT, PLANNER_PROMPT
 
@@ -14,6 +14,7 @@ from .prompts import AGGREGATOR_PROMPT, ATOMIZER_PROMPT, PLANNER_PROMPT
 @dataclass
 class LMConfig:
     """Language model configuration."""
+
     model: str
     temperature: float = 0.6
     max_tokens: int = 120000
@@ -27,12 +28,32 @@ class OptimizationConfig:
     """Complete configuration for optimization pipeline."""
 
     # LM configs
-    executor_lm: LMConfig = field(default_factory=lambda: LMConfig("fireworks_ai/accounts/fireworks/models/gpt-oss-120b"))
-    atomizer_lm: LMConfig = field(default_factory=lambda: LMConfig("gemini/gemini-2.5-flash"))
-    planner_lm: LMConfig = field(default_factory=lambda: LMConfig("gemini/gemini-2.5-flash"))
-    aggregator_lm: LMConfig = field(default_factory=lambda: LMConfig("fireworks_ai/accounts/fireworks/models/gpt-oss-120b"))
-    judge_lm: LMConfig = field(default_factory=lambda: LMConfig("openrouter/anthropic/claude-sonnet-4.5", temperature=1.0, max_tokens=64000))
-    reflection_lm: LMConfig = field(default_factory=lambda: LMConfig("openrouter/anthropic/claude-sonnet-4.5", temperature=1.0, max_tokens=64000))
+    executor_lm: LMConfig = field(
+        default_factory=lambda: LMConfig(
+            "fireworks_ai/accounts/fireworks/models/gpt-oss-120b"
+        )
+    )
+    atomizer_lm: LMConfig = field(
+        default_factory=lambda: LMConfig("gemini/gemini-2.5-flash")
+    )
+    planner_lm: LMConfig = field(
+        default_factory=lambda: LMConfig("gemini/gemini-2.5-flash")
+    )
+    aggregator_lm: LMConfig = field(
+        default_factory=lambda: LMConfig(
+            "fireworks_ai/accounts/fireworks/models/gpt-oss-120b"
+        )
+    )
+    judge_lm: LMConfig = field(
+        default_factory=lambda: LMConfig(
+            "openai/glm-4.6", temperature=1.0, max_tokens=64000
+        )
+    )
+    reflection_lm: LMConfig = field(
+        default_factory=lambda: LMConfig(
+            "openai/glm-4.6", temperature=1.0, max_tokens=64000
+        )
+    )
 
     # Dataset configs
     train_size: int = 32
@@ -57,7 +78,9 @@ class OptimizationConfig:
     output_path: Optional[str] = None
 
 
-def patch_romaconfig(opt_config: OptimizationConfig, base_config: ROMAConfig) -> ROMAConfig:
+def patch_romaconfig(
+    opt_config: OptimizationConfig, base_config: ROMAConfig
+) -> ROMAConfig:
     """
     Merge prompt optimization overrides into a ROMAConfig.
 
@@ -70,7 +93,9 @@ def patch_romaconfig(opt_config: OptimizationConfig, base_config: ROMAConfig) ->
     """
     cfg = deepcopy(base_config)
 
-    def _apply_agent_lm(agent_cfg, lm_cfg: LMConfig, instructions: Optional[str] = None) -> None:
+    def _apply_agent_lm(
+        agent_cfg, lm_cfg: LMConfig, instructions: Optional[str] = None
+    ) -> None:
         if agent_cfg is None:
             return
         agent_cfg.llm.model = lm_cfg.model

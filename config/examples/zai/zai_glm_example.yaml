@@ -1,0 +1,128 @@
+# z.ai GLM Models Example Configuration
+# This example shows how to use z.ai's GLM-4.6 and GLM-4.5-air models with ROMA
+
+# Copy this configuration and set your ZAI_API_KEY environment variable
+# export ZAI_API_KEY=your_zai_api_key
+
+agents:
+  # Fast decision-making with GLM-4.5-air (optimized for speed)
+  atomizer:
+    llm:
+      model: openai/glm-4.5-air
+      temperature: 0.0
+      max_tokens: 8000
+      api_key: ${oc.env:ZAI_API_KEY}
+      base_url: https://api.z.ai/api/coding/paas/v4
+
+  # Strategic planning with GLM-4.6 (more capable)
+  planner:
+    llm:
+      model: openai/glm-4.6
+      temperature: 0.1
+      max_tokens: 32000
+      api_key: ${oc.env:ZAI_API_KEY}
+      base_url: https://api.z.ai/api/coding/paas/v4
+
+  # General task execution with GLM-4.6
+  executor:
+    llm:
+      model: openai/glm-4.6
+      temperature: 0.2
+      max_tokens: 32000
+      api_key: ${oc.env:ZAI_API_KEY}
+      base_url: https://api.z.ai/api/coding/paas/v4
+    prediction_strategy: react
+    toolkits:
+      # Z.AI Web Search via MCP
+      - class_name: ZAIWebSearchToolkit
+        enabled: true
+        toolkit_config:
+          api_key: ${oc.env:Z_AI_API_KEY}
+          timeout: 30.0
+
+      # File operations for saving search results
+      - class_name: FileToolkit
+        enabled: true
+        toolkit_config:
+          enable_delete: false
+          max_file_size: 10485760 # 10MB
+
+  # Result synthesis with GLM-4.6
+  aggregator:
+    llm:
+      model: openai/glm-4.6
+      temperature: 0.0
+      max_tokens: 32000
+      api_key: ${oc.env:ZAI_API_KEY}
+      base_url: https://api.z.ai/api/coding/paas/v4
+
+  # Output validation with GLM-4.5-air (fast validation)
+  verifier:
+    llm:
+      model: zai/glm-4.5-air
+      temperature: 0.0
+      max_tokens: 16000
+      api_key: ${oc.env:ZAI_API_KEY}
+
+# Task-specific executor mapping
+agent_mapping:
+  executors:
+    # Fast retrieval tasks use GLM-4.5-air
+    RETRIEVE:
+      llm:
+        model: zai/glm-4.5-air
+        temperature: 0.0
+        max_tokens: 16000
+        api_key: ${oc.env:ZAI_API_KEY}
+      prediction_strategy: react
+
+    # Code interpretation uses GLM-4.6 for better reasoning
+    CODE_INTERPRET:
+      llm:
+        model: zai/glm-4.6
+        temperature: 0.1
+        max_tokens: 32000
+        api_key: ${oc.env:ZAI_API_KEY}
+      prediction_strategy: react
+
+    # Deep thinking tasks use GLM-4.6
+    THINK:
+      llm:
+        model: zai/glm-4.6
+        temperature: 0.2
+        max_tokens: 32000
+        api_key: ${oc.env:ZAI_API_KEY}
+      prediction_strategy: react
+
+    # Content creation uses GLM-4.6
+    WRITE:
+      llm:
+        model: zai/glm-4.6
+        temperature: 0.3
+        max_tokens: 32000
+        api_key: ${oc.env:ZAI_API_KEY}
+      prediction_strategy: react
+
+# Basic runtime configuration
+runtime:
+  max_depth: 6
+  verbose: true
+  enable_logging: true
+  log_level: INFO
+
+# Resilience settings
+resilience:
+  retry:
+    enabled: true
+    max_attempts: 3
+    strategy: exponential_backoff
+
+# Storage configuration
+storage:
+  base_path: ${oc.env:STORAGE_BASE_PATH,.tmp/sentient}
+
+# Logging configuration
+logging:
+  level: INFO
+  console_format: detailed
+  colorize: true

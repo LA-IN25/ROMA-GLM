@@ -4,9 +4,9 @@ import pytest
 import tempfile
 from pathlib import Path
 
-from roma_dspy.config.manager import ConfigManager
-from roma_dspy.core.engine.solve import RecursiveSolver
-from roma_dspy.types import CheckpointTrigger, CacheStatistics
+from roma_glm.config.manager import ConfigManager
+from roma_glm.core.engine.solve import RecursiveSolver
+from roma_glm.types import CheckpointTrigger, CacheStatistics
 
 
 @pytest.mark.asyncio
@@ -39,8 +39,8 @@ async def test_cache_persists_across_checkpoint_recovery():
     assert cache_path.exists(), "Cache directory should exist after solver initialization"
 
     # Create a simple checkpoint (without execution)
-    from roma_dspy.core.engine.dag import TaskDAG
-    from roma_dspy.core.signatures import TaskNode
+    from roma_glm.core.engine.dag import TaskDAG
+    from roma_glm.core.signatures import TaskNode
 
     test_dag = TaskDAG()
     test_node = TaskNode(goal="Test task", depth=0, max_depth=5, execution_id=test_dag.execution_id)
@@ -103,7 +103,7 @@ async def test_checkpoint_config_in_resilience():
 @pytest.mark.asyncio
 async def test_cache_statistics_model():
     """Verify CacheStatistics model can be created and serialized."""
-    from roma_dspy.types import CacheStatistics
+    from roma_glm.types import CacheStatistics
 
     stats = CacheStatistics(
         total_calls=100,
@@ -187,7 +187,7 @@ def test_backward_compatibility_cache_dir():
 @pytest.mark.asyncio
 async def test_cache_initialized_in_registry_mode():
     """Verify cache is initialized even when using registry mode (no config)."""
-    from roma_dspy.core.registry import AgentRegistry
+    from roma_glm.core.registry import AgentRegistry
 
     cache_dir = tempfile.mkdtemp(prefix="test_registry_cache_")
 
@@ -206,7 +206,7 @@ async def test_cache_initialized_in_registry_mode():
 @pytest.mark.asyncio
 async def test_invalid_checkpoint_config_rejected():
     """Verify invalid checkpoint config raises clear error."""
-    from roma_dspy.config.schemas.resilience import ResilienceConfig
+    from roma_glm.config.schemas.resilience import ResilienceConfig
 
     # Invalid checkpoint dict should raise ValueError
     with pytest.raises((ValueError, TypeError)):

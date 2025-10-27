@@ -15,8 +15,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from roma_dspy.core.storage.postgres_storage import PostgresStorage
-from roma_dspy.config.schemas.storage import PostgresConfig
+from roma_glm.core.storage.postgres_storage import PostgresStorage
+from roma_glm.config.schemas.storage import PostgresConfig
 
 
 class TestParallelExecutionFixes:

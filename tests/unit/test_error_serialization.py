@@ -4,7 +4,7 @@ import json
 import pytest
 from datetime import datetime
 
-from roma_dspy.types.error_types import (
+from roma_glm.types.error_types import (
     TaskHierarchyError,
     ModuleError,
     ExecutionError,

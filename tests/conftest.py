@@ -19,8 +19,8 @@ import pytest
 import pytest_asyncio
 from loguru import logger
 
-from roma_dspy import SubTask
-from roma_dspy.types import NodeType, PredictionStrategy, TaskType
+from roma_glm import SubTask
+from roma_glm.types import NodeType, PredictionStrategy, TaskType
 
 
 def _build_response(signature: Any, payload: Dict[str, Any]) -> Any:
@@ -134,7 +134,7 @@ def clean_loguru():
 def mock_execution():
     """Create a mock Execution model for API tests."""
     from datetime import datetime, timezone
-    from roma_dspy.core.storage.models import Execution
+    from roma_glm.core.storage.models import Execution
 
     return Execution(
         execution_id="test-exec-123",
@@ -156,7 +156,7 @@ def mock_execution():
 def mock_checkpoint():
     """Create a mock Checkpoint model for API tests."""
     from datetime import datetime, timezone
-    from roma_dspy.core.storage.models import Checkpoint
+    from roma_glm.core.storage.models import Checkpoint
 
     return Checkpoint(
         checkpoint_id="test-checkpoint-123",
@@ -178,7 +178,7 @@ def mock_checkpoint():
 def mock_storage(mock_execution, mock_checkpoint):
     """Create a mock PostgresStorage for API tests."""
     from unittest.mock import AsyncMock
-    from roma_dspy.core.storage.postgres_storage import PostgresStorage
+    from roma_glm.core.storage.postgres_storage import PostgresStorage
 
     storage = AsyncMock(spec=PostgresStorage)
 
@@ -219,7 +219,7 @@ def mock_storage(mock_execution, mock_checkpoint):
 def mock_config_manager():
     """Create a mock ConfigManager for API tests."""
     from unittest.mock import MagicMock
-    from roma_dspy.config.manager import ConfigManager
+    from roma_glm.config.manager import ConfigManager
 
     manager = MagicMock(spec=ConfigManager)
 
@@ -240,7 +240,7 @@ def mock_config_manager():
 def test_app(mock_storage, mock_config_manager):
     """Create FastAPI test application with mocked dependencies."""
     from datetime import datetime, timezone
-    from roma_dspy.api.main import create_app
+    from roma_glm.api.main import create_app
 
     app = create_app(enable_rate_limit=False)
 

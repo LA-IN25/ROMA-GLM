@@ -2,13 +2,13 @@
 
 import pytest
 from unittest.mock import Mock, MagicMock, patch
-from roma_dspy.tools.base.manager import ToolkitManager
-from roma_dspy.tools.base.base import BaseToolkit
-from roma_dspy.core.modules.base_module import BaseModule
-from roma_dspy.core.engine.runtime import ModuleRuntime
-from roma_dspy.core.registry import AgentRegistry
-from roma_dspy.types import AgentType
-from roma_dspy.config.schemas.toolkit import ToolkitConfig
+from roma_glm.tools.base.manager import ToolkitManager
+from roma_glm.tools.base.base import BaseToolkit
+from roma_glm.core.modules.base_module import BaseModule
+from roma_glm.core.engine.runtime import ModuleRuntime
+from roma_glm.core.registry import AgentRegistry
+from roma_glm.types import AgentType
+from roma_glm.config.schemas.toolkit import ToolkitConfig
 
 
 class MockToolkitA(BaseToolkit):
@@ -106,7 +106,7 @@ class TestToolkitInjectionBugs:
         mock_agent._tools = tools_list  # Assigning list to _tools
 
         # Create a real BaseModule to test the property
-        from roma_dspy.core.signatures import AtomizerSignature
+        from roma_glm.core.signatures import AtomizerSignature
         real_module = BaseModule(
             signature=AtomizerSignature,
             model="gpt-4",

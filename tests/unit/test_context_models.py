@@ -4,7 +4,7 @@ import pytest
 from datetime import datetime, UTC
 from pathlib import Path
 
-from src.roma_dspy.core.context.models import (
+from src.roma_glm.core.context.models import (
     TemporalContext,
     FileSystemContext,
     RecursionContext,

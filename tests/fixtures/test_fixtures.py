@@ -7,11 +7,11 @@ from pathlib import Path
 from typing import Dict, List, Any
 from unittest.mock import Mock, AsyncMock
 
-from src.roma_dspy.core.engine.dag import TaskDAG
-from src.roma_dspy.core.modules import Atomizer, Planner, Executor, Aggregator
-from src.roma_dspy.resilience.checkpoint_manager import CheckpointManager
-from src.roma_dspy.core.signatures import TaskNode, SubTask
-from src.roma_dspy.types import (
+from src.roma_glm.core.engine.dag import TaskDAG
+from src.roma_glm.core.modules import Atomizer, Planner, Executor, Aggregator
+from src.roma_glm.resilience.checkpoint_manager import CheckpointManager
+from src.roma_glm.core.signatures import TaskNode, SubTask
+from src.roma_glm.types import (
     TaskType,
     TaskStatus,
     NodeType,
@@ -19,7 +19,7 @@ from src.roma_dspy.types import (
     PredictionStrategy,
     AgentType
 )
-from src.roma_dspy.types.checkpoint_models import CheckpointConfig
+from src.roma_glm.types.checkpoint_models import CheckpointConfig
 
 
 class MockModuleFactory:

@@ -3,7 +3,7 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from src.roma_dspy.tools.crypto.defillama import DefiLlamaToolkit, DefiLlamaAPIError
+from src.roma_glm.tools.crypto.defillama import DefiLlamaToolkit, DefiLlamaAPIError
 
 
 class TestDefiLlamaToolkit:
@@ -152,7 +152,7 @@ class TestDefiLlamaToolkit:
     @pytest.mark.asyncio
     async def test_error_response_format(self):
         """Test error response format."""
-        with patch("src.roma_dspy.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
+        with patch("src.roma_glm.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
             mock_instance = MagicMock()
             mock_instance.get_protocols = AsyncMock(side_effect=DefiLlamaAPIError("API Error"))
             mock_client.return_value = mock_instance
@@ -173,7 +173,7 @@ class TestDefiLlamaToolkit:
     @pytest.mark.asyncio
     async def test_success_response_format(self):
         """Test success response format."""
-        with patch("src.roma_dspy.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
+        with patch("src.roma_glm.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
             mock_instance = MagicMock()
             mock_instance.get_protocols = AsyncMock(return_value=[
                 {"id": "aave", "name": "Aave", "tvl": 5000000000}
@@ -202,7 +202,7 @@ class TestDefiLlamaToolkit:
     @pytest.mark.asyncio
     async def test_aclose(self):
         """Test toolkit cleanup."""
-        with patch("src.roma_dspy.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
+        with patch("src.roma_glm.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
             mock_instance = MagicMock()
             mock_instance.close = AsyncMock()
             mock_client.return_value = mock_instance
@@ -223,7 +223,7 @@ class TestDefiLlamaToolkit:
     @pytest.mark.asyncio
     async def test_protocol_tvl_formatting_billions(self):
         """Test TVL formatting for billions."""
-        with patch("src.roma_dspy.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
+        with patch("src.roma_glm.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
             mock_instance = MagicMock()
             mock_instance.get_protocol_tvl = AsyncMock(return_value=5234567890)
             mock_client.return_value = mock_instance
@@ -237,7 +237,7 @@ class TestDefiLlamaToolkit:
     @pytest.mark.asyncio
     async def test_protocol_tvl_formatting_millions(self):
         """Test TVL formatting for millions."""
-        with patch("src.roma_dspy.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
+        with patch("src.roma_glm.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
             mock_instance = MagicMock()
             mock_instance.get_protocol_tvl = AsyncMock(return_value=123456789)
             mock_client.return_value = mock_instance
@@ -251,7 +251,7 @@ class TestDefiLlamaToolkit:
     @pytest.mark.asyncio
     async def test_analysis_generation_with_empty_data(self):
         """Test analysis generation with empty data."""
-        with patch("src.roma_dspy.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
+        with patch("src.roma_glm.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
             mock_instance = MagicMock()
             mock_instance.get_protocols = AsyncMock(return_value=[])
             mock_client.return_value = mock_instance
@@ -266,7 +266,7 @@ class TestDefiLlamaToolkit:
     @pytest.mark.asyncio
     async def test_invalid_response_type(self):
         """Test handling of invalid API response types."""
-        with patch("src.roma_dspy.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
+        with patch("src.roma_glm.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
             mock_instance = MagicMock()
             mock_instance.get_protocols = AsyncMock(return_value="invalid")  # Should be list
             mock_client.return_value = mock_instance
@@ -280,7 +280,7 @@ class TestDefiLlamaToolkit:
     @pytest.mark.asyncio
     async def test_yield_pool_id_validation(self):
         """Test yield chart pool ID validation."""
-        with patch("src.roma_dspy.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
+        with patch("src.roma_glm.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
             mock_instance = MagicMock()
             mock_client.return_value = mock_instance
 
@@ -297,7 +297,7 @@ class TestDefiLlamaToolkit:
     @pytest.mark.asyncio
     async def test_historical_liquidity_token_validation(self):
         """Test historical liquidity token validation."""
-        with patch("src.roma_dspy.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
+        with patch("src.roma_glm.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock_client:
             mock_instance = MagicMock()
             mock_client.return_value = mock_instance
 

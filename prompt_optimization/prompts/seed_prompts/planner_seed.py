@@ -13,8 +13,8 @@ Notes
 from __future__ import annotations
 
 import dspy
-from roma_dspy.core.signatures.base_models.subtask import SubTask
-from roma_dspy.types.task_type import TaskType
+from roma_glm.core.signatures.base_models.subtask import SubTask
+from roma_glm.types.task_type import TaskType
 
 
 PLANNER_PROMPT = r"""

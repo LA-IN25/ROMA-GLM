@@ -55,7 +55,7 @@ Each toolkit:
 agents:
   executor:
     llm:
-      model: openai/gpt-4o-mini
+      model: openai/glm-4.5-air
       temperature: 0.3
     prediction_strategy: react  # Required for tool usage
     toolkits:
@@ -80,7 +80,7 @@ just solve "Calculate 15% of 2500 and save to results.txt" -c config/profiles/my
 agents:
   executor:
     llm:
-      model: openai/gpt-4o-mini
+      model: openai/glm-4.5-air
     prediction_strategy: react
     toolkits:
       # Public HTTP MCP server (no installation needed)
@@ -527,7 +527,7 @@ You can use **multiple** MCP servers in one agent:
 agents:
   executor:
     llm:
-      model: openai/gpt-4o-mini
+      model: openai/glm-4.5-air
     prediction_strategy: react
     toolkits:
       # GitHub for code
@@ -571,7 +571,7 @@ agents:
 agents:
   executor:
     llm:
-      model: openai/gpt-4o-mini
+      model: openai/glm-4.5-air
       temperature: 0.3
     prediction_strategy: react  # REQUIRED for tool usage
     toolkits:
@@ -827,7 +827,7 @@ BUILTIN_TOOLKITS = {
 agents:
   executor:
     llm:
-      model: openai/gpt-4o-mini
+      model: openai/glm-4.5-air
     prediction_strategy: react
     toolkits:
       - class_name: MyCustomToolkit

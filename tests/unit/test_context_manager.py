@@ -4,11 +4,11 @@ import pytest
 from pathlib import Path
 from unittest.mock import Mock, MagicMock
 
-from src.roma_dspy.core.context.manager import ContextManager
-from src.roma_dspy.core.storage import FileStorage
-from src.roma_dspy.core.signatures import TaskNode
-from src.roma_dspy.core.engine.dag import TaskDAG
-from src.roma_dspy.types import TaskType
+from src.roma_glm.core.context.manager import ContextManager
+from src.roma_glm.core.storage import FileStorage
+from src.roma_glm.core.signatures import TaskNode
+from src.roma_glm.core.engine.dag import TaskDAG
+from src.roma_glm.types import TaskType
 
 
 @pytest.fixture

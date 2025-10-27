@@ -4,10 +4,10 @@ import pytest
 from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock
 
-from src.roma_dspy.core.engine.solve import RecursiveSolver
-from src.roma_dspy.core.signatures import TaskNode
-from src.roma_dspy.config.schemas.root import ROMAConfig
-from src.roma_dspy.types import TaskType
+from src.roma_glm.core.engine.solve import RecursiveSolver
+from src.roma_glm.core.signatures import TaskNode
+from src.roma_glm.config.schemas.root import ROMAConfig
+from src.roma_glm.types import TaskType
 
 
 @pytest.fixture
@@ -81,12 +81,12 @@ class TestContextSystemIntegration:
         assert (file_storage.root / "outputs").exists()
         assert (file_storage.root / "logs").exists()
 
-    @patch('src.roma_dspy.core.modules.base_module.BaseModule.forward')
+    @patch('src.roma_glm.core.modules.base_module.BaseModule.forward')
     def test_context_passed_to_atomizer(self, mock_forward, mock_config):
         """Test that context is passed to atomizer module."""
         # Mock the forward method to return expected result
-        from src.roma_dspy.core.signatures.base_models.results import AtomizerResponse
-        from src.roma_dspy.types import NodeType
+        from src.roma_glm.core.signatures.base_models.results import AtomizerResponse
+        from src.roma_glm.types import NodeType
 
         mock_result = AtomizerResponse(is_atomic=True, node_type=NodeType.EXECUTE)
         mock_forward.return_value = (mock_result, 0.1, None, [])
@@ -366,7 +366,7 @@ class TestSynchronousContextFlow:
         task_node, dag = solver._initialize_task_and_dag("Test task", None, 0)
 
         # Get atomizer agent
-        from src.roma_dspy.types import AgentType
+        from src.roma_glm.types import AgentType
         atomizer = solver.runtime.registry.get_agent(AgentType.ATOMIZER, task_node.task_type)
 
         # Build context manually to verify it matches what atomize() would build
@@ -415,7 +415,7 @@ class TestSynchronousContextFlow:
         )
 
         # Get executor agent
-        from src.roma_dspy.types import AgentType
+        from src.roma_glm.types import AgentType
         executor = solver.runtime.registry.get_agent(AgentType.EXECUTOR, main_task.task_type)
 
         # Build executor context
@@ -436,7 +436,7 @@ class TestSynchronousContextFlow:
 
         task_node, dag = solver._initialize_task_and_dag("Test task", None, 0)
 
-        from src.roma_dspy.types import AgentType
+        from src.roma_glm.types import AgentType
         atomizer = solver.runtime.registry.get_agent(AgentType.ATOMIZER, task_node.task_type)
         tools_data = solver.runtime._get_tools_data(atomizer)
 
@@ -490,7 +490,7 @@ class TestSynchronousContextFlow:
         )
 
         # Get planner agent
-        from src.roma_dspy.types import AgentType
+        from src.roma_glm.types import AgentType
         planner = solver.runtime.registry.get_agent(AgentType.PLANNER, child.task_type)
 
         # Build planner context

@@ -15,7 +15,7 @@
 agents:
   executor:
     llm:
-      model: openai/gpt-4o-mini
+      model: openai/glm-4.5-air
       temperature: 0.3
       max_tokens: 4000
     prediction_strategy: react
@@ -45,7 +45,7 @@ agents:
           args:
             - "-y"
             - "@modelcontextprotocol/server-filesystem"
-            - "/Users/yourname/Documents"  # <<< CHANGE THIS
+            - "/Users/yourname/Documents" # <<< CHANGE THIS
           use_storage: false
 
       # SQLite - Database queries
@@ -67,7 +67,6 @@ runtime:
   max_depth: 4
   timeout: 300
   enable_logging: true
-
 # Available MCP Servers:
 #
 # GitHub: Create issues, PRs, search repos, manage files

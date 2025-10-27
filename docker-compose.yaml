@@ -111,7 +111,7 @@ services:
 
       # S3 mount point (mount S3 on host first, then share via volume)
       # Host must run: scripts/setup_local.sh to mount S3 to STORAGE_BASE_PATH
-      - ${STORAGE_BASE_PATH:-/opt/sentient}:${STORAGE_BASE_PATH:-/opt/sentient}:rw
+      - /home/LAIN/ROMA-GLM/storage:/opt/sentient:rw
 
     networks:
       - roma-network

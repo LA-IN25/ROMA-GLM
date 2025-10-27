@@ -13,7 +13,7 @@ import re
 
 import pytest
 
-from roma_dspy.tools.mcp import MCPToolError, MCPToolTimeoutError, MCPToolkit
+from roma_glm.tools.mcp import MCPToolError, MCPToolTimeoutError, MCPToolkit
 
 
 class MockCallToolResult:
@@ -67,14 +67,14 @@ async def test_concurrent_storage_generates_unique_filenames(mock_client):
     )
     mock_client.call_tool = AsyncMock(return_value=result)
 
-    from roma_dspy.config.schemas.storage import StorageConfig
-    from roma_dspy.core.storage.file_storage import FileStorage
+    from roma_glm.config.schemas.storage import StorageConfig
+    from roma_glm.core.storage.file_storage import FileStorage
 
     temp_dir = tempfile.mkdtemp()
     storage_config = StorageConfig(base_path=temp_dir)
     file_storage = FileStorage(config=storage_config, execution_id="test")
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -140,14 +140,14 @@ async def test_filename_includes_microseconds_and_hex(mock_client):
     )
     mock_client.call_tool = AsyncMock(return_value=result)
 
-    from roma_dspy.config.schemas.storage import StorageConfig
-    from roma_dspy.core.storage.file_storage import FileStorage
+    from roma_glm.config.schemas.storage import StorageConfig
+    from roma_glm.core.storage.file_storage import FileStorage
 
     temp_dir = tempfile.mkdtemp()
     storage_config = StorageConfig(base_path=temp_dir)
     file_storage = FileStorage(config=storage_config, execution_id="test")
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -202,14 +202,14 @@ async def test_tool_timeout_raises_exception(mock_client):
 
     mock_client.call_tool = mock_slow_call_tool
 
-    from roma_dspy.config.schemas.storage import StorageConfig
-    from roma_dspy.core.storage.file_storage import FileStorage
+    from roma_glm.config.schemas.storage import StorageConfig
+    from roma_glm.core.storage.file_storage import FileStorage
 
     temp_dir = tempfile.mkdtemp()
     storage_config = StorageConfig(base_path=temp_dir)
     file_storage = FileStorage(config=storage_config, execution_id="test")
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -247,7 +247,7 @@ async def test_custom_timeout_value(mock_client):
     )
     mock_client.call_tool = AsyncMock(return_value=result)
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -277,7 +277,7 @@ async def test_default_timeout_is_300_seconds(mock_client):
     )
     mock_client.call_tool = AsyncMock(return_value=result)
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -313,7 +313,7 @@ async def test_fast_tool_completes_before_timeout(mock_client):
 
     mock_client.call_tool = fast_call_tool
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)

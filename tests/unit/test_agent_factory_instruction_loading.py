@@ -4,10 +4,10 @@ import pytest
 from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock
 
-from roma_dspy.core.factory.agent_factory import AgentFactory
-from roma_dspy.config.schemas.agents import AgentConfig
-from roma_dspy.types import AgentType, TaskType
-from roma_dspy.core.signatures import AtomizerSignature
+from roma_glm.core.factory.agent_factory import AgentFactory
+from roma_glm.config.schemas.agents import AgentConfig
+from roma_glm.types import AgentType, TaskType
+from roma_glm.core.signatures import AtomizerSignature
 
 
 class TestInstructionLoading:
@@ -193,7 +193,7 @@ class TestSignatureBehavior:
 class TestInstructionLoadingWithMock:
     """Test instruction loading with mocked InstructionLoader."""
 
-    @patch('roma_dspy.core.factory.agent_factory.InstructionLoader')
+    @patch('roma_glm.core.factory.agent_factory.InstructionLoader')
     def test_instruction_loader_called(self, mock_loader_class):
         """Test that InstructionLoader is called when instructions provided."""
         # Setup mock
@@ -215,7 +215,7 @@ class TestInstructionLoadingWithMock:
         mock_loader_class.assert_called_once()
         mock_loader.load.assert_called_once_with("test_instructions.jinja")
 
-    @patch('roma_dspy.core.factory.agent_factory.InstructionLoader')
+    @patch('roma_glm.core.factory.agent_factory.InstructionLoader')
     def test_instruction_loader_not_called_when_none(self, mock_loader_class):
         """Test that InstructionLoader is NOT called when no instructions."""
         factory = AgentFactory()
@@ -231,7 +231,7 @@ class TestInstructionLoadingWithMock:
         # InstructionLoader should NOT be instantiated
         mock_loader_class.assert_not_called()
 
-    @patch('roma_dspy.core.factory.agent_factory.InstructionLoader')
+    @patch('roma_glm.core.factory.agent_factory.InstructionLoader')
     def test_instruction_loader_exception_handling(self, mock_loader_class, caplog):
         """Test graceful handling of InstructionLoader exceptions."""
         # Setup mock to raise exception

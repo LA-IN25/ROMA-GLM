@@ -2,7 +2,7 @@
 
 import pytest
 from pathlib import Path
-from roma_dspy.core.utils import InstructionLoader, InstructionFormat
+from roma_glm.core.utils import InstructionLoader, InstructionFormat
 
 
 class TestFormatDetection:
@@ -325,7 +325,7 @@ class TestProjectRootFinding:
 
     def test_get_project_root_with_pyproject(self, tmp_path):
         """Test finding project root with pyproject.toml."""
-        from roma_dspy.core.utils.instruction_loader import get_project_root
+        from roma_glm.core.utils.instruction_loader import get_project_root
 
         # Create project structure
         project = tmp_path / "myproject"
@@ -347,7 +347,7 @@ class TestProjectRootFinding:
 
     def test_get_project_root_with_git(self, tmp_path):
         """Test finding project root with .git."""
-        from roma_dspy.core.utils.instruction_loader import get_project_root
+        from roma_glm.core.utils.instruction_loader import get_project_root
 
         # Create project structure
         project = tmp_path / "myproject"
@@ -369,7 +369,7 @@ class TestProjectRootFinding:
 
     def test_get_project_root_fallback(self, tmp_path):
         """Test fallback to current directory."""
-        from roma_dspy.core.utils.instruction_loader import get_project_root
+        from roma_glm.core.utils.instruction_loader import get_project_root
 
         # No markers in path
         empty_dir = tmp_path / "empty"

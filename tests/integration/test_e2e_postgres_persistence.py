@@ -3,11 +3,11 @@
 import pytest
 from pathlib import Path
 
-from roma_dspy.config.manager import ConfigManager
-from roma_dspy.core.engine.solve import RecursiveSolver
-from roma_dspy.core.storage.models import Base
-from roma_dspy.core.storage.postgres_storage import PostgresStorage
-from roma_dspy.config.schemas.storage import PostgresConfig
+from roma_glm.config.manager import ConfigManager
+from roma_glm.core.engine.solve import RecursiveSolver
+from roma_glm.core.storage.models import Base
+from roma_glm.core.storage.postgres_storage import PostgresStorage
+from roma_glm.config.schemas.storage import PostgresConfig
 
 
 @pytest.fixture
@@ -31,7 +31,7 @@ storage:
   base_path: {tmp_path}
   postgres:
     enabled: true
-    connection_url: "postgresql+asyncpg://localhost/roma_dspy_test"
+    connection_url: "postgresql+asyncpg://localhost/roma_glm_test"
     pool_size: 2
     max_overflow: 0
     pool_timeout: 5.0
@@ -57,7 +57,7 @@ async def postgres_storage():
     """Clean Postgres storage for testing."""
     config = PostgresConfig(
         enabled=True,
-        connection_url="postgresql+asyncpg://localhost/roma_dspy_test",
+        connection_url="postgresql+asyncpg://localhost/roma_glm_test",
         pool_size=2,
         max_overflow=0,
         pool_timeout=5.0
