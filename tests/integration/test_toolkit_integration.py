@@ -6,14 +6,14 @@ from unittest.mock import Mock, patch
 import dspy
 import pytest
 
-from roma_dspy.config.schemas.agents import AgentConfig
-from roma_dspy.config.schemas.base import LLMConfig
-from roma_dspy.config.schemas.toolkit import ToolkitConfig
-from roma_dspy.core.modules.base_module import BaseModule
-from roma_dspy.core.signatures.signatures import ExecutorSignature
-from roma_dspy.tools.core.calculator import CalculatorToolkit
-from roma_dspy.tools.core.file import FileToolkit
-from roma_dspy.tools.base.manager import ToolkitManager
+from roma_glm.config.schemas.agents import AgentConfig
+from roma_glm.config.schemas.base import LLMConfig
+from roma_glm.config.schemas.toolkit import ToolkitConfig
+from roma_glm.core.modules.base_module import BaseModule
+from roma_glm.core.signatures.signatures import ExecutorSignature
+from roma_glm.tools.core.calculator import CalculatorToolkit
+from roma_glm.tools.core.file import FileToolkit
+from roma_glm.tools.base.manager import ToolkitManager
 
 
 class TestBaseModuleToolkitIntegration:
@@ -53,7 +53,7 @@ class TestBaseModuleToolkitIntegration:
 
         # Mock DSPy components
         with patch('dspy.LM') as mock_lm_class, \
-             patch('roma_dspy.types.prediction_strategy.PredictionStrategy.build') as mock_build:
+             patch('roma_glm.types.prediction_strategy.PredictionStrategy.build') as mock_build:
 
             mock_lm = Mock()
             mock_lm_class.return_value = mock_lm
@@ -93,7 +93,7 @@ class TestBaseModuleToolkitIntegration:
 
         # Mock DSPy components
         with patch('dspy.LM') as mock_lm_class, \
-             patch('roma_dspy.types.prediction_strategy.PredictionStrategy.build') as mock_build:
+             patch('roma_glm.types.prediction_strategy.PredictionStrategy.build') as mock_build:
 
             mock_lm = Mock()
             mock_lm_class.return_value = mock_lm
@@ -140,7 +140,7 @@ class TestBaseModuleToolkitIntegration:
 
         # Mock DSPy components
         with patch('dspy.LM') as mock_lm_class, \
-             patch('roma_dspy.types.prediction_strategy.PredictionStrategy.build') as mock_build:
+             patch('roma_glm.types.prediction_strategy.PredictionStrategy.build') as mock_build:
 
             mock_lm = Mock()
             mock_lm_class.return_value = mock_lm
@@ -183,7 +183,7 @@ class TestBaseModuleToolkitIntegration:
 
         # Mock DSPy components
         with patch('dspy.LM') as mock_lm_class, \
-             patch('roma_dspy.types.prediction_strategy.PredictionStrategy.build') as mock_build:
+             patch('roma_glm.types.prediction_strategy.PredictionStrategy.build') as mock_build:
 
             mock_lm = Mock()
             mock_lm_class.return_value = mock_lm
@@ -210,7 +210,7 @@ class TestBaseModuleToolkitIntegration:
 
         # Mock DSPy components
         with patch('dspy.LM') as mock_lm_class, \
-             patch('roma_dspy.types.prediction_strategy.PredictionStrategy.build') as mock_build:
+             patch('roma_glm.types.prediction_strategy.PredictionStrategy.build') as mock_build:
 
             mock_lm = Mock()
             mock_lm_class.return_value = mock_lm
@@ -243,7 +243,7 @@ class TestBaseModuleToolkitIntegration:
 
         # Mock DSPy components
         with patch('dspy.LM') as mock_lm_class, \
-             patch('roma_dspy.types.prediction_strategy.PredictionStrategy.build') as mock_build:
+             patch('roma_glm.types.prediction_strategy.PredictionStrategy.build') as mock_build:
 
             mock_lm = Mock()
             mock_lm_class.return_value = mock_lm

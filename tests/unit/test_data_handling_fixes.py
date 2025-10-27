@@ -5,8 +5,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from decimal import Decimal
 from datetime import datetime, timezone
 
-from roma_dspy.tools.crypto.binance.toolkit import BinanceToolkit
-from roma_dspy.tools.value_objects.crypto import Kline, OrderBookSnapshot, OrderBookLevel, OrderSide, Trade
+from roma_glm.tools.crypto.binance.toolkit import BinanceToolkit
+from roma_glm.tools.value_objects.crypto import Kline, OrderBookSnapshot, OrderBookLevel, OrderSide, Trade
 
 
 class TestBinanceDataHandling:
@@ -170,7 +170,7 @@ class TestDataStorageIntegration:
     @pytest.mark.asyncio
     async def test_storage_tuple_return(self):
         """Test that DataStorage.store_parquet returns (key, size_kb) tuple."""
-        from roma_dspy.tools.utils.storage import DataStorage
+        from roma_glm.tools.utils.storage import DataStorage
 
         # Mock file storage
         class MockFileStorage:
@@ -215,7 +215,7 @@ class TestDataStorageIntegration:
     @pytest.mark.asyncio
     async def test_build_success_response_with_storage(self):
         """Test that _build_success_response properly handles storage."""
-        from roma_dspy.tools.utils.storage import DataStorage
+        from roma_glm.tools.utils.storage import DataStorage
 
         # Mock file storage
         class MockFileStorage:
@@ -302,7 +302,7 @@ class TestEdgeCases:
     @pytest.mark.asyncio
     async def test_data_validation_invalid_type(self):
         """Test that DataStorage validates data types."""
-        from roma_dspy.tools.utils.storage import DataStorage
+        from roma_glm.tools.utils.storage import DataStorage
 
         class MockFileStorage:
             def __init__(self):
@@ -332,7 +332,7 @@ class TestEdgeCases:
     @pytest.mark.asyncio
     async def test_metadata_preserved_with_storage(self):
         """Test that metadata is preserved when data is stored."""
-        from roma_dspy.tools.utils.storage import DataStorage
+        from roma_glm.tools.utils.storage import DataStorage
 
         toolkit = BinanceToolkit()
 

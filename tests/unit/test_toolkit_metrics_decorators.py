@@ -7,13 +7,13 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from roma_dspy.tools.metrics.decorators import (
+from roma_glm.tools.metrics.decorators import (
     track_toolkit_lifecycle,
     track_tool_invocation,
     measure_toolkit_operation
 )
-from roma_dspy.tools.metrics.models import ToolkitLifecycleEvent, ToolInvocationEvent
-from roma_dspy.core.context import ExecutionContext
+from roma_glm.tools.metrics.models import ToolkitLifecycleEvent, ToolInvocationEvent
+from roma_glm.core.context import ExecutionContext
 
 
 @pytest.fixture

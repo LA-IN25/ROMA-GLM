@@ -5,8 +5,8 @@ import tempfile
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from src.roma_dspy.tools.crypto.defillama import DefiLlamaToolkit
-from src.roma_dspy.core.storage import FileStorage
+from src.roma_glm.tools.crypto.defillama import DefiLlamaToolkit
+from src.roma_glm.core.storage import FileStorage
 
 
 class TestDefiLlamaIntegration:
@@ -26,7 +26,7 @@ class TestDefiLlamaIntegration:
     @pytest.fixture
     def mock_client(self):
         """Mock DefiLlama API client."""
-        with patch("src.roma_dspy.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock:
+        with patch("src.roma_glm.tools.crypto.defillama.toolkit.DefiLlamaAPIClient") as mock:
             client_instance = MagicMock()
             mock.return_value = client_instance
             yield client_instance
@@ -306,7 +306,7 @@ class TestDefiLlamaIntegration:
 
 def test_toolkit_imports():
     """Test that all toolkit components can be imported."""
-    from src.roma_dspy.tools.crypto.defillama import (
+    from src.roma_glm.tools.crypto.defillama import (
         DefiLlamaToolkit,
         DefiLlamaAPIClient,
         DefiLlamaAPIError,
@@ -321,6 +321,6 @@ def test_toolkit_imports():
 
 def test_toolkit_in_main_exports():
     """Test that DefiLlamaToolkit is exported from main tools module."""
-    from src.roma_dspy.tools import DefiLlamaToolkit
+    from src.roma_glm.tools import DefiLlamaToolkit
 
     assert DefiLlamaToolkit is not None

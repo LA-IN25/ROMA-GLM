@@ -4,8 +4,8 @@ import pytest
 from decimal import Decimal
 from datetime import datetime
 
-from src.roma_dspy.tools.crypto.binance import BinanceToolkit
-from src.roma_dspy.tools.value_objects.crypto import (
+from src.roma_glm.tools.crypto.binance import BinanceToolkit
+from src.roma_glm.tools.value_objects.crypto import (
     TrendDirection,
     VolatilityLevel,
     OrderSide,
@@ -64,7 +64,7 @@ class TestBinanceE2E:
 
     def test_type_safety_decimal_usage(self):
         """Verify proper Decimal usage throughout the system."""
-        from src.roma_dspy.tools.value_objects.crypto import Kline, Trade
+        from src.roma_glm.tools.value_objects.crypto import Kline, Trade
 
         # Kline uses Decimal
         kline = Kline(
@@ -101,7 +101,7 @@ class TestBinanceE2E:
 
     def test_float_conversion_for_stats_is_intentional(self):
         """Verify float conversions are intentional for NumPy operations."""
-        from src.roma_dspy.tools.utils.statistics import StatisticalAnalyzer
+        from src.roma_glm.tools.utils.statistics import StatisticalAnalyzer
 
         stats = StatisticalAnalyzer()
 
@@ -116,12 +116,12 @@ class TestBinanceE2E:
 
     def test_no_duplicate_enums_between_base_and_binance(self):
         """Ensure no enum duplication between base crypto and Binance-specific."""
-        from src.roma_dspy.tools.value_objects.crypto import (
+        from src.roma_glm.tools.value_objects.crypto import (
             TrendDirection,
             VolatilityLevel,
             OrderSide,
         )
-        from src.roma_dspy.tools.crypto.binance.types import (
+        from src.roma_glm.tools.crypto.binance.types import (
             BinanceMarketType,
             BinanceEndpoint,
         )
@@ -137,8 +137,8 @@ class TestBinanceE2E:
 
     def test_statistical_analysis_uses_base_enums(self):
         """Verify StatisticalAnalyzer returns base crypto enums, not duplicates."""
-        from src.roma_dspy.tools.utils.statistics import StatisticalAnalyzer
-        from src.roma_dspy.tools.value_objects.crypto import TrendDirection, VolatilityLevel
+        from src.roma_glm.tools.utils.statistics import StatisticalAnalyzer
+        from src.roma_glm.tools.value_objects.crypto import TrendDirection, VolatilityLevel
 
         stats = StatisticalAnalyzer()
 
@@ -146,8 +146,8 @@ class TestBinanceE2E:
         volatility = stats.classify_volatility_from_change(3.0)
 
         # Should be base enum types
-        assert type(trend).__module__ == "src.roma_dspy.tools.value_objects.crypto.trading"
-        assert type(volatility).__module__ == "src.roma_dspy.tools.value_objects.crypto.trading"
+        assert type(trend).__module__ == "src.roma_glm.tools.value_objects.crypto.trading"
+        assert type(volatility).__module__ == "src.roma_glm.tools.value_objects.crypto.trading"
 
     def test_error_handling_consistency(self):
         """Verify consistent error response format."""
@@ -172,7 +172,7 @@ class TestBinanceE2E:
 
     def test_value_objects_have_computed_properties(self):
         """Verify value objects have useful computed properties."""
-        from src.roma_dspy.tools.value_objects.crypto import Kline, OrderBookSnapshot, OrderBookLevel
+        from src.roma_glm.tools.value_objects.crypto import Kline, OrderBookSnapshot, OrderBookLevel
 
         # Kline has computed properties
         kline = Kline(
@@ -208,9 +208,9 @@ class TestBinanceE2E:
 
     def test_architecture_separation_of_concerns(self):
         """Verify clean 3-layer architecture."""
-        from src.roma_dspy.tools.utils.http_client import AsyncHTTPClient
-        from src.roma_dspy.tools.crypto.binance.client import BinanceAPIClient
-        from src.roma_dspy.tools.crypto.binance.toolkit import BinanceToolkit
+        from src.roma_glm.tools.utils.http_client import AsyncHTTPClient
+        from src.roma_glm.tools.crypto.binance.client import BinanceAPIClient
+        from src.roma_glm.tools.crypto.binance.toolkit import BinanceToolkit
 
         # Layer 1: HTTP client (generic)
         http_client = AsyncHTTPClient(base_url="https://api.binance.us")
@@ -231,7 +231,7 @@ class TestBinanceE2E:
 
     def test_multi_market_support(self):
         """Verify support for multiple market types."""
-        from src.roma_dspy.tools.crypto.binance.types import BinanceMarketType, MARKET_CONFIGS
+        from src.roma_glm.tools.crypto.binance.types import BinanceMarketType, MARKET_CONFIGS
 
         # Should support 3 market types
         assert BinanceMarketType.SPOT in BinanceMarketType
@@ -259,12 +259,12 @@ class TestBinanceE2E:
         # With analysis
         toolkit_with_stats = BinanceToolkit(enable_analysis=True)
         assert toolkit_with_stats.stats is not None
-        from src.roma_dspy.tools.utils.statistics import StatisticalAnalyzer
+        from src.roma_glm.tools.utils.statistics import StatisticalAnalyzer
         assert isinstance(toolkit_with_stats.stats, StatisticalAnalyzer)
 
     def test_comprehensive_statistical_methods(self):
         """Verify StatisticalAnalyzer has all required methods."""
-        from src.roma_dspy.tools.utils.statistics import StatisticalAnalyzer
+        from src.roma_glm.tools.utils.statistics import StatisticalAnalyzer
 
         stats = StatisticalAnalyzer()
 
@@ -293,7 +293,7 @@ class TestCompleteness:
 
     def test_all_binance_endpoints_covered(self):
         """Verify all essential Binance endpoints are covered."""
-        from src.roma_dspy.tools.crypto.binance.types import BinanceEndpoint
+        from src.roma_glm.tools.crypto.binance.types import BinanceEndpoint
 
         # Market data endpoints
         assert BinanceEndpoint.TICKER_PRICE
@@ -311,10 +311,10 @@ class TestCompleteness:
     def test_imports_all_work(self):
         """Verify all public imports work correctly."""
         # Main toolkit
-        from src.roma_dspy.tools import BinanceToolkit
+        from src.roma_glm.tools import BinanceToolkit
 
         # Value objects
-        from src.roma_dspy.tools.value_objects.crypto import (
+        from src.roma_glm.tools.value_objects.crypto import (
             Kline,
             Trade,
             OrderBookSnapshot,
@@ -326,7 +326,7 @@ class TestCompleteness:
         )
 
         # Utils
-        from src.roma_dspy.tools.utils import StatisticalAnalyzer
+        from src.roma_glm.tools.utils import StatisticalAnalyzer
 
         # All should be classes/enums
         assert isinstance(BinanceToolkit, type)
@@ -340,8 +340,8 @@ class TestDRYPrinciples:
 
     def test_no_duplicate_classification_logic(self):
         """Verify classification logic is not duplicated."""
-        from src.roma_dspy.tools.utils.statistics import StatisticalAnalyzer
-        from src.roma_dspy.tools.crypto.binance.toolkit import BinanceToolkit
+        from src.roma_glm.tools.utils.statistics import StatisticalAnalyzer
+        from src.roma_glm.tools.crypto.binance.toolkit import BinanceToolkit
 
         # StatisticalAnalyzer should be the single source of truth
         stats = StatisticalAnalyzer()
@@ -355,7 +355,7 @@ class TestDRYPrinciples:
 
     def test_value_objects_reusable_across_toolkits(self):
         """Verify value objects are generic enough for reuse."""
-        from src.roma_dspy.tools.value_objects.crypto import (
+        from src.roma_glm.tools.value_objects.crypto import (
             Kline,
             Trade,
             OrderBookSnapshot,

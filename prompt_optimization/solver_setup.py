@@ -2,9 +2,9 @@
 
 from typing import Optional
 
-from roma_dspy import RecursiveSolverModule
-from roma_dspy.config import load_config
-from roma_dspy.core.engine.solve import RecursiveSolver
+from roma_glm import RecursiveSolverModule
+from roma_glm.config import load_config
+from roma_glm.core.engine.solve import RecursiveSolver
 
 from .config import OptimizationConfig, patch_romaconfig
 

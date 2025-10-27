@@ -11,7 +11,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 
-from roma_dspy.tools.mcp import MCPToolError, MCPToolkit
+from roma_glm.tools.mcp import MCPToolError, MCPToolkit
 
 
 class MockCallToolResult:
@@ -54,7 +54,7 @@ def mock_client():
 @pytest.fixture
 async def toolkit(mock_client):
     """Create MCPToolkit instance with mocked client."""
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         # Setup context manager
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
@@ -93,7 +93,7 @@ async def test_tool_error_is_detected_snake_case(mock_client):
     mock_client.call_tool = AsyncMock(return_value=error_result)
 
     # Create toolkit with mocked client
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -131,7 +131,7 @@ async def test_tool_error_is_detected_camel_case(mock_client):
     )
     mock_client.call_tool = AsyncMock(return_value=error_result)
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -164,7 +164,7 @@ async def test_tool_error_with_empty_content(mock_client):
     )
     mock_client.call_tool = AsyncMock(return_value=error_result)
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -201,7 +201,7 @@ async def test_empty_content_list_handled(mock_client):
     )
     mock_client.call_tool = AsyncMock(return_value=result)
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -233,7 +233,7 @@ async def test_non_list_content_handled(mock_client):
     )
     mock_client.call_tool = AsyncMock(return_value=result)
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -270,7 +270,7 @@ async def test_content_without_text_attribute(mock_client):
     )
     mock_client.call_tool = AsyncMock(return_value=result)
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -309,15 +309,15 @@ async def test_non_json_text_returned_without_storage(mock_client):
     mock_client.call_tool = AsyncMock(return_value=result)
 
     # Mock FileStorage
-    from roma_dspy.config.schemas.storage import StorageConfig
-    from roma_dspy.core.storage.file_storage import FileStorage
+    from roma_glm.config.schemas.storage import StorageConfig
+    from roma_glm.core.storage.file_storage import FileStorage
     import tempfile
 
     temp_dir = tempfile.mkdtemp()
     storage_config = StorageConfig(base_path=temp_dir)
     file_storage = FileStorage(config=storage_config, execution_id="test")
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -357,15 +357,15 @@ async def test_json_parse_error_logged(mock_client, caplog):
     mock_client.call_tool = AsyncMock(return_value=result)
 
     # Mock FileStorage
-    from roma_dspy.config.schemas.storage import StorageConfig
-    from roma_dspy.core.storage.file_storage import FileStorage
+    from roma_glm.config.schemas.storage import StorageConfig
+    from roma_glm.core.storage.file_storage import FileStorage
     import tempfile
 
     temp_dir = tempfile.mkdtemp()
     storage_config = StorageConfig(base_path=temp_dir)
     file_storage = FileStorage(config=storage_config, execution_id="test")
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -408,15 +408,15 @@ async def test_valid_json_is_parsed_and_stored(mock_client):
     mock_client.call_tool = AsyncMock(return_value=result)
 
     # Mock FileStorage
-    from roma_dspy.config.schemas.storage import StorageConfig
-    from roma_dspy.core.storage.file_storage import FileStorage
+    from roma_glm.config.schemas.storage import StorageConfig
+    from roma_glm.core.storage.file_storage import FileStorage
     import tempfile
 
     temp_dir = tempfile.mkdtemp()
     storage_config = StorageConfig(base_path=temp_dir)
     file_storage = FileStorage(config=storage_config, execution_id="test")
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)
@@ -457,15 +457,15 @@ async def test_malformed_json_doesnt_crash_storage(mock_client, caplog):
     mock_client.call_tool = AsyncMock(return_value=result)
 
     # Mock FileStorage
-    from roma_dspy.config.schemas.storage import StorageConfig
-    from roma_dspy.core.storage.file_storage import FileStorage
+    from roma_glm.config.schemas.storage import StorageConfig
+    from roma_glm.core.storage.file_storage import FileStorage
     import tempfile
 
     temp_dir = tempfile.mkdtemp()
     storage_config = StorageConfig(base_path=temp_dir)
     file_storage = FileStorage(config=storage_config, execution_id="test")
 
-    with patch('roma_dspy.tools.mcp.toolkit.Client') as mock_client_class:
+    with patch('roma_glm.tools.mcp.toolkit.Client') as mock_client_class:
         mock_context = AsyncMock()
         mock_context.__aenter__ = AsyncMock(return_value=mock_client)
         mock_context.__aexit__ = AsyncMock(return_value=None)

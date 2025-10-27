@@ -1,9 +1,9 @@
 """Tests for DSPy LM retry configuration propagation."""
 
 import pytest
-from src.roma_dspy.config.schemas.base import LLMConfig
-from src.roma_dspy.config.schemas.agents import AgentConfig
-from src.roma_dspy.core.modules.atomizer import Atomizer
+from src.roma_glm.config.schemas.base import LLMConfig
+from src.roma_glm.config.schemas.agents import AgentConfig
+from src.roma_glm.core.modules.atomizer import Atomizer
 
 
 def test_llm_config_defaults():

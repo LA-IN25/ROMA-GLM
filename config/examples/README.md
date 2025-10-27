@@ -88,7 +88,7 @@ uv run python -m roma_dspy.cli solve "What is the current price of Bitcoin?" --c
 agents:
   executor:
     llm:
-      model: openai/gpt-4o-mini
+      model: openai/glm-4.5-air
       temperature: 0.3
       max_tokens: 2000
     prediction_strategy: react  # Required for tools

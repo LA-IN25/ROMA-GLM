@@ -12,12 +12,12 @@ from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 
-from roma_dspy.config.schemas import StorageConfig
-from roma_dspy.config.schemas.toolkit import ToolkitConfig
-from roma_dspy.core.storage import FileStorage
-from roma_dspy.tools.base.base import BaseToolkit
-from roma_dspy.tools.base.manager import ToolkitManager
-from roma_dspy.tools.core.calculator import CalculatorToolkit
+from roma_glm.config.schemas import StorageConfig
+from roma_glm.config.schemas.toolkit import ToolkitConfig
+from roma_glm.core.storage import FileStorage
+from roma_glm.tools.base.base import BaseToolkit
+from roma_glm.tools.base.manager import ToolkitManager
+from roma_glm.tools.core.calculator import CalculatorToolkit
 
 
 def create_file_storage(execution_id: str, temp_dir: Path) -> FileStorage:
@@ -690,7 +690,7 @@ class TestToolkitLifecycleTracking:
     @pytest.mark.asyncio
     async def test_track_toolkit_event_buffers_to_context(self):
         """Test _track_toolkit_event() buffers events to ExecutionContext."""
-        from roma_dspy.core.context import ExecutionContext
+        from roma_glm.core.context import ExecutionContext
 
         execution_id = "test_exec_tracking"
         file_storage = create_file_storage(execution_id, Path(self.temp_dir))
@@ -728,7 +728,7 @@ class TestToolkitLifecycleTracking:
     @pytest.mark.asyncio
     async def test_track_toolkit_event_with_error(self):
         """Test _track_toolkit_event() captures error details."""
-        from roma_dspy.core.context import ExecutionContext
+        from roma_glm.core.context import ExecutionContext
 
         execution_id = "test_exec_error"
         file_storage = create_file_storage(execution_id, Path(self.temp_dir))
@@ -759,7 +759,7 @@ class TestToolkitLifecycleTracking:
     @pytest.mark.asyncio
     async def test_cache_hit_tracking(self):
         """Test cache hit events are tracked."""
-        from roma_dspy.core.context import ExecutionContext
+        from roma_glm.core.context import ExecutionContext
 
         execution_id = "test_cache_hit"
         file_storage = create_file_storage(execution_id, Path(self.temp_dir))
@@ -799,7 +799,7 @@ class TestToolkitLifecycleTracking:
     @pytest.mark.asyncio
     async def test_toolkit_creation_tracking_with_timing(self):
         """Test toolkit creation events include timing."""
-        from roma_dspy.core.context import ExecutionContext
+        from roma_glm.core.context import ExecutionContext
 
         execution_id = "test_creation_timing"
         file_storage = create_file_storage(execution_id, Path(self.temp_dir))
@@ -833,7 +833,7 @@ class TestToolkitLifecycleTracking:
     @pytest.mark.asyncio
     async def test_failed_creation_tracking(self):
         """Test failed toolkit creation events are tracked with error details."""
-        from roma_dspy.core.context import ExecutionContext
+        from roma_glm.core.context import ExecutionContext
 
         execution_id = "test_failed_creation"
         file_storage = create_file_storage(execution_id, Path(self.temp_dir))
@@ -871,7 +871,7 @@ class TestToolkitLifecycleTracking:
     @pytest.mark.asyncio
     async def test_multiple_operations_tracked(self):
         """Test multiple toolkit operations are tracked correctly."""
-        from roma_dspy.core.context import ExecutionContext
+        from roma_glm.core.context import ExecutionContext
 
         execution_id = "test_multiple_ops"
         file_storage = create_file_storage(execution_id, Path(self.temp_dir))

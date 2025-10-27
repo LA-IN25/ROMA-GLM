@@ -6,7 +6,7 @@
 agents:
   executor:
     llm:
-      model: openai/gpt-4o
+      model: openai/glm-4.6
       temperature: 0.3
       max_tokens: 8000
     prediction_strategy: react
@@ -60,7 +60,6 @@ runtime:
   max_depth: 6
   timeout: 600
   enable_logging: true
-
 # Crypto Agent Capabilities:
 # - Real-time price data (CoinGecko + Binance)
 # - Market trends and gainers/losers

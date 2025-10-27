@@ -4,10 +4,10 @@ import asyncio
 
 import pytest
 
-from roma_dspy.core.context import ExecutionContext
-from roma_dspy.core.storage import FileStorage
-from roma_dspy.config.schemas import StorageConfig
-from roma_dspy.types import ExecutionEventType
+from roma_glm.core.context import ExecutionContext
+from roma_glm.core.storage import FileStorage
+from roma_glm.config.schemas import StorageConfig
+from roma_glm.types import ExecutionEventType
 
 
 @pytest.fixture
@@ -47,7 +47,7 @@ class TestE2EObservability:
             # ==================== Layer 1: Toolkit Metrics ====================
 
             # Simulate toolkit lifecycle
-            from roma_dspy.tools.metrics.decorators import track_toolkit_lifecycle, track_tool_invocation
+            from roma_glm.tools.metrics.decorators import track_toolkit_lifecycle, track_tool_invocation
 
             @track_toolkit_lifecycle("create")
             async def create_toolkit():

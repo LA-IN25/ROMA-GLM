@@ -16,12 +16,12 @@ from pathlib import Path
 
 import pytest
 
-from src.roma_dspy.config.manager import ConfigManager
-from src.roma_dspy.core.storage import FileStorage
-from src.roma_dspy.core.context import ContextManager
-from src.roma_dspy.core.factory import ToolkitFactory
-from src.roma_dspy.tools.crypto.defillama import DefiLlamaToolkit
-from src.roma_dspy.tools.core import E2BToolkit
+from src.roma_glm.config.manager import ConfigManager
+from src.roma_glm.core.storage import FileStorage
+from src.roma_glm.core.context import ContextManager
+from src.roma_glm.core.factory import ToolkitFactory
+from src.roma_glm.tools.crypto.defillama import DefiLlamaToolkit
+from src.roma_glm.tools.core import E2BToolkit
 
 
 class TestIntegrationFlow:

@@ -11,7 +11,7 @@ Tests verify that:
 import pytest
 import asyncio
 from unittest.mock import Mock, patch, AsyncMock, MagicMock
-from roma_dspy.tools.mcp.toolkit import MCPToolkit
+from roma_glm.tools.mcp.toolkit import MCPToolkit
 
 
 class TestMCPInitializationFlag:
@@ -19,7 +19,7 @@ class TestMCPInitializationFlag:
 
     def test_flag_exists_after_construction(self):
         """Test that _initialized flag is created during __init__."""
-        with patch('roma_dspy.tools.mcp.toolkit.MCP_AVAILABLE', True):
+        with patch('roma_glm.tools.mcp.toolkit.MCP_AVAILABLE', True):
             # Create toolkit
             # Mock _initialize_tools to prevent actual connection attempt
             with patch.object(MCPToolkit, '_initialize_tools'):
@@ -37,8 +37,8 @@ class TestMCPInitializationFlag:
     @pytest.mark.asyncio
     async def test_flag_set_after_successful_initialization(self):
         """Test that _initialized flag is set to True after successful init."""
-        with patch('roma_dspy.tools.mcp.toolkit.MCP_AVAILABLE', True), \
-             patch('roma_dspy.tools.mcp.toolkit.USING_FASTMCP', True):
+        with patch('roma_glm.tools.mcp.toolkit.MCP_AVAILABLE', True), \
+             patch('roma_glm.tools.mcp.toolkit.USING_FASTMCP', True):
 
             toolkit = MCPToolkit(
                 server_name="test_server",
@@ -62,8 +62,8 @@ class TestMCPInitializationFlag:
     @pytest.mark.asyncio
     async def test_double_initialization_prevented(self):
         """Test that calling initialize() twice doesn't re-initialize."""
-        with patch('roma_dspy.tools.mcp.toolkit.MCP_AVAILABLE', True), \
-             patch('roma_dspy.tools.mcp.toolkit.USING_FASTMCP', True):
+        with patch('roma_glm.tools.mcp.toolkit.MCP_AVAILABLE', True), \
+             patch('roma_glm.tools.mcp.toolkit.USING_FASTMCP', True):
 
             toolkit = MCPToolkit(
                 server_name="test_server",
@@ -94,7 +94,7 @@ class TestMCPInitializationFlag:
     @pytest.mark.asyncio
     async def test_guard_checks_flag_before_connection_state(self):
         """Test that initialize() checks _initialized flag first."""
-        with patch('roma_dspy.tools.mcp.toolkit.MCP_AVAILABLE', True):
+        with patch('roma_glm.tools.mcp.toolkit.MCP_AVAILABLE', True):
 
             toolkit = MCPToolkit(
                 server_name="test_server",
@@ -117,7 +117,7 @@ class TestMCPInitializationFlag:
     @pytest.mark.asyncio
     async def test_fallback_guard_handles_inconsistent_state(self):
         """Test that fallback guard sets flag if connection exists but flag is False."""
-        with patch('roma_dspy.tools.mcp.toolkit.MCP_AVAILABLE', True):
+        with patch('roma_glm.tools.mcp.toolkit.MCP_AVAILABLE', True):
 
             toolkit = MCPToolkit(
                 server_name="test_server",
@@ -144,7 +144,7 @@ class TestMCPInitializationFlag:
     @pytest.mark.asyncio
     async def test_cleanup_resets_flag(self):
         """Test that cleanup() resets _initialized flag to False."""
-        with patch('roma_dspy.tools.mcp.toolkit.MCP_AVAILABLE', True):
+        with patch('roma_glm.tools.mcp.toolkit.MCP_AVAILABLE', True):
 
             toolkit = MCPToolkit(
                 server_name="test_server",
@@ -168,8 +168,8 @@ class TestMCPInitializationFlag:
     @pytest.mark.asyncio
     async def test_reinitialization_after_cleanup(self):
         """Test that toolkit can be re-initialized after cleanup."""
-        with patch('roma_dspy.tools.mcp.toolkit.MCP_AVAILABLE', True), \
-             patch('roma_dspy.tools.mcp.toolkit.USING_FASTMCP', True):
+        with patch('roma_glm.tools.mcp.toolkit.MCP_AVAILABLE', True), \
+             patch('roma_glm.tools.mcp.toolkit.USING_FASTMCP', True):
 
             toolkit = MCPToolkit(
                 server_name="test_server",
@@ -207,7 +207,7 @@ class TestMCPInitializationFlag:
     @pytest.mark.asyncio
     async def test_partial_initialization_failure_allows_retry(self):
         """Test that failed initialization leaves flag False and allows retry."""
-        with patch('roma_dspy.tools.mcp.toolkit.MCP_AVAILABLE', True):
+        with patch('roma_glm.tools.mcp.toolkit.MCP_AVAILABLE', True):
 
             toolkit = MCPToolkit(
                 server_name="test_server",
@@ -245,7 +245,7 @@ class TestMCPInitializationFlag:
         # This is more of an integration test with manager
         # Testing the code path in manager.py:536-538
 
-        with patch('roma_dspy.tools.mcp.toolkit.MCP_AVAILABLE', True):
+        with patch('roma_glm.tools.mcp.toolkit.MCP_AVAILABLE', True):
             toolkit = MCPToolkit(
                 server_name="test_server",
                 server_type="stdio",
@@ -274,8 +274,8 @@ class TestMCPInitializationFlag:
     @pytest.mark.asyncio
     async def test_fastmcp_path_double_init_prevented(self):
         """Test double init prevention specifically for FastMCP path."""
-        with patch('roma_dspy.tools.mcp.toolkit.MCP_AVAILABLE', True), \
-             patch('roma_dspy.tools.mcp.toolkit.USING_FASTMCP', True):
+        with patch('roma_glm.tools.mcp.toolkit.MCP_AVAILABLE', True), \
+             patch('roma_glm.tools.mcp.toolkit.USING_FASTMCP', True):
 
             toolkit = MCPToolkit(
                 server_name="test_server",
@@ -309,8 +309,8 @@ class TestMCPInitializationFlag:
     @pytest.mark.asyncio
     async def test_mcp_sdk_path_double_init_prevented(self):
         """Test double init prevention specifically for MCP SDK path."""
-        with patch('roma_dspy.tools.mcp.toolkit.MCP_AVAILABLE', True), \
-             patch('roma_dspy.tools.mcp.toolkit.USING_FASTMCP', False):
+        with patch('roma_glm.tools.mcp.toolkit.MCP_AVAILABLE', True), \
+             patch('roma_glm.tools.mcp.toolkit.USING_FASTMCP', False):
 
             toolkit = MCPToolkit(
                 server_name="test_server",

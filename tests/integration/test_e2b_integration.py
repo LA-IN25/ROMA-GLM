@@ -14,7 +14,7 @@ from pathlib import Path
 
 import pytest
 
-from src.roma_dspy.tools.core.e2b import E2BToolkit
+from src.roma_glm.tools.core.e2b import E2BToolkit
 
 
 # Skip all tests if E2B_API_KEY not set

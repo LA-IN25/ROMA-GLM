@@ -7,7 +7,7 @@
 agents:
   executor:
     llm:
-      model: openai/gpt-4o-mini
+      model: openai/glm-4.5-air
       temperature: 0.3
     prediction_strategy: react
     toolkits:
@@ -20,13 +20,12 @@ agents:
           args:
             - "-y"
             - "@modelcontextprotocol/server-filesystem"
-            - "/Users/yourname/allowed_directory"  # Change this!
-          use_storage: false  # File operations are small
+            - "/Users/yourname/allowed_directory" # Change this!
+          use_storage: false # File operations are small
 
 runtime:
   max_depth: 4
   enable_logging: true
-
 # MCP Stdio Features:
 # - Local execution (secure)
 # - Process isolation

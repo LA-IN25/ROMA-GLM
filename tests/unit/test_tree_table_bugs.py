@@ -4,7 +4,7 @@ import pytest
 from unittest.mock import Mock, MagicMock
 from rich.console import Console
 from textual.geometry import Size
-from roma_dspy.tui.widgets import TreeTable, TreeTableNode
+from roma_glm.tui.widgets import TreeTable, TreeTableNode
 
 
 class TestTreeTableBugs:

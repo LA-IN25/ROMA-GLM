@@ -1,0 +1,46 @@
+# Z.AI Web Search Configuration
+# Demonstrates Z.AI web search capabilities via MCP integration
+
+agents:
+  executor:
+    llm:
+      model: openai/glm-4.5-air
+      temperature: 0.4
+      max_tokens: 8000
+      api_key: ${oc.env:ZAI_API_KEY}
+      base_url: https://api.z.ai/api/coding/paas/v4
+    prediction_strategy: react
+    toolkits:
+      # Z.AI Web Search via MCP
+      - class_name: ZAIWebSearchToolkit
+        enabled: true
+        toolkit_config:
+          api_key: ${oc.env:Z_AI_API_KEY} # Set in .env file or environment variable
+          timeout: 30.0
+
+      # File operations for saving search results
+      - class_name: FileToolkit
+        enabled: true
+        toolkit_config:
+          enable_delete: false
+          max_file_size: 10485760 # 10MB
+
+runtime:
+  max_depth: 5
+  timeout: 300
+  enable_logging: true
+# Key Concept: Z.AI Web Search via MCP
+# - Real-time web search capabilities
+# - Latest information retrieval
+# - News, stock prices, weather data
+# - Remote HTTP-based MCP service
+
+# Prerequisites:
+# 1. Get Z.AI API key from: https://z.ai/manage-apikey/apikey-list
+# 2. Copy .env.example to .env and add: Z_AI_API_KEY=your_api_key
+# 3. Install MCP dependencies: pip install 'roma-glm[mcp]'
+
+# Usage:
+#   uv run python -m roma_glm.cli solve "Search for the latest AI developments and summarize the key trends" --config config/examples/basic/zai_websearch.yaml
+#   uv run python -m roma_glm.cli solve "Find current stock prices for major tech companies" --config config/examples/basic/zai_websearch.yaml
+#   uv run python -m roma_glm.cli solve "Search for recent news about climate change" --config config/examples/basic/zai_websearch.yaml

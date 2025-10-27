@@ -10,10 +10,10 @@ from typing import Dict, Any
 
 import pytest
 
-from src.roma_dspy.config.manager import ConfigManager
-from src.roma_dspy.core.modules.base_module import BaseModule
-from src.roma_dspy.core.signatures.signatures import ExecutorSignature
-from src.roma_dspy.tools import register_toolkit, CalculatorToolkit, SerperToolkit
+from src.roma_glm.config.manager import ConfigManager
+from src.roma_glm.core.modules.base_module import BaseModule
+from src.roma_glm.core.signatures.signatures import ExecutorSignature
+from src.roma_glm.tools import register_toolkit, CalculatorToolkit, SerperToolkit
 
 
 class TestE2EToolkitSystem:
@@ -81,7 +81,7 @@ class TestE2EToolkitSystem:
 
         # 3. Create BaseModule with toolkit configuration
         with patch('dspy.LM') as mock_lm_class, \
-             patch('src.roma_dspy.types.prediction_strategy.PredictionStrategy.build') as mock_build:
+             patch('src.roma_glm.types.prediction_strategy.PredictionStrategy.build') as mock_build:
 
             mock_lm = Mock()
             mock_lm_class.return_value = mock_lm
@@ -168,7 +168,7 @@ class TestE2EToolkitSystem:
 
         # 3. Create BaseModule and test tool execution
         with patch('dspy.LM') as mock_lm_class, \
-             patch('src.roma_dspy.types.prediction_strategy.PredictionStrategy.build') as mock_build:
+             patch('src.roma_glm.types.prediction_strategy.PredictionStrategy.build') as mock_build:
 
             mock_lm = Mock()
             mock_lm_class.return_value = mock_lm
@@ -252,7 +252,7 @@ class TestE2EToolkitSystem:
 
         # 3. Create BaseModule with multiple toolkits
         with patch('dspy.LM') as mock_lm_class, \
-             patch('src.roma_dspy.types.prediction_strategy.PredictionStrategy.build') as mock_build:
+             patch('src.roma_glm.types.prediction_strategy.PredictionStrategy.build') as mock_build:
 
             mock_lm = Mock()
             mock_lm_class.return_value = mock_lm
@@ -334,7 +334,7 @@ class TestE2EToolkitSystem:
 
         # BaseModule should handle toolkit initialization errors gracefully
         with patch('dspy.LM') as mock_lm_class, \
-             patch('src.roma_dspy.types.prediction_strategy.PredictionStrategy.build') as mock_build:
+             patch('src.roma_glm.types.prediction_strategy.PredictionStrategy.build') as mock_build:
 
             mock_lm = Mock()
             mock_lm_class.return_value = mock_lm
@@ -390,7 +390,7 @@ class TestE2EToolkitSystem:
 
         # 4. Test that the loaded config can be used successfully
         with patch('dspy.LM') as mock_lm_class, \
-             patch('src.roma_dspy.types.prediction_strategy.PredictionStrategy.build') as mock_build:
+             patch('src.roma_glm.types.prediction_strategy.PredictionStrategy.build') as mock_build:
 
             mock_lm = Mock()
             mock_lm_class.return_value = mock_lm

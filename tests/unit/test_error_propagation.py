@@ -3,13 +3,13 @@
 import pytest
 from unittest.mock import Mock, patch
 
-from roma_dspy.core.engine.runtime import ModuleRuntime
-from roma_dspy.core.registry import AgentRegistry
-from roma_dspy.resilience import module_circuit_breaker
-from roma_dspy.core.engine.dag import TaskDAG
-from roma_dspy.core.modules import Atomizer, Planner, Executor, Aggregator
-from roma_dspy.core.signatures import TaskNode
-from roma_dspy.types import TaskType, TaskStatus, AgentType
+from roma_glm.core.engine.runtime import ModuleRuntime
+from roma_glm.core.registry import AgentRegistry
+from roma_glm.resilience import module_circuit_breaker
+from roma_glm.core.engine.dag import TaskDAG
+from roma_glm.core.modules import Atomizer, Planner, Executor, Aggregator
+from roma_glm.core.signatures import TaskNode
+from roma_glm.types import TaskType, TaskStatus, AgentType
 
 
 class TestErrorPropagation:
@@ -229,8 +229,8 @@ class TestErrorPropagation:
 
     # ==================== Module Decorator Integration Tests ====================
 
-    @patch('roma_dspy.core.engine.runtime.measure_execution_time')
-    @patch('roma_dspy.core.engine.runtime.with_module_resilience')
+    @patch('roma_glm.core.engine.runtime.measure_execution_time')
+    @patch('roma_glm.core.engine.runtime.with_module_resilience')
     def test_resilience_decorators_applied(self, mock_resilience, mock_timing, runtime):
         """Test that resilience decorators are properly applied to module methods."""
         # Verify decorators are applied to the async execution method

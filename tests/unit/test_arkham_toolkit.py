@@ -4,8 +4,8 @@ import pytest
 import os
 from unittest.mock import MagicMock
 
-from src.roma_dspy.tools.crypto.arkham import ArkhamToolkit, ArkhamAPIClient, ArkhamAPIError
-from src.roma_dspy.tools.value_objects.crypto import BlockchainNetwork, ErrorType
+from src.roma_glm.tools.crypto.arkham import ArkhamToolkit, ArkhamAPIClient, ArkhamAPIError
+from src.roma_glm.tools.value_objects.crypto import BlockchainNetwork, ErrorType
 
 
 class TestArkhamToolkit:
@@ -226,7 +226,7 @@ class TestArkhamAPIError:
 
 def test_value_object_imports():
     """Test that value objects can be imported."""
-    from src.roma_dspy.tools.crypto.arkham import BlockchainNetwork, AssetIdentifier
+    from src.roma_glm.tools.crypto.arkham import BlockchainNetwork, AssetIdentifier
     
     assert BlockchainNetwork is not None
     assert AssetIdentifier is not None
@@ -234,7 +234,7 @@ def test_value_object_imports():
 
 def test_types_imports():
     """Test that Arkham-specific types can be imported."""
-    from src.roma_dspy.tools.crypto.arkham import (
+    from src.roma_glm.tools.crypto.arkham import (
         TokenHolder,
         TokenFlow,
         Transfer,

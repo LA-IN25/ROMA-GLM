@@ -3,10 +3,10 @@
 import pytest
 from pathlib import Path
 
-from src.roma_dspy.config.manager import ConfigManager
-from src.roma_dspy.core.engine.solve import RecursiveSolver
-from src.roma_dspy.core.registry import AgentRegistry
-from src.roma_dspy.types import AgentType, TaskType
+from src.roma_glm.config.manager import ConfigManager
+from src.roma_glm.core.engine.solve import RecursiveSolver
+from src.roma_glm.core.registry import AgentRegistry
+from src.roma_glm.types import AgentType, TaskType
 
 
 class TestConfigToSolver:

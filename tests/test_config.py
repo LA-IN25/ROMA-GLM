@@ -6,7 +6,7 @@ from pathlib import Path
 from omegaconf import OmegaConf
 import os
 
-from roma_dspy.config import (
+from roma_glm.config import (
     load_config,
     ConfigManager,
     ROMAConfig,
@@ -110,7 +110,7 @@ class TestAgentConfig:
 
     def test_valid_tools(self):
         """Test valid toolkits configuration."""
-        from roma_dspy.config.schemas.toolkit import ToolkitConfig
+        from roma_glm.config.schemas.toolkit import ToolkitConfig
         toolkit = ToolkitConfig(class_name="CalculatorToolkit", enabled=True)
         config = AgentConfig(toolkits=[toolkit])
         assert len(config.toolkits) == 1
@@ -118,7 +118,7 @@ class TestAgentConfig:
 
     def test_invalid_tools(self):
         """Test invalid toolkits configuration."""
-        from roma_dspy.config.schemas.toolkit import ToolkitConfig
+        from roma_glm.config.schemas.toolkit import ToolkitConfig
         # This test now validates at toolkit manager level, not config level
         # Empty class name should fail
         with pytest.raises(ValueError):
@@ -126,7 +126,7 @@ class TestAgentConfig:
 
     def test_tool_strategy_compatibility(self):
         """Test that toolkits work with compatible strategies."""
-        from roma_dspy.config.schemas.toolkit import ToolkitConfig
+        from roma_glm.config.schemas.toolkit import ToolkitConfig
         toolkit = ToolkitConfig(class_name="CalculatorToolkit", enabled=True)
 
         # Should work with react
@@ -162,7 +162,7 @@ class TestAgentsConfig:
 
     def test_tool_strategy_compatibility_validation(self):
         """Test cross-agent toolkit/strategy validation."""
-        from roma_dspy.config.schemas.toolkit import ToolkitConfig
+        from roma_glm.config.schemas.toolkit import ToolkitConfig
         toolkit = ToolkitConfig(class_name="CalculatorToolkit", enabled=True)
 
         # Should pass with compatible strategy

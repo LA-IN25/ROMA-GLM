@@ -9,7 +9,7 @@ class TestInlineSignatureParser:
 
     def test_parse_simple_signature(self):
         """Parse basic 'input -> output' format."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
 
         sig = AgentFactory._parse_inline_signature("goal -> output")
 
@@ -20,7 +20,7 @@ class TestInlineSignatureParser:
 
     def test_parse_typed_signature(self):
         """Parse signature with type annotations."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
 
         sig = AgentFactory._parse_inline_signature(
             "goal: str -> is_atomic: bool, node_type: str"
@@ -33,7 +33,7 @@ class TestInlineSignatureParser:
 
     def test_parse_signature_with_instructions(self):
         """Parse signature with custom instructions."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
 
         sig = AgentFactory._parse_inline_signature(
             "goal -> output",
@@ -45,7 +45,7 @@ class TestInlineSignatureParser:
 
     def test_parse_complex_signature(self):
         """Parse signature with multiple inputs and outputs."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
 
         sig = AgentFactory._parse_inline_signature(
             "goal: str, context: str -> output: str, sources: list[str], confidence: float"
@@ -60,21 +60,21 @@ class TestInlineSignatureParser:
 
     def test_parse_invalid_signature_no_arrow(self):
         """Fail on signature without arrow."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
 
         with pytest.raises(ValueError, match="Must contain '->'"):
             AgentFactory._parse_inline_signature("goal output")
 
     def test_parse_empty_signature(self):
         """Fail on empty signature."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
 
         with pytest.raises(ValueError):
             AgentFactory._parse_inline_signature("")
 
     def test_parse_none_signature(self):
         """Fail on None signature."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
 
         with pytest.raises((ValueError, TypeError, AttributeError)):
             AgentFactory._parse_inline_signature(None)
@@ -85,11 +85,11 @@ class TestSignatureFallback:
 
     def test_fallback_on_invalid_signature(self):
         """Use default signature when custom is invalid."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
-        from src.roma_dspy.config.schemas.agents import AgentConfig
-        from src.roma_dspy.config.schemas.base import LLMConfig
-        from src.roma_dspy.types import AgentType
-        from src.roma_dspy.core.signatures import AtomizerSignature
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.config.schemas.agents import AgentConfig
+        from src.roma_glm.config.schemas.base import LLMConfig
+        from src.roma_glm.types import AgentType
+        from src.roma_glm.core.signatures import AtomizerSignature
 
         config = AgentConfig(
             llm=LLMConfig(model="gpt-4o"),
@@ -104,11 +104,11 @@ class TestSignatureFallback:
 
     def test_fallback_on_empty_signature(self):
         """Use default signature when custom is empty."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
-        from src.roma_dspy.config.schemas.agents import AgentConfig
-        from src.roma_dspy.config.schemas.base import LLMConfig
-        from src.roma_dspy.types import AgentType
-        from src.roma_dspy.core.signatures import ExecutorSignature
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.config.schemas.agents import AgentConfig
+        from src.roma_glm.config.schemas.base import LLMConfig
+        from src.roma_glm.types import AgentType
+        from src.roma_glm.core.signatures import ExecutorSignature
 
         config = AgentConfig(
             llm=LLMConfig(model="gpt-4o"),
@@ -123,11 +123,11 @@ class TestSignatureFallback:
 
     def test_fallback_on_none_signature(self):
         """Use default signature when custom is None."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
-        from src.roma_dspy.config.schemas.agents import AgentConfig
-        from src.roma_dspy.config.schemas.base import LLMConfig
-        from src.roma_dspy.types import AgentType
-        from src.roma_dspy.core.signatures import PlannerSignature
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.config.schemas.agents import AgentConfig
+        from src.roma_glm.config.schemas.base import LLMConfig
+        from src.roma_glm.types import AgentType
+        from src.roma_glm.core.signatures import PlannerSignature
 
         config = AgentConfig(
             llm=LLMConfig(model="gpt-4o"),
@@ -142,11 +142,11 @@ class TestSignatureFallback:
 
     def test_use_custom_valid_signature(self):
         """Use custom signature when valid."""
-        from src.roma_dspy.core.factory.agent_factory import AgentFactory
-        from src.roma_dspy.config.schemas.agents import AgentConfig
-        from src.roma_dspy.config.schemas.base import LLMConfig
-        from src.roma_dspy.types import AgentType
-        from src.roma_dspy.core.signatures import ExecutorSignature
+        from src.roma_glm.core.factory.agent_factory import AgentFactory
+        from src.roma_glm.config.schemas.agents import AgentConfig
+        from src.roma_glm.config.schemas.base import LLMConfig
+        from src.roma_glm.types import AgentType
+        from src.roma_glm.core.signatures import ExecutorSignature
 
         config = AgentConfig(
             llm=LLMConfig(model="gpt-4o"),

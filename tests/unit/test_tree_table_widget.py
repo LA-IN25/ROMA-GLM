@@ -1,7 +1,7 @@
 """Unit tests for TreeTable widget - NON-INTERACTIVE tests only."""
 
 import pytest
-from roma_dspy.tui.widgets import TreeTable, TreeTableNode
+from roma_glm.tui.widgets import TreeTable, TreeTableNode
 
 
 class TestTreeTableNode:

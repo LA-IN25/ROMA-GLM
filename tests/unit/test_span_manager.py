@@ -2,7 +2,7 @@ import socket
 
 import pytest
 
-from roma_dspy.core.observability import span_manager as span_module
+from roma_glm.core.observability import span_manager as span_module
 
 
 @pytest.fixture(autouse=True)

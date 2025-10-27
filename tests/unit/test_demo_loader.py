@@ -4,7 +4,7 @@ import pytest
 from unittest.mock import patch, MagicMock
 import dspy
 
-from roma_dspy.core.utils.demo_loader import DemoLoader, load_demos
+from roma_glm.core.utils.demo_loader import DemoLoader, load_demos
 
 
 class TestDemoLoader:
@@ -188,7 +188,7 @@ class TestDemoLoader:
         with pytest.raises((ImportError, AttributeError)):
             loader.load("module:sub:VARIABLE")
 
-    @patch("roma_dspy.core.utils.demo_loader.importlib.import_module")
+    @patch("roma_glm.core.utils.demo_loader.importlib.import_module")
     def test_import_error_logged(self, mock_import):
         """Test that import errors are logged."""
         mock_import.side_effect = ImportError("Test import error")

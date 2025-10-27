@@ -6,8 +6,8 @@ import argparse
 import logging
 from pathlib import Path
 
-from roma_dspy.utils import log_async_execution
-from roma_dspy.utils.async_executor import AsyncParallelExecutor
+from roma_glm.utils import log_async_execution
+from roma_glm.utils.async_executor import AsyncParallelExecutor
 
 from .config import get_default_config, OptimizationConfig
 from .datasets import load_aimo_datasets

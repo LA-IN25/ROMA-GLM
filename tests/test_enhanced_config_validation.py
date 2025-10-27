@@ -6,13 +6,13 @@ import os
 from pathlib import Path
 from pydantic import ValidationError
 
-from roma_dspy.config.schemas.root import ROMAConfig
-from roma_dspy.config.schemas.agents import AgentConfig, AgentsConfig
-from roma_dspy.config.schemas.base import LLMConfig, RuntimeConfig
-from roma_dspy.config.schemas.resilience import ResilienceConfig
-from roma_dspy.config.schemas.toolkit import ToolkitConfig
-from roma_dspy.config.manager import ConfigManager
-from roma_dspy.tools.base.manager import ToolkitManager
+from roma_glm.config.schemas.root import ROMAConfig
+from roma_glm.config.schemas.agents import AgentConfig, AgentsConfig
+from roma_glm.config.schemas.base import LLMConfig, RuntimeConfig
+from roma_glm.config.schemas.resilience import ResilienceConfig
+from roma_glm.config.schemas.toolkit import ToolkitConfig
+from roma_glm.config.manager import ConfigManager
+from roma_glm.tools.base.manager import ToolkitManager
 
 
 class TestEnhancedRuntimeConfig:

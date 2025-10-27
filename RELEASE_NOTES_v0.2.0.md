@@ -163,7 +163,7 @@ from roma_dspy import Atomizer, Planner, Executor, Aggregator, Verifier
 
 # Consistent interface across all modules
 executor = Executor(
-    model="openrouter/openai/gpt-4o-mini",
+    model="openai/glm-4.5-air",
     prediction_strategy="react",
     tools=[get_weather, search_web]
 )
@@ -241,7 +241,7 @@ Comprehensive documentation in the `docs/` directory:
    # v0.2.0 (new)
    from roma_dspy import Executor
    executor = Executor(
-       model="openrouter/openai/gpt-4o-mini",
+       model="openai/glm-4.5-air",
        prediction_strategy="react"
    )
    ```

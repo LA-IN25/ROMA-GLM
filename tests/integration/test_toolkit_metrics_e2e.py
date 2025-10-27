@@ -6,12 +6,12 @@ from datetime import datetime, timezone
 import pytest
 import pytest_asyncio
 
-from roma_dspy.core.context import ExecutionContext
-from roma_dspy.core.storage import FileStorage
-from roma_dspy.core.storage.postgres_storage import PostgresStorage
-from roma_dspy.config.schemas.storage import PostgresConfig
-from roma_dspy.tools.metrics.decorators import track_toolkit_lifecycle, track_tool_invocation
-from roma_dspy.tools.metrics.models import aggregate_toolkit_metrics
+from roma_glm.core.context import ExecutionContext
+from roma_glm.core.storage import FileStorage
+from roma_glm.core.storage.postgres_storage import PostgresStorage
+from roma_glm.config.schemas.storage import PostgresConfig
+from roma_glm.tools.metrics.decorators import track_toolkit_lifecycle, track_tool_invocation
+from roma_glm.tools.metrics.models import aggregate_toolkit_metrics
 
 
 @pytest_asyncio.fixture
@@ -41,7 +41,7 @@ async def temp_postgres_storage(tmp_path):
 @pytest.fixture
 def mock_file_storage(tmp_path):
     """Create mock FileStorage for testing."""
-    from roma_dspy.config.schemas import StorageConfig
+    from roma_glm.config.schemas import StorageConfig
 
     config = StorageConfig(
         base_path=str(tmp_path),
@@ -353,7 +353,7 @@ class TestToolkitMetricsE2E:
     @pytest.mark.asyncio
     async def test_toolkit_auto_wrapping_tracking(self, mock_file_storage):
         """Test that toolkit tools are automatically wrapped with tracking via BaseToolkit._register_all_tools()."""
-        from roma_dspy.tools.core.calculator import CalculatorToolkit
+        from roma_glm.tools.core.calculator import CalculatorToolkit
 
         token = ExecutionContext.set(execution_id="test_exec_autowrap", file_storage=mock_file_storage)
 
