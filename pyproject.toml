@@ -4,7 +4,8 @@ version = "0.1.0"
 description = "ROMA-GLM: Hierarchical task decomposition with GLM models and Z.AI web search integration"
 readme = "README.md"
 authors = [
-    { name = "salzubi401", email = "salaheddin@sentient.xyz" }
+    { name = "salzubi401", email = "salaheddin@sentient.xyz" },
+    { name = "baran nama", email = "baran@sentient.xyz" }
 ]
 requires-python = ">=3.12"
 dependencies = [
@@ -43,7 +44,14 @@ dependencies = [
     "boto3>=1.40.55",
     "fastmcp>=2.12.4",
     "jinja2>=3.1.0",
+<<<<<<< HEAD
     "mcp>=1.18.0",
+=======
+    "jsonschema>=4.20.0",
+    "pyperclip>=1.8.2",
+    "python-magic>=0.4.27",
+    "aiofiles>=23.2.1",
+>>>>>>> upstream/main
 ]
 
 [project.optional-dependencies]
@@ -60,9 +68,14 @@ mcp = [
     "httpx-sse>=0.4.0",
     "mcp>=1.0.0",
 ]
+<<<<<<< HEAD
 agent = [
     "apscheduler>=3.10.0",
     "websockets>=12.0",
+=======
+wandb = [
+    "wandb>=0.15.0",
+>>>>>>> upstream/main
 ]
 
 [project.scripts]

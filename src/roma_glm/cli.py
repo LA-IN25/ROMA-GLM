@@ -83,13 +83,31 @@ def solve(
     """
     try:
         # Import here to avoid slow startup
+<<<<<<< HEAD:src/roma_glm/cli.py
         from roma_glm.config.manager import ConfigManager
         from roma_glm.core.engine.solve import RecursiveSolver
         from roma_glm.logging_config import configure_from_config
+=======
+        from dataclasses import replace
+        from roma_dspy.config.manager import ConfigManager
+        from roma_dspy.core.engine.solve import RecursiveSolver
+        from roma_dspy.logging_config import configure_from_config
+>>>>>>> upstream/main:src/roma_dspy/cli.py
 
         # Load configuration
         config_mgr = ConfigManager()
         config = config_mgr.load_config(config_path=config_path, profile=profile)
+
+        # Enhance config with profile metadata for execution tracking
+        # This ensures the profile is correctly stored in the database
+        profile_name = config_mgr.loaded_profile_name or profile or "default"
+
+        # Get existing metadata or create new dict
+        metadata = config.metadata if config.metadata is not None else {}
+        metadata["profile_name"] = profile_name
+
+        # Create new config instance with updated metadata (dataclasses are immutable patterns)
+        config = replace(config, metadata=metadata)
 
         # Initialize logging from configuration
         if config.logging:
@@ -519,20 +537,34 @@ def exec_create(
 
 @exec_app.command("list")
 def exec_list(
+<<<<<<< HEAD:src/roma_glm/cli.py
     status: Optional[str] = typer.Option(
         None, "--status", "-s", help="Filter by status"
     ),
+=======
+    status: Optional[str] = typer.Option(None, "--status", "-s", help="Filter by status"),
+    experiment: Optional[str] = typer.Option(None, "--experiment", "-e", help="Filter by experiment name"),
+    profile: Optional[str] = typer.Option(None, "--profile", "-p", help="Filter by profile"),
+>>>>>>> upstream/main:src/roma_dspy/cli.py
     limit: int = typer.Option(20, "--limit", "-l", help="Number of executions to show"),
     url: str = typer.Option(
         "http://localhost:8000", "--url", "-u", help="API server URL"
     ),
 ):
-    """List all executions.
+    """List all executions with optional filtering.
 
     Examples:
+<<<<<<< HEAD:src/roma_glm/cli.py
         roma-glm exec list
         roma-glm exec list --status running
         roma-glm exec list --limit 50
+=======
+        roma-dspy exec list
+        roma-dspy exec list --status running
+        roma-dspy exec list --experiment "ROMA-Crypto-Agent"
+        roma-dspy exec list --profile crypto_agent --status completed
+        roma-dspy exec list --limit 50
+>>>>>>> upstream/main:src/roma_dspy/cli.py
     """
     try:
         from rich.table import Table
@@ -540,6 +572,10 @@ def exec_list(
         params = {"limit": limit}
         if status:
             params["status"] = status
+        if experiment:
+            params["experiment_name"] = experiment
+        if profile:
+            params["profile"] = profile
 
         response = httpx.get(f"{url}/api/v1/executions", params=params, timeout=10.0)
         response.raise_for_status()
@@ -550,24 +586,49 @@ def exec_list(
             console.print("[yellow]No executions found[/yellow]")
             return
 
-        table = Table(title=f"Executions (Total: {data['total']})")
+        # Build title with active filters
+        title_parts = [f"Executions (Total: {data['total']})"]
+        if experiment:
+            title_parts.append(f"Experiment: {experiment}")
+        if profile:
+            title_parts.append(f"Profile: {profile}")
+        if status:
+            title_parts.append(f"Status: {status}")
+        title = " | ".join(title_parts)
+
+        table = Table(title=title)
         table.add_column("ID", style="cyan", no_wrap=True)
+        table.add_column("Experiment", style="blue", overflow="ellipsis", max_width=25)
         table.add_column("Status", style="magenta")
         table.add_column("Goal", style="white")
         table.add_column("Tasks", justify="right", style="green")
         table.add_column("Created", style="dim")
 
         for exec in data["executions"]:
+<<<<<<< HEAD:src/roma_glm/cli.py
             goal = (
                 exec["initial_goal"][:50] + "..."
                 if len(exec["initial_goal"]) > 50
                 else exec["initial_goal"]
             )
+=======
+            goal = exec["initial_goal"][:40] + "..." if len(exec["initial_goal"]) > 40 else exec["initial_goal"]
+>>>>>>> upstream/main:src/roma_dspy/cli.py
             tasks = f"{exec['completed_tasks']}/{exec['total_tasks']}"
             created = exec["created_at"][:19].replace("T", " ")
+            experiment_short = exec["experiment_name"][:25] + "..." if len(exec["experiment_name"]) > 25 else exec["experiment_name"]
 
             table.add_row(
+<<<<<<< HEAD:src/roma_glm/cli.py
                 exec["execution_id"][:12], exec["status"], goal, tasks, created
+=======
+                exec["execution_id"][:12],
+                experiment_short,
+                exec["status"],
+                goal,
+                tasks,
+                created
+>>>>>>> upstream/main:src/roma_dspy/cli.py
             )
 
         console.print(table)
@@ -718,6 +779,116 @@ def exec_cancel(
         raise typer.Exit(code=1)
     except Exception as e:
         console_err.print(f"[bold red]Error:[/bold red] {e}")
+        raise typer.Exit(code=1)
+
+
+@exec_app.command("export")
+def exec_export(
+    execution_id: str = typer.Argument(..., help="Execution ID to export"),
+    output: Optional[Path] = typer.Option(None, "--output", "-o", help="Output filepath (default: auto-generated)"),
+    level: str = typer.Option("full", "--level", "-l", help="Export level: full, compact, or minimal"),
+    exclude_io: bool = typer.Option(False, "--exclude-io", help="Exclude trace I/O data"),
+    redact: bool = typer.Option(False, "--redact", "-r", help="Redact sensitive strings (API keys, tokens)"),
+    compress: bool = typer.Option(True, "--compress/--no-compress", "-c", help="Auto-compress if > 10MB (default: True)"),
+    url: str = typer.Option("http://localhost:8000", "--url", "-u", help="API server URL"),
+):
+    """Export execution to shareable file.
+
+    Exports complete execution data to JSON file with optional compression,
+    privacy redaction, and checksum verification.
+
+    Export levels:
+      - full: All data including trace I/O (~100%)
+      - compact: No trace I/O (~20-30%)
+      - minimal: Task tree + metrics only (~5%)
+
+    Examples:
+        roma-dspy exec export abc123
+        roma-dspy exec export abc123 --output my_export.json
+        roma-dspy exec export abc123 --level compact --redact
+        roma-dspy exec export abc123 --exclude-io --no-compress
+    """
+    try:
+        from roma_dspy.tui.core.client import ApiClient
+        from roma_dspy.tui.types.export import ExportLevel
+        from roma_dspy.tui.utils.export import ExportService
+        from roma_dspy.tui.transformer import DataTransformer
+
+        # Validate level
+        level_map = {
+            "full": ExportLevel.FULL,
+            "compact": ExportLevel.COMPACT,
+            "minimal": ExportLevel.MINIMAL,
+        }
+        if level not in level_map:
+            console_err.print(f"[bold red]Error:[/bold red] Invalid level '{level}'. Use: full, compact, or minimal")
+            raise typer.Exit(code=1)
+
+        level_enum = level_map[level]
+
+        # Generate output filepath if not provided
+        if output is None:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            output = Path(f"roma_export_{execution_id[:8]}_{timestamp}.json")
+
+        with console.status(f"[bold green]Fetching execution {execution_id}..."):
+            # Fetch execution data from API
+            client = ApiClient(base_url=url)
+
+            # Fetch execution
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            try:
+                exec_data = loop.run_until_complete(client.get_execution(execution_id))
+            finally:
+                loop.close()
+
+            if not exec_data:
+                console_err.print(f"[bold red]Error:[/bold red] Execution {execution_id} not found")
+                raise typer.Exit(code=1)
+
+            # Transform to ExecutionViewModel
+            transformer = DataTransformer()
+            execution = transformer.transform_execution(exec_data)
+
+        console.print(f"✅ Fetched execution with {len(execution.tasks)} tasks")
+
+        with console.status(f"[bold green]Exporting to {output.name}..."):
+            # Export with full options
+            result = ExportService.export_execution_full(
+                execution=execution,
+                filepath=output,
+                level=level_enum,
+                exclude_io=exclude_io,
+                redact_sensitive=redact,
+                api_url=url,
+            )
+
+        # Show result
+        size_kb = result.size_bytes / 1024
+        size_str = f"{size_kb:.1f} KB" if size_kb < 1024 else f"{size_kb / 1024:.1f} MB"
+
+        console.print(f"\n✅ [bold green]Export successful![/bold green]")
+        console.print(f"   File: {result.filepath}")
+        console.print(f"   Level: {result.level.value}")
+        console.print(f"   Size: {size_str}")
+        console.print(f"   Compressed: {result.compressed}")
+        console.print(f"   Tasks: {result.task_count}")
+        console.print(f"   Traces: {result.trace_count}")
+        if result.io_excluded:
+            console.print(f"   I/O Excluded: Yes")
+        if result.redacted:
+            console.print(f"   Sensitive Data Redacted: Yes")
+        console.print(f"   Checksum: {result.checksum[:32]}...")
+
+        console.print(f"\n[dim]Load with: roma-dspy viz-interactive --file {result.filepath}[/dim]")
+
+    except ImportError as e:
+        console_err.print(f"[bold red]Error:[/bold red] Missing dependency: {e}")
+        console_err.print("[dim]Make sure TUI dependencies are installed[/dim]")
+        raise typer.Exit(code=1)
+    except Exception as e:
+        console_err.print(f"[bold red]Export failed:[/bold red] {e}")
         raise typer.Exit(code=1)
 
 
@@ -917,6 +1088,7 @@ def checkpoint_delete(
 
 @app.command("viz-interactive")
 def viz_interactive(
+<<<<<<< HEAD:src/roma_glm/cli.py
     execution_id: str = typer.Argument(..., help="Execution ID to explore"),
     api_url: str = typer.Option(
         "http://localhost:8000", "--url", "-u", help="API server URL"
@@ -927,23 +1099,91 @@ def viz_interactive(
     poll_interval: float = typer.Option(
         2.0, "--poll-interval", help="Polling interval in seconds (default: 2.0)"
     ),
+=======
+    execution_id: Optional[str] = typer.Argument(None, help="Execution ID to explore (omit for browser mode)"),
+    api_url: str = typer.Option("http://localhost:8000", "--url", "-u", help="API server URL"),
+    live: bool = typer.Option(False, "--live", "-l", help="Enable live mode with automatic polling"),
+    poll_interval: float = typer.Option(2.0, "--poll-interval", help="Polling interval in seconds (default: 2.0)"),
+    file: Optional[Path] = typer.Option(None, "--file", "-f", help="Load from exported file instead of API"),
+    experiment: Optional[str] = typer.Option(None, "--experiment", "-e", help="Filter by experiment name (browser mode only)"),
+    profile: Optional[str] = typer.Option(None, "--profile", "-p", help="Filter by profile (browser mode only)"),
+    status: Optional[str] = typer.Option(None, "--status", "-s", help="Filter by status (browser mode only)"),
+>>>>>>> upstream/main:src/roma_dspy/cli.py
 ):
     """
-    Launch interactive TUI visualizer for an execution.
+    Launch interactive TUI visualizer for executions.
 
-    No profile needed - searches all MLflow experiments by execution_id tag.
+    Modes:
+    - Detail mode: View a specific execution (provide execution_id)
+    - Browser mode: Browse all executions grouped by experiment (no execution_id)
+    - File mode: Load from exported file (provide --file)
 
     Examples:
+<<<<<<< HEAD:src/roma_glm/cli.py
         roma-glm viz-interactive abc123              # Static view
         roma-glm viz-interactive abc123 --live       # Live mode (auto-refresh every 2s)
         roma-glm viz-interactive abc123 --live --poll-interval 5  # Refresh every 5s
+=======
+        # Detail mode (specific execution):
+        roma-dspy viz-interactive abc123              # Static view
+        roma-dspy viz-interactive abc123 --live       # Live mode (auto-refresh every 2s)
+
+        # Browser mode (all executions):
+        roma-dspy viz-interactive                     # Browse all experiments
+        roma-dspy viz-interactive --experiment "ROMA-Crypto-Agent"  # Filter by experiment
+        roma-dspy viz-interactive --profile crypto_agent            # Filter by profile
+        roma-dspy viz-interactive --status running                  # Filter by status
+
+        # File mode (offline):
+        roma-dspy viz-interactive --file export.json           # Load from file
+        roma-dspy viz-interactive --file export.json.gz        # Auto-decompresses gzipped files
+>>>>>>> upstream/main:src/roma_dspy/cli.py
     """
     try:
-        run_viz_app(
+        # Validate mutually exclusive options
+        if execution_id and file:
+            console_err.print("[bold red]Error:[/bold red] Cannot specify both execution_id and --file")
+            console_err.print("[dim]Use either 'roma-dspy viz-interactive EXECUTION_ID' or 'roma-dspy viz-interactive --file PATH'[/dim]")
+            raise typer.Exit(code=1)
+
+        # Validate filter usage (only in browser mode)
+        if execution_id and (experiment or profile or status):
+            console_err.print("[yellow]Warning:[/yellow] Filters (--experiment, --profile, --status) are ignored in detail mode")
+
+        # Validate file mode restrictions
+        if file:
+            if not file.exists():
+                console_err.print(f"[bold red]Error:[/bold red] File not found: {file}")
+                raise typer.Exit(code=1)
+
+            if live:
+                console_err.print("[yellow]Warning:[/yellow] --live mode not available in file mode (ignored)")
+                live = False
+
+            if experiment or profile or status:
+                console_err.print("[yellow]Warning:[/yellow] Filters are not available in file mode (ignored)")
+
+            console.print(f"[dim]Loading execution from file: {file}[/dim]")
+
+        # Browser mode message
+        if not execution_id and not file:
+            console.print("[dim]Launching browser mode - browse all executions grouped by experiment[/dim]")
+            if experiment:
+                console.print(f"[dim]Filtering by experiment: {experiment}[/dim]")
+            if profile:
+                console.print(f"[dim]Filtering by profile: {profile}[/dim]")
+            if status:
+                console.print(f"[dim]Filtering by status: {status}[/dim]")
+
+        run_viz(
             execution_id=execution_id,
             base_url=api_url,
             live=live,
             poll_interval=poll_interval,
+            file_path=file,
+            experiment_filter=experiment,
+            profile_filter=profile,
+            status_filter=status,
         )
     except Exception as e:  # pragma: no cover - CLI runtime
         console_err.print(f"[bold red]Failed to launch TUI:[/bold red] {e}")
@@ -1026,6 +1266,7 @@ def metrics(
 
 
 # ============================================================================
+<<<<<<< HEAD:src/roma_glm/cli.py
 # Autonomous Agent Commands
 # ============================================================================
 
@@ -1271,6 +1512,127 @@ def agent_trade(
         raise typer.Exit(code=1)
     except Exception as e:
         console_err.print(f"[bold red]Error:[/bold red] {e}")
+=======
+# Export Validation Command
+# ============================================================================
+
+@app.command("validate-export")
+def validate_export(
+    filepath: Path = typer.Argument(..., help="Path to exported file to validate"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Show detailed validation info"),
+):
+    """Validate an exported execution file.
+
+    Checks:
+    - JSON schema compliance (v1.0.0)
+    - Reference integrity (task IDs, trace IDs)
+    - Checksum verification
+    - File format detection (.json vs .json.gz)
+    - Metric consistency
+
+    Examples:
+        roma-dspy validate-export export.json
+        roma-dspy validate-export export.json.gz --verbose
+    """
+    try:
+        from roma_dspy.tui.utils.import_service import ImportService
+
+        if not filepath.exists():
+            console_err.print(f"[bold red]Error:[/bold red] File not found: {filepath}")
+            raise typer.Exit(code=1)
+
+        console.print(f"[dim]Validating: {filepath}[/dim]\n")
+
+        # Create import service
+        import_service = ImportService()
+
+        # Validate file
+        with console.status("[bold green]Validating export file..."):
+            validation = import_service.validate_export_file(filepath)
+
+        # Display results
+        if validation.valid:
+            console.print(f"✅ [bold green]Validation PASSED[/bold green]\n")
+
+            # Show basic info
+            console.print(f"[bold]Schema Version:[/bold] {validation.schema_version}")
+            console.print(f"[bold]Execution ID:[/bold] {validation.execution_id}")
+
+            if validation.checksum_valid:
+                console.print(f"[bold]Checksum:[/bold] ✓ Valid")
+            else:
+                console.print(f"[bold]Checksum:[/bold] ⚠️  Mismatch (file may be corrupted)")
+
+            # Show warnings if any
+            if validation.warnings:
+                console.print(f"\n[yellow]Warnings ({len(validation.warnings)}):[/yellow]")
+                for warning in validation.warnings[:5]:
+                    console.print(f"  ⚠️  {warning}")
+                if len(validation.warnings) > 5:
+                    console.print(f"  [dim]... and {len(validation.warnings) - 5} more[/dim]")
+
+            # Verbose mode: show additional info
+            if verbose:
+                try:
+                    import json
+                    from roma_dspy.tui.utils.file_loader import FileLoader
+
+                    data = FileLoader.load_json(filepath)
+
+                    console.print(f"\n[bold]File Details:[/bold]")
+                    console.print(f"  Format: {'Compressed (gzip)' if FileLoader.is_compressed(filepath) else 'Plain JSON'}")
+                    console.print(f"  Size: {filepath.stat().st_size / 1024:.1f} KB")
+                    console.print(f"  Export Level: {data.get('export_level', 'unknown')}")
+                    console.print(f"  ROMA Version: {data.get('roma_version', 'unknown')}")
+                    console.print(f"  Exported At: {data.get('exported_at', 'unknown')}")
+
+                    # Show execution summary
+                    exec_data = data.get('execution', {})
+                    console.print(f"\n[bold]Execution Summary:[/bold]")
+                    console.print(f"  Root Goal: {exec_data.get('root_goal', 'N/A')[:80]}")
+                    console.print(f"  Status: {exec_data.get('status', 'unknown')}")
+                    console.print(f"  Tasks: {len(exec_data.get('tasks', {}))}")
+
+                    # Show metadata
+                    metadata = data.get('metadata', {})
+                    if metadata:
+                        console.print(f"\n[bold]Metadata:[/bold]")
+                        console.print(f"  Privacy: io_excluded={metadata.get('privacy', {}).get('io_excluded', False)}, redacted={metadata.get('privacy', {}).get('sensitive_redacted', False)}")
+                        console.print(f"  Compression: {metadata.get('compression', {}).get('method', 'none')}")
+
+                except Exception as e:
+                    console.print(f"\n[yellow]Warning:[/yellow] Could not load file details: {e}")
+
+        else:
+            console.print(f"❌ [bold red]Validation FAILED[/bold red]\n")
+
+            console.print(f"[bold red]Errors ({len(validation.errors)}):[/bold red]")
+            for error in validation.errors[:10]:
+                console.print(f"  ✗ {error}")
+            if len(validation.errors) > 10:
+                console.print(f"  [dim]... and {len(validation.errors) - 10} more[/dim]")
+
+            if validation.warnings:
+                console.print(f"\n[yellow]Warnings ({len(validation.warnings)}):[/yellow]")
+                for warning in validation.warnings[:5]:
+                    console.print(f"  ⚠️  {warning}")
+
+            raise typer.Exit(code=1)
+
+    except ImportError as e:
+        console_err.print(f"[bold red]Error:[/bold red] Missing dependency: {e}")
+        console_err.print("[dim]Make sure TUI dependencies are installed[/dim]")
+        raise typer.Exit(code=1)
+    except json.JSONDecodeError as e:
+        console_err.print(f"[bold red]Error:[/bold red] Invalid JSON file")
+        console_err.print(f"  {e}")
+        raise typer.Exit(code=1)
+    except Exception as e:
+        console_err.print(f"[bold red]Validation error:[/bold red] {e}")
+        if verbose:
+            import traceback
+            console_err.print(traceback.format_exc())
+>>>>>>> upstream/main:src/roma_dspy/cli.py
         raise typer.Exit(code=1)
 
 

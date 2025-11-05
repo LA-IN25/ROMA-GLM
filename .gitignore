@@ -84,4 +84,7 @@ htmlcov/
 secrets/
 
 .claude
-CLAUDE.mdnode_modules/
+CLAUDE.md
+node_modules/
+.*
+mlartifacts/

@@ -112,6 +112,8 @@ class ExecutionResponse(BaseModel):
     status: str
     initial_goal: str
     max_depth: int
+    profile: str
+    experiment_name: str
     total_tasks: int
     completed_tasks: int
     failed_tasks: int

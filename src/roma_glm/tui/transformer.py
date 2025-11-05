@@ -310,6 +310,8 @@ class DataTransformer:
                         start_time=span.get("start_time"),
                         start_ts=self._safe_float(span.get("start_ts")),
                         model=span.get("model"),
+                        error=span.get("error"),  # Extract error message from API
+                        exception=span.get("exception"),  # Extract exception type from API
                         source=DataSource.MLFLOW,
                         has_full_io=bool(span.get("inputs") or span.get("outputs")),
                     )
@@ -336,6 +338,8 @@ class DataTransformer:
                 start_time=span.get("start_time"),
                 start_ts=self._safe_float(span.get("start_ts")),
                 model=span.get("model"),
+                error=span.get("error"),  # Extract error message from API
+                exception=span.get("exception"),  # Extract exception type from API
                 source=DataSource.MLFLOW,
                 has_full_io=bool(span.get("inputs") or span.get("outputs")),
             )
@@ -715,6 +719,13 @@ class DataTransformer:
         if value in (None, ""):
             return default
         try:
+            if isinstance(value, str):
+                cleaned = value.replace(",", "").strip()
+                if not cleaned:
+                    return default
+                return int(cleaned)
+            if isinstance(value, float):
+                return int(value)
             return int(value)
         except (TypeError, ValueError):
             return default
