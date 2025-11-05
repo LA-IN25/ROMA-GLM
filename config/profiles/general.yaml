@@ -7,10 +7,6 @@ agents:
   # Atomizer: Fast decision-making with Gemini Flash
   atomizer:
     llm:
-<<<<<<< HEAD
-      model: openai/glm-4.5-air
-      temperature: 0.0
-=======
       model: openai/glm-4.5-air
       temperature: 0.0
       max_tokens: 8000
@@ -59,8 +55,8 @@ agents:
           # No search_engine = OpenRouter native search
           max_results: 5
           search_context_size: medium
-          temperature: 1.0  # Required for GPT-5 reasoning models
-          max_tokens: 16000  # Required for GPT-5 reasoning models
+          temperature: 1.0 # Required for GPT-5 reasoning models
+          max_tokens: 16000 # Required for GPT-5 reasoning models
 
       - class_name: FileToolkit
         enabled: true
@@ -151,48 +147,6 @@ agent_mapping:
             max_lifetime_hours: 23.5
             auto_reinitialize: true
 
-        - class_name: FileToolkit
-          enabled: true
-          toolkit_config:
-            enable_delete: false
-            max_file_size: 10485760
-
-        - class_name: CalculatorToolkit
-          enabled: true
-
-    # WRITE: Content creation and documentation
-    # Use cases: "write a report", "create documentation", "summarize findings"
-    WRITE:
-      llm:
-        model: openai/glm-4.6
-        temperature: 0.3
-        max_tokens: 32000
-      prediction_strategy: react
-      # Load WRITE-specific seed prompt and demos
-      signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_write_seed:EXECUTOR_WRITE_PROMPT"
-      demos: "prompt_optimization.prompts.seed_prompts.executor_write_seed:EXECUTOR_WRITE_DEMOS"
-      agent_config:
-        max_executions: 8
-
-      # File I/O + research tools
-      toolkits:
-        - class_name: FileToolkit
-          enabled: true
-          toolkit_config:
-            enable_delete: false
-            max_file_size: 10485760
-
-        - class_name: MCPToolkit
-          enabled: true
-          toolkit_config:
-            server_name: exa
-            server_type: http
-            url: https://mcp.exa.ai/mcp
-            headers:
-              Authorization: Bearer ${oc.env:EXA_API_KEY}
-            transport_type: streamable
-            use_storage: false
-            tool_timeout: 60
         - class_name: FileToolkit
           enabled: true
           toolkit_config:
