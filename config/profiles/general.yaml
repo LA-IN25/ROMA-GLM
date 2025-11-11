@@ -48,7 +48,7 @@ agents:
           max_lifetime_hours: 23.5
           auto_reinitialize: true
 
-      - class_name: WebSearchToolkit
+      - class_name: ZAIWebSearchToolkit
         enabled: true
         toolkit_config:
           model: openrouter/openai/gpt-5-mini
