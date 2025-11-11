@@ -43,6 +43,7 @@ class ToolkitManager:
         "SerperToolkit": "roma_glm.tools.web_search.serper",
         "ZAIWebSearchToolkit": "roma_glm.tools.web_search.zai_websearch",
         "E2BToolkit": "roma_glm.tools.core.e2b",
+        "MicroSandboxToolkit": "roma_glm.tools.core.microsandbox",
         "BinanceToolkit": "roma_glm.tools.crypto.binance.toolkit",
         "CoinGeckoToolkit": "roma_glm.tools.crypto.coingecko.toolkit",
         "DefiLlamaToolkit": "roma_glm.tools.crypto.defillama.toolkit",

@@ -17,7 +17,7 @@ from datetime import datetime
 from typing import List, Optional
 from pathlib import Path
 
-from roma_dspy.types.artifact_models import ArtifactReference
+from roma_glm.types.artifact_models import ArtifactReference
 
 
 # ==================== Fundamental Context Components ====================

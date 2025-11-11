@@ -1,5 +1,5 @@
 
-```"""Decision engine module for trading logic and risk management."""
+"""Decision engine module for trading logic and risk management."""
 
 from .decision_engine import DecisionEngine
 

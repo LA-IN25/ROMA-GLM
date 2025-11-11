@@ -21,9 +21,9 @@ from typing import Any, List, Optional, Set
 import pandas as pd
 from loguru import logger
 
-from roma_dspy.core.artifacts import ArtifactBuilder
-from roma_dspy.core.context import ExecutionContext
-from roma_dspy.types import ArtifactType
+from roma_glm.core.artifacts import ArtifactBuilder
+from roma_glm.core.context import ExecutionContext
+from roma_glm.types import ArtifactType
 
 
 # Regex to detect absolute file paths in strings

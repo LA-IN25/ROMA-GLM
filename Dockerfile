@@ -20,12 +20,12 @@ WORKDIR /app
 
 # Copy only dependency files first (better layer caching)
 COPY pyproject.toml README.md ./
-COPY src/roma_dspy/__init__.py src/roma_dspy/
+COPY src/roma_glm/__init__.py src/roma_glm/
 
 # Install dependencies with uv cache mount (much faster on rebuilds)
 # --prerelease=allow is needed for mlflow 3.5.0rc0
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system --prerelease=allow -e ".[e2b,api,wandb]" boto3
+    uv pip install --system --prerelease=allow -e ".[e2b,api,wandb,agent]" boto3
 
 # Copy rest of source for final install
 COPY src/ ./src/
@@ -88,5 +88,5 @@ EXPOSE 8000
 HEALTHCHECK --interval=60s --timeout=5s --start-period=40s --retries=2 \
     CMD curl -f http://localhost:8000/health || exit 1
 
-# Default command - run API server
-CMD ["roma-glm", "server", "start", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+# Default command - run API server directly
+CMD ["uvicorn", "roma_glm.api.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]

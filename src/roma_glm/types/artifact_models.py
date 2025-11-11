@@ -18,8 +18,8 @@ from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field, field_validator
 
-from roma_dspy.types.artifact_types import ArtifactType
-from roma_dspy.types.media_type import MediaType
+from roma_glm.types.artifact_types import ArtifactType
+from roma_glm.types.media_type import MediaType
 
 
 class ArtifactRegistrationRequest(BaseModel):

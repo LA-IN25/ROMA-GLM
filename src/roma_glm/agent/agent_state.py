@@ -1,5 +1,5 @@
 
-```"""Agent state management with database models for portfolio and trades."""
+"""Agent state management with database models for portfolio and trades."""
 
 from __future__ import annotations
 
@@ -54,7 +54,7 @@ class Position:
         return self.quantity * price
 
     @property
-    unrealized_pnl(self) -> float:
+    def unrealized_pnl(self) -> float:
         """Unrealized profit/loss."""
         if self.action == TradeAction.BUY:
             current_value = self.quantity * (self.current_price or self.entry_price)

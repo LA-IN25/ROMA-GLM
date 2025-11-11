@@ -1,7 +1,7 @@
 """API routers for ROMA-DSPy."""
 
 from . import (
-    agent,
+    # agent,  # TODO: Re-enable after fixing scheduler imports
     checkpoints,
     executions,
     health,
@@ -10,7 +10,7 @@ from . import (
 )
 
 __all__ = [
-    "agent",
+    # "agent",  # TODO: Re-enable after fixing scheduler imports
     "checkpoints",
     "executions",
     "health",

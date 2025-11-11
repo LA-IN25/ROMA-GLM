@@ -19,10 +19,10 @@ from typing import List, Union
 
 from loguru import logger
 
-from roma_dspy.core.artifacts import ArtifactBuilder
-from roma_dspy.core.context import ExecutionContext
-from roma_dspy.tools.base.base import BaseToolkit
-from roma_dspy.types import Artifact, ArtifactRegistrationRequest, ArtifactType
+from roma_glm.core.artifacts import ArtifactBuilder
+from roma_glm.core.context import ExecutionContext
+from roma_glm.tools.base.base import BaseToolkit
+from roma_glm.types import Artifact, ArtifactRegistrationRequest, ArtifactType
 
 
 class ArtifactToolkit(BaseToolkit):

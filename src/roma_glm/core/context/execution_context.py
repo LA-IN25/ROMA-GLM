@@ -22,7 +22,7 @@ if TYPE_CHECKING:
         ToolInvocationEvent,
     )
 
-from roma_dspy.core.artifacts import ArtifactRegistry
+from roma_glm.core.artifacts import ArtifactRegistry
 
 
 class ExecutionContext:

@@ -13,6 +13,8 @@ agents:
       model: openai/glm-4.5-air
       temperature: 0.0
       max_tokens: 1000
+      api_key: ${oc.env:ZAI_API_KEY}
+      base_url: https://api.z.ai/api/coding/paas/v4
     # Load atomizer seed prompt and demos for improved task classification
     signature_instructions: "prompt_optimization.prompts.seed_prompts.atomizer_seed:ATOMIZER_PROMPT"
     demos: "prompt_optimization.prompts.seed_prompts.atomizer_seed:ATOMIZER_DEMOS"
@@ -23,6 +25,8 @@ agents:
       model: openai/glm-4.5-air
       temperature: 0.1
       max_tokens: 4000
+      api_key: ${oc.env:ZAI_API_KEY}
+      base_url: https://api.z.ai/api/coding/paas/v4
     # Load planner seed prompt and demos for improved task decomposition
     signature_instructions: "prompt_optimization.prompts.seed_prompts.planner_seed:PLANNER_PROMPT"
     demos: "prompt_optimization.prompts.seed_prompts.planner_seed:PLANNER_DEMOS"
@@ -35,6 +39,8 @@ agents:
       model: openai/glm-4.6
       temperature: 0.2
       max_tokens: 16000
+      api_key: ${oc.env:ZAI_API_KEY}
+      base_url: https://api.z.ai/api/coding/paas/v4
     prediction_strategy: react
     # Load executor seed prompt and demos for improved task execution
     signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_seed:EXECUTOR_PROMPT"
@@ -45,11 +51,13 @@ agents:
     # Default toolkits (all available)
     # NOTE: Configs are homogenized across all task types for maximum cache reuse
     toolkits:
-      - class_name: E2BToolkit
+      - class_name: MicroSandboxToolkit
         enabled: true
         toolkit_config:
           timeout: 600
-          max_lifetime_hours: 23.5
+          image: python
+          cpus: 1
+          memory: 1024
           auto_reinitialize: true
 
       - class_name: MCPToolkit
@@ -145,6 +153,8 @@ agents:
       model: openai/glm-4.5-air
       temperature: 0.0
       max_tokens: 5000
+      api_key: ${oc.env:ZAI_API_KEY}
+      base_url: https://api.z.ai/api/coding/paas/v4
     # Load aggregator seed prompt for improved result synthesis
     signature_instructions: "prompt_optimization.prompts.seed_prompts.aggregator_seed:AGGREGATOR_PROMPT"
     demos: "prompt_optimization.prompts.seed_prompts.aggregator_seed:AGGREGATOR_DEMOS"
@@ -155,6 +165,8 @@ agents:
       model: openai/glm-4.5-air
       temperature: 0.0
       max_tokens: 3000
+      api_key: ${oc.env:ZAI_API_KEY}
+      base_url: https://api.z.ai/api/coding/paas/v4
     # Load verifier seed prompt and demos for improved output validation
     signature_instructions: "prompt_optimization.prompts.seed_prompts.verifier_seed:VERIFIER_PROMPT"
     demos: "prompt_optimization.prompts.seed_prompts.verifier_seed:VERIFIER_DEMOS"
@@ -169,6 +181,8 @@ agent_mapping:
         model: openai/glm-4.5-air # Fast & cheap for simple queries
         temperature: 0.0 # Deterministic data retrieval
         max_tokens: 4000 # Sufficient for data responses
+        api_key: ${oc.env:ZAI_API_KEY}
+        base_url: https://api.z.ai/api/coding/paas/v4
       prediction_strategy: react
       # Load RETRIEVE-specific seed prompt and demos
       signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_retrieve_seed:EXECUTOR_RETRIEVE_PROMPT"
@@ -271,6 +285,8 @@ agent_mapping:
         model: openai/glm-4.6 # Best for code generation
         temperature: 0.1 # Slightly creative for problem-solving
         max_tokens: 16000 # Large context for complex code
+        api_key: ${oc.env:ZAI_API_KEY}
+        base_url: https://api.z.ai/api/coding/paas/v4
       prediction_strategy: react
       # Load CODE_INTERPRET-specific seed prompt and demos
       signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_code_seed:EXECUTOR_CODE_PROMPT"
@@ -280,11 +296,13 @@ agent_mapping:
 
       # Code execution + data sources + file I/O - HOMOGENIZED configs
       toolkits:
-        - class_name: E2BToolkit # PRIMARY: Code execution
+        - class_name: MicroSandboxToolkit # PRIMARY: Code execution
           enabled: true
           toolkit_config:
             timeout: 600 # HOMOGENIZED: standard value
-            max_lifetime_hours: 23.5
+            image: python
+            cpus: 1
+            memory: 1024
             auto_reinitialize: true
 
         - class_name: FileToolkit # Save analysis results
@@ -360,6 +378,8 @@ agent_mapping:
         model: openai/glm-4.6 # Best reasoning
         temperature: 0.2 # Balanced creativity + accuracy
         max_tokens: 16000 # Large context for complex reasoning
+        api_key: ${oc.env:ZAI_API_KEY}
+        base_url: https://api.z.ai/api/coding/paas/v4
       prediction_strategy: react
       # Load THINK-specific seed prompt and demos
       signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_think_seed:EXECUTOR_THINK_PROMPT"
@@ -369,11 +389,13 @@ agent_mapping:
 
       # All data sources + web search + code execution - HOMOGENIZED configs
       toolkits:
-        - class_name: E2BToolkit # Code execution for complex analysis
+        - class_name: MicroSandboxToolkit # Code execution for complex analysis
           enabled: true
           toolkit_config:
             timeout: 600 # HOMOGENIZED: standard value
-            max_lifetime_hours: 23.5
+            image: python
+            cpus: 1
+            memory: 1024
             auto_reinitialize: true
 
         - class_name: MCPToolkit # Market sentiment & news
@@ -475,6 +497,8 @@ agent_mapping:
         model: openai/glm-4.6 # Best writing quality
         temperature: 0.3 # More creative for engaging writing
         max_tokens: 16000 # Long-form content
+        api_key: ${oc.env:ZAI_API_KEY}
+        base_url: https://api.z.ai/api/coding/paas/v4
       prediction_strategy: react
       # Load WRITE-specific seed prompt and demos
       signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_write_seed:EXECUTOR_WRITE_PROMPT"

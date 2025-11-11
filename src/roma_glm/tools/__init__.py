@@ -40,13 +40,12 @@ Example usage:
 
 from .base import BaseToolkit, ToolkitManager
 from .core import FileToolkit, CalculatorToolkit, E2BToolkit, ArtifactToolkit
-from .web_search import WebSearchToolkit, WebSearchProvider, SerperToolkit
+from .web_search import SerperToolkit, ZAIWebSearchToolkit
 from .crypto import (
     BinanceToolkit,
     CoinGeckoToolkit,
     DefiLlamaToolkit,
     ArkhamToolkit,
-    CoinglassToolkit,
 )
 
 

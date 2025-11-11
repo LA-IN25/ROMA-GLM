@@ -34,16 +34,16 @@ from textual.containers import VerticalScroll
 from textual.screen import ModalScreen
 from textual.message import Message
 
-from .client import VizApiClient
+from .core.client import VizApiClient
 from .models import AgentGroupViewModel, ExecutionViewModel, TaskViewModel, TraceViewModel
 from .transformer import DataTransformer
 from .widgets.tree_table import TreeTable
-from .detail_view import (
-    GenericDetailModal,
-    LMCallDetailParser,
-    SpanDetailParser,
-    ToolCallDetailParser,
-)
+# from .detail_view import (
+#     GenericDetailModal,
+#     LMCallDetailParser,
+#     SpanDetailDetailParser,
+#     ToolCallDetailParser,
+# )
 
 
 # ROMA Logo ASCII Art (from file)

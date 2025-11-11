@@ -16,8 +16,9 @@ from roma_glm.api.dependencies import init_dependencies
 from roma_glm.config.manager import ConfigManager
 from roma_glm.core.storage.postgres_storage import PostgresStorage
 from roma_glm.logging_config import configure_from_config
-from roma_glm.agent.autonomous_agent import AutonomousCryptoAgent
-from roma_glm.decision.decision_engine import RiskLevel
+# from roma_glm.agent.autonomous_agent import AutonomousCryptoAgent
+# from roma_glm.decision.decision_engine import RiskLevel
+# TODO: Fix scheduler imports before re-enabling
 
 
 # ============================================================================
@@ -32,7 +33,7 @@ class AppState:
         self.storage: PostgresStorage | None = None
         self.config_manager: ConfigManager | None = None
         self.execution_service: ExecutionService | None = None
-        self.autonomous_agent: AutonomousCryptoAgent | None = None
+        # self.autonomous_agent: AutonomousCryptoAgent | None = None
         self.startup_time: datetime = datetime.now(timezone.utc)
 
 
@@ -104,26 +105,28 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
             app.state.app_state.execution_service = None
 
         # Initialize Autonomous Agent
-        if app.state.app_state.execution_service:
-            logger.info("Initializing Autonomous Crypto Agent")
-            autonomous_agent = AutonomousCryptoAgent(
-                agent_id="main_crypto_agent",
-                initial_balance=10000.0,
-                risk_level=RiskLevel.MODERATE,
-                execution_service=app.state.app_state.execution_service,
-            )
-            app.state.app_state.autonomous_agent = autonomous_agent
+        # TODO: Fix scheduler imports before re-enabling
+        # if app.state.app_state.execution_service:
+        #     logger.info("Initializing Autonomous Crypto Agent")
+        #     autonomous_agent = AutonomousCryptoAgent(
+        #         agent_id="main_crypto_agent",
+        #         initial_balance=10000.0,
+        #         risk_level=RiskLevel.MODERATE,
+        #         execution_service=app.state.app_state.execution_service,
+        #     )
+        #     app.state.app_state.autonomous_agent = autonomous_agent
 
-            # Start autonomous agent in background
-            import asyncio
+        #     # Start autonomous agent in background
+        #     import asyncio
 
-            asyncio.create_task(autonomous_agent.run_autonomously())
-            logger.info("Autonomous Crypto Agent started in background")
-        else:
-            logger.warning(
-                "Autonomous Agent not initialized (ExecutionService disabled)"
-            )
-            app.state.app_state.autonomous_agent = None
+        #     asyncio.create_task(autonomous_agent.run_autonomously())
+        #     logger.info("Autonomous Crypto Agent started in background")
+        # else:
+        #     logger.warning(
+        #         "Autonomous Agent not initialized (ExecutionService disabled)"
+        #     )
+        logger.info("Autonomous Agent temporarily disabled")
+        # app.state.app_state.autonomous_agent = None
 
         # Initialize dependency injection
         if storage and config_manager:
@@ -140,9 +143,10 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         logger.info("Shutting down ROMA-DSPy API server")
 
         # Shutdown Autonomous Agent
-        if app.state.app_state.autonomous_agent:
-            logger.info("Shutting down Autonomous Agent")
-            await app.state.app_state.autonomous_agent.stop()
+        # TODO: Fix scheduler imports before re-enabling
+        # if app.state.app_state.autonomous_agent:
+        #     logger.info("Shutting down Autonomous Agent")
+        #     await app.state.app_state.autonomous_agent.stop()
 
         # Shutdown ExecutionService
         if app.state.app_state.execution_service:
@@ -212,7 +216,7 @@ def create_app(enable_rate_limit: bool = True) -> FastAPI:
         checkpoints,
         metrics,
         traces,
-        agent,
+        # agent,  # TODO: Re-enable after fixing scheduler imports
     )
 
     app.include_router(health.router, tags=["health"])
@@ -220,7 +224,7 @@ def create_app(enable_rate_limit: bool = True) -> FastAPI:
     app.include_router(checkpoints.router, prefix="/api/v1", tags=["checkpoints"])
     app.include_router(metrics.router, prefix="/api/v1", tags=["metrics"])
     app.include_router(traces.router, prefix="/api/v1", tags=["traces"])
-    app.include_router(agent.router, prefix="/api/v1", tags=["agent"])
+    # app.include_router(agent.router, prefix="/api/v1", tags=["agent"])  # TODO: Re-enable after fixing scheduler imports
 
     # Global exception handler
     @app.exception_handler(Exception)

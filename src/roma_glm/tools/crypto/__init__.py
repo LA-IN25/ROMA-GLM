@@ -8,7 +8,6 @@ This module contains all cryptocurrency, DeFi, and blockchain analytics toolkits
 
 from .binance import BinanceToolkit, BinanceMarketType
 from .coingecko import CoinGeckoToolkit
-from .coinglass import CoinglassToolkit
 from .defillama import DefiLlamaToolkit
 from .arkham import ArkhamToolkit
 
@@ -16,7 +15,6 @@ __all__ = [
     "BinanceToolkit",
     "BinanceMarketType",
     "CoinGeckoToolkit",
-    "CoinglassToolkit",
     "DefiLlamaToolkit",
     "ArkhamToolkit",
 ]

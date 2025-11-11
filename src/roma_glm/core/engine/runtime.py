@@ -495,7 +495,7 @@ class ModuleRuntime:
         def prepare_kwargs(t: TaskNode, context: Optional[str]) -> dict:
             nonlocal context_captured
             context_captured = context
-            return {"goal": t.goal, "context_payload": context}
+            return {"input_task": t.goal, "context_payload": context}
 
         def process_result(t: TaskNode, result: Any, duration: float, token_metrics: Any, messages: Any, dag: TaskDAG) -> TaskNode:
             # Record with context metadata
@@ -541,7 +541,7 @@ class ModuleRuntime:
         def prepare_kwargs(t: TaskNode, context: Optional[str]) -> dict:
             nonlocal context_captured
             context_captured = context
-            return {"goal": t.goal, "context_payload": context}
+            return {"input_task": t.goal, "context_payload": context}
 
         def process_result(t: TaskNode, result: Any, duration: float, token_metrics: Any, messages: Any, dag: TaskDAG) -> TaskNode:
             # Record with context metadata (forced execution has additional metadata)
@@ -591,7 +591,7 @@ class ModuleRuntime:
 
         def prepare_kwargs(t: TaskNode, context: Optional[str]) -> dict:
             return {
-                "original_goal": t.goal,
+                "input_task": t.goal,
                 "subtasks_results": subtask_results,
                 "context_payload": context,
             }
@@ -660,7 +660,12 @@ class ModuleRuntime:
     @measure_execution_time
     @with_module_resilience(module_name="module_execution")
     async def _async_execute_module(self, module, *args, **kwargs):
-        return await module.aforward(*args, **kwargs)
+        # Extract input_task from kwargs if it's there, as it's a required positional argument
+        if 'input_task' in kwargs:
+            input_task = kwargs.pop('input_task')
+            return await module.aforward(input_task, *args, **kwargs)
+        else:
+            return await module.aforward(*args, **kwargs)
 
     def _record_module_result(
         self,

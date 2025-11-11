@@ -9,6 +9,6 @@ Features:
 - File loading for offline viewing
 """
 
-from roma_dspy.tui.app import RomaVizApp, run_viz
+from roma_glm.tui.app import RomaVizApp, run_viz
 
 __all__ = ["RomaVizApp", "run_viz"]

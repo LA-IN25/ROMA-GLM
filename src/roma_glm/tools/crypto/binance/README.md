@@ -180,7 +180,7 @@ All responses use type-safe Pydantic models:
 
 ### OrderBookSnapshot
 ```python
-from src.roma_dspy.tools.value_objects.crypto import OrderBookSnapshot
+from src.roma_glm.tools.value_objects.crypto import OrderBookSnapshot
 
 book: OrderBookSnapshot
 book.best_bid  # OrderBookLevel with price/quantity
@@ -191,7 +191,7 @@ book.mid_price # Decimal ((bid + ask) / 2)
 
 ### Kline (Candlestick)
 ```python
-from src.roma_dspy.tools.value_objects.crypto import Kline
+from src.roma_glm.tools.value_objects.crypto import Kline
 
 kline: Kline
 kline.open      # Decimal
@@ -206,7 +206,7 @@ kline.wick_high       # Decimal
 
 ### TickerStats
 ```python
-from src.roma_dspy.tools.value_objects.crypto import TickerStats
+from src.roma_glm.tools.value_objects.crypto import TickerStats
 
 ticker: TickerStats
 ticker.price_change_percent  # Decimal
@@ -260,8 +260,8 @@ All tools return consistent error format:
 
 ```python
 # Test imports
-from src.roma_dspy.tools import BinanceToolkit
-from src.roma_dspy.tools.value_objects.crypto import OrderBookSnapshot
+from src.roma_glm.tools import BinanceToolkit
+from src.roma_glm.tools.value_objects.crypto import OrderBookSnapshot
 
 # Initialize toolkit
 toolkit = BinanceToolkit(

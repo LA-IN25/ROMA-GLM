@@ -46,6 +46,11 @@ async def get_config_manager() -> ConfigManager:
     return _config_manager
 
 
+def get_app_state(request):
+    """Get app state from request."""
+    return request.app.state.app_state
+
+
 async def verify_execution_exists(
     execution_id: str,
     storage: PostgresStorage = Depends(get_storage)

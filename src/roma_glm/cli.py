@@ -13,7 +13,7 @@ from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.tree import Tree
 
-from roma_glm.tui import run_viz_app
+# from roma_glm.tui import run_viz_app
 
 # Optional dependency for API client commands
 try:
@@ -83,16 +83,10 @@ def solve(
     """
     try:
         # Import here to avoid slow startup
-<<<<<<< HEAD:src/roma_glm/cli.py
+        from dataclasses import replace
         from roma_glm.config.manager import ConfigManager
         from roma_glm.core.engine.solve import RecursiveSolver
         from roma_glm.logging_config import configure_from_config
-=======
-        from dataclasses import replace
-        from roma_dspy.config.manager import ConfigManager
-        from roma_dspy.core.engine.solve import RecursiveSolver
-        from roma_dspy.logging_config import configure_from_config
->>>>>>> upstream/main:src/roma_dspy/cli.py
 
         # Load configuration
         config_mgr = ConfigManager()
@@ -537,15 +531,9 @@ def exec_create(
 
 @exec_app.command("list")
 def exec_list(
-<<<<<<< HEAD:src/roma_glm/cli.py
-    status: Optional[str] = typer.Option(
-        None, "--status", "-s", help="Filter by status"
-    ),
-=======
     status: Optional[str] = typer.Option(None, "--status", "-s", help="Filter by status"),
     experiment: Optional[str] = typer.Option(None, "--experiment", "-e", help="Filter by experiment name"),
     profile: Optional[str] = typer.Option(None, "--profile", "-p", help="Filter by profile"),
->>>>>>> upstream/main:src/roma_dspy/cli.py
     limit: int = typer.Option(20, "--limit", "-l", help="Number of executions to show"),
     url: str = typer.Option(
         "http://localhost:8000", "--url", "-u", help="API server URL"
@@ -554,17 +542,11 @@ def exec_list(
     """List all executions with optional filtering.
 
     Examples:
-<<<<<<< HEAD:src/roma_glm/cli.py
-        roma-glm exec list
-        roma-glm exec list --status running
-        roma-glm exec list --limit 50
-=======
         roma-dspy exec list
         roma-dspy exec list --status running
         roma-dspy exec list --experiment "ROMA-Crypto-Agent"
         roma-dspy exec list --profile crypto_agent --status completed
         roma-dspy exec list --limit 50
->>>>>>> upstream/main:src/roma_dspy/cli.py
     """
     try:
         from rich.table import Table
@@ -605,30 +587,18 @@ def exec_list(
         table.add_column("Created", style="dim")
 
         for exec in data["executions"]:
-<<<<<<< HEAD:src/roma_glm/cli.py
-            goal = (
-                exec["initial_goal"][:50] + "..."
-                if len(exec["initial_goal"]) > 50
-                else exec["initial_goal"]
-            )
-=======
             goal = exec["initial_goal"][:40] + "..." if len(exec["initial_goal"]) > 40 else exec["initial_goal"]
->>>>>>> upstream/main:src/roma_dspy/cli.py
             tasks = f"{exec['completed_tasks']}/{exec['total_tasks']}"
             created = exec["created_at"][:19].replace("T", " ")
             experiment_short = exec["experiment_name"][:25] + "..." if len(exec["experiment_name"]) > 25 else exec["experiment_name"]
 
             table.add_row(
-<<<<<<< HEAD:src/roma_glm/cli.py
-                exec["execution_id"][:12], exec["status"], goal, tasks, created
-=======
                 exec["execution_id"][:12],
                 experiment_short,
                 exec["status"],
                 goal,
                 tasks,
                 created
->>>>>>> upstream/main:src/roma_dspy/cli.py
             )
 
         console.print(table)
@@ -809,10 +779,10 @@ def exec_export(
         roma-dspy exec export abc123 --exclude-io --no-compress
     """
     try:
-        from roma_dspy.tui.core.client import ApiClient
-        from roma_dspy.tui.types.export import ExportLevel
-        from roma_dspy.tui.utils.export import ExportService
-        from roma_dspy.tui.transformer import DataTransformer
+        from roma_glm.tui.core.client import ApiClient
+        from roma_glm.tui.types.export import ExportLevel
+        from roma_glm.tui.utils.export import ExportService
+        from roma_glm.tui.transformer import DataTransformer
 
         # Validate level
         level_map = {
@@ -1088,18 +1058,6 @@ def checkpoint_delete(
 
 @app.command("viz-interactive")
 def viz_interactive(
-<<<<<<< HEAD:src/roma_glm/cli.py
-    execution_id: str = typer.Argument(..., help="Execution ID to explore"),
-    api_url: str = typer.Option(
-        "http://localhost:8000", "--url", "-u", help="API server URL"
-    ),
-    live: bool = typer.Option(
-        False, "--live", "-l", help="Enable live mode with automatic polling"
-    ),
-    poll_interval: float = typer.Option(
-        2.0, "--poll-interval", help="Polling interval in seconds (default: 2.0)"
-    ),
-=======
     execution_id: Optional[str] = typer.Argument(None, help="Execution ID to explore (omit for browser mode)"),
     api_url: str = typer.Option("http://localhost:8000", "--url", "-u", help="API server URL"),
     live: bool = typer.Option(False, "--live", "-l", help="Enable live mode with automatic polling"),
@@ -1108,7 +1066,6 @@ def viz_interactive(
     experiment: Optional[str] = typer.Option(None, "--experiment", "-e", help="Filter by experiment name (browser mode only)"),
     profile: Optional[str] = typer.Option(None, "--profile", "-p", help="Filter by profile (browser mode only)"),
     status: Optional[str] = typer.Option(None, "--status", "-s", help="Filter by status (browser mode only)"),
->>>>>>> upstream/main:src/roma_dspy/cli.py
 ):
     """
     Launch interactive TUI visualizer for executions.
@@ -1119,11 +1076,6 @@ def viz_interactive(
     - File mode: Load from exported file (provide --file)
 
     Examples:
-<<<<<<< HEAD:src/roma_glm/cli.py
-        roma-glm viz-interactive abc123              # Static view
-        roma-glm viz-interactive abc123 --live       # Live mode (auto-refresh every 2s)
-        roma-glm viz-interactive abc123 --live --poll-interval 5  # Refresh every 5s
-=======
         # Detail mode (specific execution):
         roma-dspy viz-interactive abc123              # Static view
         roma-dspy viz-interactive abc123 --live       # Live mode (auto-refresh every 2s)
@@ -1137,7 +1089,6 @@ def viz_interactive(
         # File mode (offline):
         roma-dspy viz-interactive --file export.json           # Load from file
         roma-dspy viz-interactive --file export.json.gz        # Auto-decompresses gzipped files
->>>>>>> upstream/main:src/roma_dspy/cli.py
     """
     try:
         # Validate mutually exclusive options
@@ -1266,253 +1217,6 @@ def metrics(
 
 
 # ============================================================================
-<<<<<<< HEAD:src/roma_glm/cli.py
-# Autonomous Agent Commands
-# ============================================================================
-
-@agent_app.command("status")
-def agent_status(
-    url: str = typer.Option(
-        "http://localhost:8000", "--url", "-u", help="API server URL"
-    ),
-):
-    """Get autonomous agent status.
-
-    Examples:
-        roma-glm agent status
-        roma-glm agent status --url http://localhost:8000
-    """
-    if not HTTPX_AVAILABLE:
-        console_err.print("[bold red]Error:[/bold red] httpx not installed")
-        raise typer.Exit(code=1)
-
-    try:
-        response = httpx.get(f"{url}/api/v1/agent/status", timeout=10.0)
-        response.raise_for_status()
-
-        data = response.json()
-
-        # Display agent status
-        console.print(
-            Panel(
-                f"""[bold]Agent ID:[/bold] {data['data']['agent_id']}
-[bold]Running:[/bold] {'✅ Yes' if data['data']['running'] else '❌ No'}
-[bold]Uptime:[/bold] {data['data']['uptime_seconds']:.0f}s
-[bold]Portfolio Value:[/bold] ${data['data']['agent_state']['portfolio']['total_value']:.2f}
-[bold]Total P&L:[/bold] {data['data']['agent_state']['portfolio']['total_pnl_percent']:.2f}%
-[bold]Risk Level:[/bold] {data['data']['decision_engine']['risk_level']}""",
-                title="[bold blue]Autonomous Agent Status",
-                border_style="blue",
-            )
-        )
-
-        # Display monitoring info
-        if data['data'].get('market_monitor'):
-            monitor = data['data']['market_monitor']
-            console.print(f"\n[bold]Monitoring:[/bold] {len(monitor.get('symbols', []))} symbols")
-            console.print(f"[bold]Alerts:[/bold] {monitor.get('alert_callbacks_count', 0)} callbacks")
-
-        # Display scheduler info
-        if data['data'].get('scheduler'):
-            scheduler = data['data']['scheduler']
-            console.print(f"[bold]Scheduled Tasks:[/bold] {len(scheduler.get('tasks', {}))}")
-
-    except httpx.HTTPError as e:
-        console_err.print(f"[bold red]API Error:[/bold red] {e}")
-        raise typer.Exit(code=1)
-    except Exception as e:
-        console_err.print(f"[bold red]Error:[/bold red] {e}")
-        raise typer.Exit(code=1)
-
-
-@agent_app.command("start")
-def agent_start(
-    url: str = typer.Option(
-        "http://localhost:8000", "--url", "-u", help="API server URL"
-    ),
-):
-    """Start autonomous agent.
-
-    Examples:
-        roma-glm agent start
-        roma-glm agent start --url http://localhost:8000
-    """
-    if not HTTPX_AVAILABLE:
-        console_err.print("[bold red]Error:[/bold red] httpx not installed")
-        raise typer.Exit(code=1)
-
-    try:
-        response = httpx.post(f"{url}/api/v1/agent/start", timeout=10.0)
-        response.raise_for_status()
-
-        data = response.json()
-        console.print(f"[bold green]✅[/bold green] {data['message']}")
-        console.print(f"Timestamp: {data['timestamp']}")
-
-    except httpx.HTTPError as e:
-        console_err.print(f"[bold red]API Error:[/bold red] {e}")
-        raise typer.Exit(code=1)
-    except Exception as e:
-        console_err.print(f"[bold red]Error:[/bold red] {e}")
-        raise typer.Exit(code=1)
-
-
-@agent_app.command("stop")
-def agent_stop(
-    url: str = typer.Option(
-        "http://localhost:8000", "--url", "-u", help="API server URL"
-    ),
-):
-    """Stop autonomous agent.
-
-    Examples:
-        roma-glm agent stop
-        roma-glm agent stop --url http://localhost:8000
-    """
-    if not HTTPX_AVAILABLE:
-        console_err.print("[bold red]Error:[/bold red] httpx not installed")
-        raise typer.Exit(code=1)
-
-    try:
-        response = httpx.post(f"{url}/api/v1/agent/stop", timeout=10.0)
-        response.raise_for_status()
-
-        data = response.json()
-        console.print(f"[bold green]✅[/bold green] {data['message']}")
-        console.print(f"Timestamp: {data['timestamp']}")
-
-    except httpx.HTTPError as e:
-        console_err.print(f"[bold red]API Error:[/bold red] {e}")
-        raise typer.Exit(code=1)
-    except Exception as e:
-        console_err.print(f"[bold red]Error:[/bold red] {e}")
-        raise typer.Exit(code=1)
-
-
-@agent_app.command("portfolio")
-def agent_portfolio(
-    url: str = typer.Option(
-        "http://localhost:8000", "--url", "-u", help="API server URL"
-    ),
-):
-    """Get agent portfolio details.
-
-    Examples:
-        roma-glm agent portfolio
-        roma-glm agent portfolio --url http://localhost:8000
-    """
-    if not HTTPX_AVAILABLE:
-        console_err.print("[bold red]Error:[/bold red] httpx not installed")
-        raise typer.Exit(code=1)
-
-    try:
-        from rich.table import Table
-
-        response = httpx.get(f"{url}/api/v1/agent/portfolio", timeout=10.0)
-        response.raise_for_status()
-
-        data = response.json()
-        portfolio = data['data']['portfolio']
-
-        # Display portfolio summary
-        console.print(
-            Panel(
-                f"""[bold]Portfolio ID:[/bold] {portfolio['id']}
-[bold]Cash Balance:[/bold] ${portfolio['cash']:.2f}
-[bold]Total Value:[/bold] ${portfolio['total_value']:.2f}
-[bold]Total P&L:[/bold] ${portfolio['total_pnl']:.2f} ({portfolio['total_pnl_percent']:.2f}%)
-[bold]Positions:[/bold] {data['data']['performance']['positions_count']}
-[bold]Total Trades:[/bold] {data['data']['performance']['total_trades']}""",
-                title="[bold green]Portfolio Overview",
-                border_style="green",
-            )
-        )
-
-        # Display positions
-        if data['data']['positions']:
-            console.print("\n[bold]Open Positions:[/bold]")
-
-            table = Table()
-            table.add_column("Symbol", style="cyan")
-            table.add_column("Action", style="magenta")
-            table.add_column("Quantity", justify="right", style="yellow")
-            table.add_column("Entry Price", justify="right", style="blue")
-            table.add_column("Current Price", justify="right", style="green")
-            table.add_column("P&L", justify="right", style="red")
-            table.add_column("P&L %", justify="right", style="red")
-
-            for pos in data['data']['positions']:
-                pnl_color = "green" if pos['unrealized_pnl'] >= 0 else "red"
-                table.add_row(
-                    pos['symbol'],
-                    pos['action'],
-                    f"{pos['quantity']:.4f}",
-                    f"${pos['entry_price']:.2f}",
-                    f"${pos['current_price']:.2f}",
-                    f"${pos['unrealized_pnl']:.2f}",
-                    f"[{pnl_color}]{pos['unrealized_pnl_percent']:.2f}%[/{pnl_color}]",
-                )
-
-            console.print(table)
-
-    except httpx.HTTPError as e:
-        console_err.print(f"[bold red]API Error:[/bold red] {e}")
-        raise typer.Exit(code=1)
-    except Exception as e:
-        console_err.print(f"[bold red]Error:[/bold red] {e}")
-        raise typer.Exit(code=1)
-
-
-@agent_app.command("trade")
-def agent_trade(
-    symbol: str = typer.Argument(..., help="Trading symbol (e.g., BTCUSDT)"),
-    action: str = typer.Argument(..., help="Trade action: buy or sell"),
-    quantity: float = typer.Argument(..., help="Trade quantity"),
-    price: Optional[float] = typer.Option(None, "--price", "-p", help="Target price (market price if not specified)"),
-    url: str = typer.Option(
-        "http://localhost:8000", "--url", "-u", help="API server URL"
-    ),
-):
-    """Force execute a manual trade.
-
-    Examples:
-        roma-glm agent trade BTCUSDT buy 0.01
-        roma-glm agent trade ETHUSDT sell 0.5 --price 3000
-    """
-    if not HTTPX_AVAILABLE:
-        console_err.print("[bold red]Error:[/bold red] httpx not installed")
-        raise typer.Exit(code=1)
-
-    if action.lower() not in ["buy", "sell"]:
-        console_err.print("[bold red]Error:[/bold red] Action must be 'buy' or 'sell'")
-        raise typer.Exit(code=1)
-
-    try:
-        payload = {
-            "symbol": symbol.upper(),
-            "action": action.lower(),
-            "quantity": quantity,
-        }
-        if price is not None:
-            payload["price"] = price
-
-        response = httpx.post(
-            f"{url}/api/v1/agent/force-trade",
-            json=payload,
-            timeout=10.0
-        )
-        response.raise_for_status()
-
-        data = response.json()
-        console.print(f"[bold green]✅[/bold green] {data['message']}")
-        console.print(f"Timestamp: {data['timestamp']}")
-
-    except httpx.HTTPError as e:
-        console_err.print(f"[bold red]API Error:[/bold red] {e}")
-        raise typer.Exit(code=1)
-    except Exception as e:
-        console_err.print(f"[bold red]Error:[/bold red] {e}")
-=======
 # Export Validation Command
 # ============================================================================
 
@@ -1535,7 +1239,7 @@ def validate_export(
         roma-dspy validate-export export.json.gz --verbose
     """
     try:
-        from roma_dspy.tui.utils.import_service import ImportService
+        from roma_glm.tui.utils.import_service import ImportService
 
         if not filepath.exists():
             console_err.print(f"[bold red]Error:[/bold red] File not found: {filepath}")
@@ -1575,7 +1279,7 @@ def validate_export(
             if verbose:
                 try:
                     import json
-                    from roma_dspy.tui.utils.file_loader import FileLoader
+                    from roma_glm.tui.utils.file_loader import FileLoader
 
                     data = FileLoader.load_json(filepath)
 
@@ -1632,7 +1336,6 @@ def validate_export(
         if verbose:
             import traceback
             console_err.print(traceback.format_exc())
->>>>>>> upstream/main:src/roma_dspy/cli.py
         raise typer.Exit(code=1)
 
 

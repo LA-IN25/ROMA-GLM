@@ -6,7 +6,7 @@ from typing import Optional, Dict, Any
 from loguru import logger
 import json
 
-from roma_dspy.types import AdapterType
+from roma_glm.types import AdapterType
 
 
 @dataclass

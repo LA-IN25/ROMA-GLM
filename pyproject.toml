@@ -44,14 +44,10 @@ dependencies = [
     "boto3>=1.40.55",
     "fastmcp>=2.12.4",
     "jinja2>=3.1.0",
-<<<<<<< HEAD
-    "mcp>=1.18.0",
-=======
     "jsonschema>=4.20.0",
     "pyperclip>=1.8.2",
     "python-magic>=0.4.27",
     "aiofiles>=23.2.1",
->>>>>>> upstream/main
 ]
 
 [project.optional-dependencies]
@@ -68,14 +64,12 @@ mcp = [
     "httpx-sse>=0.4.0",
     "mcp>=1.0.0",
 ]
-<<<<<<< HEAD
 agent = [
-    "apscheduler>=3.10.0",
+    "apscheduler>=3.10.0,<4.0.0",
     "websockets>=12.0",
-=======
+]
 wandb = [
     "wandb>=0.15.0",
->>>>>>> upstream/main
 ]
 
 [project.scripts]
@@ -85,6 +79,8 @@ roma-glm = "roma_glm.cli:app"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+# Note: dependency-groups (PEP 735) may not be supported by all tools/IDEs
+# If you encounter parsing errors, comment out this section
 [dependency-groups]
 dev = [
     "pytest>=8.4.2",

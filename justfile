@@ -84,13 +84,13 @@ setup-dev:
 # Example: just solve "your task" crypto_agent 3 false text
 solve task profile="crypto_agent" max_depth="3" verbose="false" output="text":
     @if [ "{{verbose}}" = "true" ]; then \
-        docker exec -it roma-dspy-api roma-dspy solve --profile {{profile}} --max-depth {{max_depth}} --output {{output}} --verbose "{{task}}"; \
+        docker exec -it roma-dspy-api roma-glm solve --profile {{profile}} --max-depth {{max_depth}} --output {{output}} --verbose "{{task}}"; \
     else \
-        docker exec -it roma-dspy-api roma-dspy solve --profile {{profile}} --max-depth {{max_depth}} --output {{output}} "{{task}}"; \
+        docker exec -it roma-dspy-api roma-glm solve --profile {{profile}} --max-depth {{max_depth}} --output {{output}} "{{task}}"; \
     fi
 # Run any CLI command in the container (Docker)
 cli-docker *args:
-    docker exec -it roma-dspy-api roma-dspy {{args}}
+    docker exec -it roma-dspy-api roma-glm {{args}}
 # Interactive TUI visualization
 # Usage: just viz [execution_id] [experiment] [profile] [status]
 # Examples:
@@ -101,7 +101,7 @@ cli-docker *args:
 #   just viz "" "" "" running                 # Filter by status
 viz execution_id="" experiment="" profile="" status="":
     #!/usr/bin/env bash
-    cmd="docker exec -it roma-dspy-api roma-dspy viz-interactive"
+    cmd="docker exec -it roma-dspy-api roma-glm viz-interactive"
     [ -n "{{execution_id}}" ] && cmd="$cmd {{execution_id}}"
     [ -n "{{experiment}}" ] && cmd="$cmd --experiment '{{experiment}}'"
     [ -n "{{profile}}" ] && cmd="$cmd --profile {{profile}}"
@@ -114,9 +114,9 @@ viz execution_id="" experiment="" profile="" status="":
 # Example: just viz-v2 abc-123-def-456 true
 viz-v2 execution_id live="false":
     @if [ "{{live}}" = "true" ]; then \
-        docker exec -it roma-dspy-api roma-dspy viz-v2 {{execution_id}} --live; \
+        docker exec -it roma-dspy-api roma-glm viz-v2 {{execution_id}} --live; \
     else \
-        docker exec -it roma-dspy-api roma-dspy viz-v2 {{execution_id}}; \
+        docker exec -it roma-dspy-api roma-glm viz-v2 {{execution_id}}; \
     fi
 
 # ==============================================================================

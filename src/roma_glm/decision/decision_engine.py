@@ -11,7 +11,8 @@ from decimal import Decimal
 
 from loguru import logger
 
-from .market_monitor import MarketAlert, AlertType
+# from .market_monitor import MarketAlert, AlertType
+# TODO: Implement market_monitor module
 from ..agent.agent_state import Portfolio, Position, TradeDecision, TradeAction
 
 

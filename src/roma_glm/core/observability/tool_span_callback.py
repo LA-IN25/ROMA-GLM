@@ -26,8 +26,8 @@ from typing import Any, Dict, Optional, Tuple
 from dspy.utils.callback import BaseCallback
 from loguru import logger
 
-from roma_dspy.core.context.execution_context import ExecutionContext
-from roma_dspy.tools.metrics.models import ToolInvocationEvent
+from roma_glm.core.context.execution_context import ExecutionContext
+from roma_glm.tools.metrics.models import ToolInvocationEvent
 
 try:
     import mlflow
@@ -345,7 +345,7 @@ class ROMAToolSpanCallback(BaseCallback):
                 return ("MCPToolkit", "mcp")
 
             # Try to extract toolkit name from module
-            # e.g., roma_dspy.tools.crypto.binance.toolkit -> BinanceToolkit
+            # e.g., roma_glm.tools.crypto.binance.toolkit -> BinanceToolkit
             parts = module.split('.')
             if 'tools' in parts and len(parts) > parts.index('tools') + 1:
                 toolkit_category = parts[parts.index('tools') + 1]

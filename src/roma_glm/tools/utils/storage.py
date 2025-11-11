@@ -11,10 +11,10 @@ from typing import TYPE_CHECKING, Any, Optional
 
 from loguru import logger
 
-from roma_dspy.core.artifacts import ArtifactBuilder
-from roma_dspy.core.context import ExecutionContext
-from roma_dspy.tools.metrics.artifact_detector import _build_rich_description
-from roma_dspy.types import ArtifactType
+from roma_glm.core.artifacts import ArtifactBuilder
+from roma_glm.core.context import ExecutionContext
+from roma_glm.tools.metrics.artifact_detector import _build_rich_description
+from roma_glm.types import ArtifactType
 
 if TYPE_CHECKING:
     from roma_glm.core.storage import FileStorage
