@@ -1,53 +1,32 @@
-# Test profile - Full knob surface for ROMA-DSPy runs
+# Test Agent Profile
+# Lightweight configuration for testing and development
+# Includes essential tools for code execution, file operations, and calculations
 
-project: roma-dspy
-version: "0.1.0"
-environment: development
-
+# Default agent configurations
 agents:
+  # Atomizer: Fast decision-making with local models
   atomizer:
     llm:
-      model: "openai/glm-4.5-airopenai/glm-4.5-air"
-      temperature: 0.7
-      max_tokens: 128000
-      timeout: 30
-      api_key: null
-      base_url: null
-      num_retries: 3
-      cache: true
-      rollout_id: null
-    prediction_strategy: "chain_of_thought"
-    toolkits: [] # See example under agent_mapping if you want task-specific tools
-    enabled: true
-    type: null # Options: ATOMIZER, PLANNER, EXECUTOR, AGGREGATOR, VERIFIER
-    task_type: null # Options: RETRIEVE, WRITE, THINK, CODE_INTERPRET, IMAGE_GENERATION
-    signature: null # Inline signature (optional), e.g., "goal -> is_atomic: bool, node_type: NodeType"
-    signature_instructions: null
-    agent_config: {} # Business-logic params for the agent
-    strategy_config: {} # Params for the prediction strategy
+      model: openai/glm-4.5-air
+      temperature: 0.0
+      max_tokens: 8000
+    # Load atomizer seed prompt and demos for improved task classification
+    signature_instructions: "prompt_optimization.prompts.seed_prompts.atomizer_seed:ATOMIZER_PROMPT"
+    demos: "prompt_optimization.prompts.seed_prompts.atomizer_seed:ATOMIZER_DEMOS"
 
+  # Planner: Strategic planning with local models
   planner:
     llm:
-      model: "openai/glm-4.5-air"
-      temperature: 0.4
-      max_tokens: 128000
-      timeout: 30
-      api_key: null
-      base_url: null
-      num_retries: 3
-      cache: true
-      rollout_id: null
-    prediction_strategy: "chain_of_thought"
-    toolkits: []
-    enabled: true
-    type: null
-    task_type: null
-    signature: null
-    signature_instructions: null
+      model: openai/glm-4.5-air
+      temperature: 0.1
+      max_tokens: 16000
+    # Load planner seed prompt and demos for improved task decomposition
+    signature_instructions: "prompt_optimization.prompts.seed_prompts.planner_seed:PLANNER_PROMPT"
+    demos: "prompt_optimization.prompts.seed_prompts.planner_seed:PLANNER_DEMOS"
     agent_config:
-      max_subtasks: 15
-    strategy_config: {}
+      max_subtasks: 8
 
+  # Default Executor (fallback for unmapped task types)
   executor:
     llm:
       model: "fireworks_ai/accounts/fireworks/models/kimi-k2-instruct-0905"
@@ -58,262 +37,214 @@ agents:
       base_url: null
       num_retries: 3
       cache: true
-      rollout_id: null
-    prediction_strategy: "chain_of_thought" # Use "react" or "code_act" if you need tools
-    toolkits: [] # e.g., [{class_name: "CalculatorToolkit"}]
+    prediction_strategy: "chain_of_thought"
+    # Load executor seed prompt and demos for improved task execution
+    signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_seed:EXECUTOR_PROMPT"
+    demos: "prompt_optimization.prompts.seed_prompts.executor_seed:EXECUTOR_DEMOS"
+    agent_config:
+      max_executions: 5
+    toolkits: []
     enabled: true
     type: null
     task_type: null
     signature: null
     signature_instructions: null
-    agent_config: {}
+    agent_config:
+      max_subtasks: 15
     strategy_config: {}
 
+  # Aggregator: Synthesis with local models
   aggregator:
     llm:
-      model: "fireworks_ai/accounts/fireworks/models/kimi-k2-instruct-0905"
-      temperature: 0.75
-      max_tokens: 128000
-      timeout: 30
-      api_key: null
-      base_url: null
-      num_retries: 3
-      cache: true
-      rollout_id: null
-    prediction_strategy: "chain_of_thought"
-    toolkits: []
-    enabled: true
-    type: null
-    task_type: null
-    signature: null
-    signature_instructions: null
-    agent_config: {}
-    strategy_config: {}
+      model: openai/glm-4.5-air
+      temperature: 0.0
+      max_tokens: 16000
+    # Load aggregator seed prompt for improved result synthesis
+    signature_instructions: "prompt_optimization.prompts.seed_prompts.aggregator_seed:AGGREGATOR_PROMPT"
+    demos: "prompt_optimization.prompts.seed_prompts.aggregator_seed:AGGREGATOR_DEMOS"
 
+  # Verifier: Validation with local models
   verifier:
     llm:
-      model: "gpt-4o-mini"
-      temperature: 0.1
-      max_tokens: 2000
-      timeout: 30
-      api_key: null
-      base_url: null
-      num_retries: 3
-      cache: true
-      rollout_id: null
-    prediction_strategy: "chain_of_thought"
-    toolkits: []
-    enabled: false
-    type: null
-    task_type: null
-    signature: null
-    signature_instructions: null
-    agent_config: {}
-    strategy_config: {}
+      model: openai/glm-4.5-air
+      temperature: 0.0
+      max_tokens: 8000
+    # Load verifier seed prompt and demos for improved output validation
+    signature_instructions: "prompt_optimization.prompts.seed_prompts.verifier_seed:VERIFIER_PROMPT"
+    demos: "prompt_optimization.prompts.seed_prompts.verifier_seed:VERIFIER_DEMOS"
 
+# Task-aware agent mapping for executor
 agent_mapping:
   executors:
+    # RETRIEVE: Fast data fetching and web research
+    # Use cases: "search for information", "fetch documentation", "find code examples"
     RETRIEVE:
       llm:
-        model: "openrouter/openai/gpt-5-mini:online"
-        temperature: 1.0 #DO NOT CHANGE FOR OPENAI
-        max_tokens: 128000
-        timeout: 500
-        num_retries: 3
-        cache: true
-      prediction_strategy: "chain_of_thought" # or "react"/"code_act" if you want tools
-      toolkits: [] # add toolkits if using ReAct/CodeAct
-      enabled: true
-      agent_config: {} # e.g., max_executions: 6
-      strategy_config: {}
+        model: openai/glm-4.5-air
+        temperature: 0.0
+        max_tokens: 16000
+      prediction_strategy: react
+      # Load RETRIEVE-specific seed prompt and demos
+      signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_retrieve_seed:EXECUTOR_RETRIEVE_PROMPT"
+      demos: "prompt_optimization.prompts.seed_prompts.executor_retrieve_seed:EXECUTOR_RETRIEVE_DEMOS"
+      agent_config:
+        max_executions: 3
 
+      # Research tools
+      toolkits:
+        - class_name: MCPToolkit
+          enabled: true
+          toolkit_config:
+            server_name: exa
+            server_type: http
+            url: https://mcp.exa.ai/mcp
+            headers:
+              Authorization: Bearer ${oc.env:EXA_API_KEY}
+            transport_type: streamable
+            use_storage: false
+            tool_timeout: 60
+
+    # CODE_INTERPRET: Code execution, analysis, and calculations
+    # Use cases: "run this code", "analyze data", "calculate statistics"
+    CODE_INTERPRET:
+      llm:
+        model: "fireworks_ai/accounts/fireworks/models/kimi-k2-instruct-0905"
+        temperature: 0.75
+        max_tokens: 128000
+      prediction_strategy: chain_of_thought
+      # Load CODE_INTERPRET-specific seed prompt and demos
+      signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_code_seed:EXECUTOR_CODE_PROMPT"
+      demos: "prompt_optimization.prompts.seed_prompts.executor_code_seed:EXECUTOR_CODE_DEMOS"
+      agent_config:
+        max_executions: 10
+
+      # Code execution + file I/O + calculator
+      toolkits:
+        - class_name: MicroSandboxToolkit
+          enabled: true
+          toolkit_config:
+            timeout: 300
+            image: python
+            cpus: 1
+            memory: 1024
+
+        - class_name: FileToolkit
+          enabled: true
+          toolkit_config:
+            enable_delete: false
+            max_file_size: 10485760
+
+        - class_name: CalculatorToolkit
+          enabled: true
+
+    # THINK: Complex reasoning and analysis
+    # Use cases: "analyze this problem", "think through this", "reason about X"
     THINK:
       llm:
-        model: "cerebras/gpt-oss-120b"
-        temperature: 0.7
-        max_tokens: 128000
-        timeout: 30
-        num_retries: 3
-        cache: true
-      prediction_strategy: "chain_of_thought"
-      toolkits: []
-      enabled: true
-      agent_config: {}
-      strategy_config: {}
+        model: openai/glm-4.5-air
+        temperature: 0.1
+        max_tokens: 16000
+      prediction_strategy: react
+      # Load THINK-specific seed prompt and demos
+      signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_think_seed:EXECUTOR_THINK_PROMPT"
+      demos: "prompt_optimization.prompts.seed_prompts.executor_think_seed:EXECUTOR_THINK_DEMOS"
+      agent_config:
+        max_executions: 5
 
+      # Analysis tools
+      toolkits:
+        - class_name: FileToolkit
+          enabled: true
+          toolkit_config:
+            enable_delete: false
+            max_file_size: 10485760
+
+        - class_name: CalculatorToolkit
+          enabled: true
+
+    # WRITE: Content creation and documentation
+    # Use cases: "write a report", "create documentation", "summarize findings"
     WRITE:
       llm:
-        model: "cerebras/gpt-oss-120b"
-        temperature: 0.7
-        max_tokens: 128000
-        timeout: 30
-        num_retries: 3
-        cache: true
-      prediction_strategy: "chain_of_thought"
-      toolkits: []
-      enabled: true
-      agent_config: {}
-      strategy_config: {}
+        model: openai/glm-4.5-air
+        temperature: 0.2
+        max_tokens: 16000
+      prediction_strategy: react
+      # Load WRITE-specific seed prompt and demos
+      signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_write_seed:EXECUTOR_WRITE_PROMPT"
+      demos: "prompt_optimization.prompts.seed_prompts.executor_write_seed:EXECUTOR_WRITE_DEMOS"
+      agent_config:
+        max_executions: 3
 
-  # Required: keep an enabled default executor as fallback and to satisfy registry
-  default_executor:
-    llm:
-      model: "fireworks_ai/accounts/fireworks/models/gpt-oss-120b"
-      temperature: 0.7
-      max_tokens: 128000
-      timeout: 30
-      num_retries: 3
-      cache: true
-    prediction_strategy: "chain_of_thought"
-    toolkits: []
-    enabled: true
-    agent_config: {}
-    strategy_config: {}
+      # File I/O tools
+      toolkits:
+        - class_name: FileToolkit
+          enabled: true
+          toolkit_config:
+            enable_delete: false
+            max_file_size: 10485760
 
-  # # Defaults for the other required agent types (can be minimal; still must be enabled)
-  # default_atomizer:
-  #   llm:
-  #     model: "openai/glm-4.5-air-lite-preview-09-2025"
-  #     temperature: 0.4
-  #     max_tokens: 64000
-  #     timeout: 30
-  #     num_retries: 3
-  #     cache: true
-  #   prediction_strategy: "chain_of_thought"
-  #   toolkits: []
-  #   enabled: true
-  #   agent_config: {}
-
-  # default_planner:
-  #   llm:
-  #     model: "openai/glm-4.5-air"
-  #     temperature: 0.4
-  #     max_tokens: 128000
-  #     timeout: 30
-  #     num_retries: 3
-  #     cache: true
-  #   prediction_strategy: "chain_of_thought"
-  #   toolkits: []
-  #   enabled: true
-  #   agent_config:
-  #     max_subtasks: 15
-
-  # default_aggregator:
-  #   llm:
-  #     model: "cerebras/gpt-oss-120b"
-  #     temperature: 0.6
-  #     max_tokens: 128000
-  #     timeout: 30
-  #     num_retries: 3
-  #     cache: true
-  #   prediction_strategy: "chain_of_thought"
-  #   toolkits: []
-  #   enabled: true
-  #   agent_config: {}
-
+# Runtime configuration
 runtime:
-  max_concurrency: 8
-  timeout: 30
-  verbose: false
-  max_depth: 1
-  enable_logging: false
-  log_level: DEBUG
+  max_depth: 4
+  verbose: true
+  enable_logging: true
+  log_level: INFO
+  timeout: 60
 
-  cache:
-    enabled: true
-    enable_disk_cache: true
-    enable_memory_cache: true
-    disk_cache_dir: .cache/dspy
-    disk_size_limit_bytes: 30000000000
-    memory_max_entries: 1000000
-
+# Resilience
 resilience:
-  retry_strategy: "exponential_backoff" # fixed_delay | linear_backoff
-  max_retries: 3
-  base_delay: 1.0
-  max_delay: 60.0
-  jitter_factor: 0.1
-  failure_threshold: 5
-  recovery_timeout: 60.0
-  success_threshold: 2
-  evaluation_window: 300.0
+  retry:
+    enabled: true
+    max_attempts: 3
+    strategy: exponential_backoff
+    base_delay: 1.0
+    max_delay: 30.0
+
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 3
+    recovery_timeout: 60.0
+    half_open_max_calls: 2
 
   checkpoint:
-    enabled: false
-    storage_path: .checkpoints
-    auto_checkpoint_triggers:
-      - before_planning
-      - before_aggregation
+    enabled: true
+    storage_path: ${oc.env:ROMA_CHECKPOINT_PATH,.checkpoints}
     max_checkpoints: 10
     max_age_hours: 24.0
-    cleanup_interval_minutes: 60
-    default_recovery_strategy: partial # partial | full | selective
-    preserve_partial_results: true
     compress_checkpoints: true
     verify_integrity: true
-    periodic_checkpoints_enabled: false
-    periodic_interval_seconds: 30.0
-    min_execution_time_for_periodic: 10.0
 
+# Storage
 storage:
-  base_path: .tmp/sentient
-  max_file_size: 104857600
-  buffer_size: 1048576
+  base_path: ${oc.env:STORAGE_BASE_PATH,/opt/sentient}
+  max_file_size: 104857600 # 100MB
+
   postgres:
-    enabled: false
-    connection_url: postgresql+asyncpg://localhost/roma_dspy
+    enabled: ${oc.env:POSTGRES_ENABLED,true}
+    connection_url: ${oc.env:DATABASE_URL,postgresql+asyncpg://localhost/roma_dspy}
     pool_size: 5
     max_overflow: 10
-    pool_timeout: 30.0
-    echo_sql: false
 
+# Observability
 observability:
   mlflow:
-    enabled: false
-    tracking_uri: http://127.0.0.1:5000
-    experiment_name: ROMA-DSPy
+    enabled: ${oc.env:MLFLOW_ENABLED,false}
+    tracking_uri: ${oc.env:MLFLOW_TRACKING_URI,http://mlflow:5000}
+    experiment_name: ROMA-Test-Agent
     log_traces: true
-    log_traces_from_compile: false
-    log_traces_from_eval: true
     log_compiles: true
     log_evals: true
-    backend_store_uri: null
-    artifact_location: null
-  toolkit_metrics:
-    enabled: true
-    track_lifecycle: true
-    track_invocations: true
-    sample_rate: 1.0
-    persist_to_db: true
-    persist_to_mlflow: false
-    batch_size: 100
-    async_persist: true
-  event_traces:
-    enabled: true
-    track_execution_events: true
-    track_module_events: true
-    track_task_lifecycle: true
-    track_failures: true
-    sample_rate: 1.0
-    persist_to_db: true
-    persist_to_mlflow: false
-    batch_size: 50
-    async_persist: true
-    include_task_details: true
-    include_timing: true
-    max_goal_length: 200
 
+# Logging
 logging:
-  level: ERROR
-  log_dir: logs/test/
-  console_format: default # default | minimal | detailed
-  file_format: detailed # default | detailed | json
+  level: ${oc.env:LOG_LEVEL,INFO}
+  log_dir: ${oc.env:LOG_DIR,logs}
+  console_format: detailed
+  file_format: json
+  serialize: true
+  rotation: 500 MB
+  retention: 30 days
   colorize: true
-  serialize: false
-  rotation: "100 MB"
-  retention: "30 days"
-  compression: "zip"
-  intercept_standard_logging: true
   backtrace: true
   diagnose: false
-  enqueue: true

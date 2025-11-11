@@ -4,7 +4,7 @@
 
 # Default agent configurations
 agents:
-  # Atomizer: Fast decision-making with Gemini Flash
+  # Atomizer: Fast decision-making with GLM models
   atomizer:
     llm:
       model: openai/glm-4.5-air
@@ -14,17 +14,17 @@ agents:
     signature_instructions: "prompt_optimization.prompts.seed_prompts.atomizer_seed:ATOMIZER_PROMPT"
     demos: "prompt_optimization.prompts.seed_prompts.atomizer_seed:ATOMIZER_DEMOS"
 
-  # Planner: Strategic planning with Gemini Flash
+  # Planner: Strategic planning with GLM models
   planner:
     llm:
       model: openai/glm-4.5-air
       temperature: 0.1
-      max_tokens: 32000
+      max_tokens: 16000
     # Load planner seed prompt and demos for improved task decomposition
     signature_instructions: "prompt_optimization.prompts.seed_prompts.planner_seed:PLANNER_PROMPT"
     demos: "prompt_optimization.prompts.seed_prompts.planner_seed:PLANNER_DEMOS"
     agent_config:
-      max_subtasks: 12
+      max_subtasks: 8
 
   # Default Executor (fallback for unmapped task types)
   executor:
@@ -32,42 +32,16 @@ agents:
       model: openai/glm-4.6
       temperature: 0.2
       max_tokens: 32000
-    prediction_strategy: react
+    prediction_strategy: "chain_of_thought"
     # Load executor seed prompt and demos for improved task execution
     signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_seed:EXECUTOR_PROMPT"
     demos: "prompt_optimization.prompts.seed_prompts.executor_seed:EXECUTOR_DEMOS"
     agent_config:
-      max_executions: 10
+      max_executions: 5
+    agent_config:
+      max_subtasks: 15
 
-    # Default fundamental toolkits
-    toolkits:
-      - class_name: E2BToolkit
-        enabled: true
-        toolkit_config:
-          timeout: 600
-          max_lifetime_hours: 23.5
-          auto_reinitialize: true
-
-      - class_name: ZAIWebSearchToolkit
-        enabled: true
-        toolkit_config:
-          model: openrouter/openai/gpt-5-mini
-          # No search_engine = OpenRouter native search
-          max_results: 5
-          search_context_size: medium
-          temperature: 1.0 # Required for GPT-5 reasoning models
-          max_tokens: 16000 # Required for GPT-5 reasoning models
-
-      - class_name: FileToolkit
-        enabled: true
-        toolkit_config:
-          enable_delete: false
-          max_file_size: 10485760 # 10MB
-
-      - class_name: CalculatorToolkit
-        enabled: true
-
-  # Aggregator: Synthesis with Gemini Flash
+  # Aggregator: Synthesis with GLM models
   aggregator:
     llm:
       model: openai/glm-4.5-air
@@ -77,7 +51,7 @@ agents:
     signature_instructions: "prompt_optimization.prompts.seed_prompts.aggregator_seed:AGGREGATOR_PROMPT"
     demos: "prompt_optimization.prompts.seed_prompts.aggregator_seed:AGGREGATOR_DEMOS"
 
-  # Verifier: Validation with Gemini Flash
+  # Verifier: Validation with GLM models
   verifier:
     llm:
       model: openai/glm-4.5-air
@@ -102,7 +76,7 @@ agent_mapping:
       signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_retrieve_seed:EXECUTOR_RETRIEVE_PROMPT"
       demos: "prompt_optimization.prompts.seed_prompts.executor_retrieve_seed:EXECUTOR_RETRIEVE_DEMOS"
       agent_config:
-        max_executions: 6
+        max_executions: 3
 
       # Web research and file tools
       toolkits:
@@ -136,16 +110,17 @@ agent_mapping:
       signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_code_seed:EXECUTOR_CODE_PROMPT"
       demos: "prompt_optimization.prompts.seed_prompts.executor_code_seed:EXECUTOR_CODE_DEMOS"
       agent_config:
-        max_executions: 15
+        max_executions: 10
 
       # Code execution + file I/O + calculator
       toolkits:
-        - class_name: E2BToolkit
+        - class_name: MicroSandboxToolkit
           enabled: true
           toolkit_config:
-            timeout: 600
-            max_lifetime_hours: 23.5
-            auto_reinitialize: true
+            timeout: 300
+            image: python
+            cpus: 1
+            memory: 1024
 
         - class_name: FileToolkit
           enabled: true
@@ -168,9 +143,9 @@ agent_mapping:
       signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_write_seed:EXECUTOR_WRITE_PROMPT"
       demos: "prompt_optimization.prompts.seed_prompts.executor_write_seed:EXECUTOR_WRITE_DEMOS"
       agent_config:
-        max_executions: 8
+        max_executions: 5
 
-      # File I/O + research tools
+      # File I/O tools
       toolkits:
         - class_name: FileToolkit
           enabled: true
@@ -178,46 +153,34 @@ agent_mapping:
             enable_delete: false
             max_file_size: 10485760
 
-        - class_name: MCPToolkit
-          enabled: true
-          toolkit_config:
-            server_name: exa
-            server_type: http
-            url: https://mcp.exa.ai/mcp
-            headers:
-              Authorization: Bearer ${oc.env:EXA_API_KEY}
-            transport_type: streamable
-            use_storage: false
-            tool_timeout: 60
-
 # Runtime configuration
 runtime:
-  max_depth: 6
+  max_depth: 4
   verbose: true
   enable_logging: true
   log_level: INFO
-  timeout: 120
+  timeout: 60
 
 # Resilience
 resilience:
   retry:
     enabled: true
-    max_attempts: 5
+    max_attempts: 3
     strategy: exponential_backoff
-    base_delay: 2.0
-    max_delay: 60.0
+    base_delay: 1.0
+    max_delay: 30.0
 
   circuit_breaker:
     enabled: true
-    failure_threshold: 5
-    recovery_timeout: 120.0
-    half_open_max_calls: 3
+    failure_threshold: 3
+    recovery_timeout: 60.0
+    half_open_max_calls: 2
 
   checkpoint:
     enabled: true
     storage_path: ${oc.env:ROMA_CHECKPOINT_PATH,.checkpoints}
-    max_checkpoints: 20
-    max_age_hours: 48.0
+    max_checkpoints: 10
+    max_age_hours: 24.0
     compress_checkpoints: true
     verify_integrity: true
 
@@ -229,8 +192,8 @@ storage:
   postgres:
     enabled: ${oc.env:POSTGRES_ENABLED,true}
     connection_url: ${oc.env:DATABASE_URL,postgresql+asyncpg://localhost/roma_dspy}
-    pool_size: 10
-    max_overflow: 20
+    pool_size: 5
+    max_overflow: 10
 
 # Observability
 observability:
@@ -250,7 +213,7 @@ logging:
   file_format: json
   serialize: true
   rotation: 500 MB
-  retention: 90 days
+  retention: 30 days
   colorize: true
   backtrace: true
   diagnose: false
